@@ -23,4 +23,6 @@ int     main(void)
 		int a = (c | b) & (~(c & b));
 	    printf("%d\n%d\n", a, c + b); */
 		return (0);
+
+
 }

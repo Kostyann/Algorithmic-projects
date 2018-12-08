@@ -1,7 +1,7 @@
 CC = gcc
 FLAGS = -Wall -Wextra
 LIBFLAGS = -L libft/ -lft
-SOURCES = main.c resolvers.c print_funs/*.c libft/*.c
+SOURCES = main.c resolvers.c technical.c print_funs/*.c libft/*.c
 OBJECTS = *.o
 NAME = libftprintf.a
 

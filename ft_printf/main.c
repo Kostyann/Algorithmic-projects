@@ -16,8 +16,8 @@ int     ft_printf(const char *restrict format, ...);
 
 int     main(void)
 {
-	    printf("\n%d\n", ft_printf("%-2.3liafter", 42));
-	 ft_printf("\n%d\n", ft_printf("%-2.3liafter", 42));
+	    printf("\n%d\n", printf("%+-22.7liafter", 42000000000000));
+	 printf("\n%d\n", ft_printf("%+-22.7liafter", 42000000000000));
 /*	    int c = 12;
 	    int b = 8;
 	    // XOR

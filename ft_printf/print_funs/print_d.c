@@ -11,12 +11,51 @@
 /* ************************************************************************** */
 
 #include "../libft/includes/print_funs.h"
+#include "../libft/includes/technical.h"
 
 int    print_d(t_flags *flags, va_list *ap)
 {
-	(void)flags;
+	int len;
 	char *str;
 
+	if (flags->length == 0)
+		str = ft_itoa(va_arg(*ap, int));
+	else if (flags->length == 1)
+		str = ft_itoa((char) va_arg(*ap, int));
+	else if (flags->length == 2)
+		str = ft_itoa((short) va_arg(*ap, int));
+	else if (flags->length == 3)
+		str = ft_itoa_long(va_arg(*ap, long long));
+	else
+		str = ft_itoa_long(va_arg(*ap, long));
+
+	len = ft_strlen(str);
+
+	if (flags->precision > len)
+		len = add_prefix(&str, '0', flags->precision - len);
+
+	if ((flags->add_plus && str[0] != '-') || flags->space)
+		len++;
+
+	if (flags->width > len)
+	{
+		if (flags->left_align)
+			len = add_suffix(&str, ' ', flags->width - len);
+		else if (!flags->precision && flags->zero)
+			len = add_prefix(&str, '0', flags->width - len);
+		else
+			len = add_prefix(&str, ' ', flags->width - len);
+	}
+	if (flags->add_plus && str[0] != '-')
+		len = add_prefix(&str, '+', 1);
+	else if (flags->space)
+		len = add_prefix(&str, ' ', 1);
+
+
+
+	ft_putstr(str);
+	return (len);
+}
 //	printf("d\n");
 /*	printf("(left_align = %d)\n", flags->left_align);
 	printf("(add_plus = %d)\n", flags->add_plus);
@@ -26,7 +65,4 @@ int    print_d(t_flags *flags, va_list *ap)
 	printf("(width = %d)\n", flags->width);
 	printf("(precision = %d)\n", flags->precision);
 	printf("(length = %d)\n", flags->length); */
-	str = ft_itoa(va_arg(*ap, int));
-	ft_putstr(str);
-	return (ft_strlen(str));
-}
+

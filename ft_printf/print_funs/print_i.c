@@ -15,15 +15,15 @@
 
 int		print_i(t_flags *flags, va_list *ap)
 {
-	int 	len;
-	char	*str;
+	int len;
+	char *str;
 
 	if (flags->length == 0)
 		str = ft_itoa(va_arg(*ap, int));
 	else if (flags->length == 1)
-		str = ft_itoa((char)va_arg(*ap, int));
+		str = ft_itoa((char) va_arg(*ap, int));
 	else if (flags->length == 2)
-		str = ft_itoa((short)va_arg(*ap, int));
+		str = ft_itoa((short) va_arg(*ap, int));
 	else if (flags->length == 3)
 		str = ft_itoa_long(va_arg(*ap, long long));
 	else
@@ -34,7 +34,7 @@ int		print_i(t_flags *flags, va_list *ap)
 	if (flags->precision > len)
 		len = add_prefix(&str, '0', flags->precision - len);
 
-	if (flags->add_plus || flags->space)
+	if ((flags->add_plus && str[0] != '-') || flags->space)
 		len++;
 
 	if (flags->width > len)
@@ -46,11 +46,12 @@ int		print_i(t_flags *flags, va_list *ap)
 		else
 			len = add_prefix(&str, ' ', flags->width - len);
 	}
-
-	if (flags->add_plus)
+	if (flags->add_plus && str[0] != '-')
 		len = add_prefix(&str, '+', 1);
 	else if (flags->space)
 		len = add_prefix(&str, ' ', 1);
+
+
 
 	ft_putstr(str);
 	return (len);

@@ -64,7 +64,13 @@ int			add_prefix(char **str, int c, size_t len)
 	pref = ft_strnew(len);
 	pref = ft_memset(pref, c, len);
 	to_free = *str;
-	*str = ft_strjoin(pref, *str);
+	if (c == '0' && **str == '-')
+	{
+		*str = ft_strjoin(pref, (*str + 1));
+		add_prefix(str, '-', 1);
+	}
+	else
+		*str = ft_strjoin(pref, *str);
 	free(to_free);
 	free(pref);
 	return (ft_strlen(*str));

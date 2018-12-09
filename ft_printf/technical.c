@@ -56,6 +56,35 @@ char		*ft_itoa_long(long long n)
 	return (str);
 }
 
+char		*ft_itoa_ulong(unsigned long long n)
+{
+	unsigned long long	nbr;
+	int					len;
+	char 				*str;
+
+	len = 0;
+	nbr = n;
+	while (nbr != 0)
+	{
+		nbr /= 10;
+		len++;
+	}
+	if (n == 0)
+	{
+		if ((str = ft_strnew(1)))
+			str[0] = '0';
+	}
+	else if ((str = ft_strnew(len)))
+	{
+		while (n != 0)
+		{
+			str[--len] = (n % 10) + '0';
+			n /= 10;
+		}
+	}
+	return (str);
+}
+
 int			add_prefix(char **str, int c, size_t len)
 {
 	char *pref;

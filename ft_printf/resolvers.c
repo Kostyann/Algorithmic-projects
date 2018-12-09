@@ -29,6 +29,10 @@ void 	resolve_flags(t_flags *flags, char **format)
 			flags->hash = 1;
 		(*format)++;
 	}
+	if (flags->left_align)
+		flags->zero = 0;
+	if (flags->add_plus)
+		flags->space = 0;
 }
 
 void	resolve_width(t_flags *flags, char **format)

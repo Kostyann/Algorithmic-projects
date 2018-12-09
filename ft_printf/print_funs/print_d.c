@@ -26,9 +26,9 @@ int    print_d(t_flags *flags, va_list *ap)
 	else if (flags->length == 2)
 		str = ft_itoa((short) va_arg(*ap, int));
 	else if (flags->length == 3)
-		str = ft_itoa_long(va_arg(*ap, long long));
+		str = ft_itoa_long(va_arg(*ap, long long), 10);
 	else
-		str = ft_itoa_long(va_arg(*ap, long));
+		str = ft_itoa_long(va_arg(*ap, long), 10);
 
 	len = ft_strlen(str);
 	neg = (*str == '-') ? 1 : 0;

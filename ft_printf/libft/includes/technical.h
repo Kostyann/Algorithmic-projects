@@ -15,7 +15,7 @@
 
 #include "ft_printf.h"
 
-char		*ft_itoa_long(long long n);
+char		*ft_itoa_long(long long n, int base);
 char		*ft_itoa_ulong(unsigned long long n);
 int			add_prefix(char **str, int c, size_t len);
 int			add_suffix(char **str, int c, size_t len);

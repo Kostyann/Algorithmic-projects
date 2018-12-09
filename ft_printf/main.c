@@ -16,8 +16,10 @@ int     ft_printf(const char *restrict format, ...);
 
 int     main(void)
 {
-	    printf("\n%d\n", printf("%+022ldafter", -42000000000000));
-	 printf("\n%d\n", ft_printf("%+022ldafter", -42000000000000));
+	    printf("\n%d\n", printf("@moulitest: %.d %.0d", 0, 0));
+	 printf("\n%d\n", ft_printf("@moulitest: %.d %.0d", 0, 0));
+		printf("\n%d\n", printf("%+10.d", 0));
+	 printf("\n%d\n", ft_printf("%+10.d", 0));
 /*	    int c = 12;
 	    int b = 8;
 	    // XOR

@@ -39,12 +39,14 @@ void	resolve_width(t_flags *flags, char **format)
 
 void	resolve_precision(t_flags *flags, char **format)
 {
-	if (**format && **format == '.' && *(*format + 1) >= '0' && *(*format + 1) <= '9')
+	if (**format && **format == '.' && ft_atoi(*format + 1))
 		(*format) += ft_strlen(ft_itoa(flags->precision = ft_atoi(++(*format))));
 	else if (**format && **format == '.')
 	{
-		flags->precision = 1;
+		flags->precision = -1;
 		(*format)++;
+		while (**format == '0')
+			(*format)++;
 	}
 }
 

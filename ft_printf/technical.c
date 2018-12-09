@@ -69,6 +69,8 @@ int			add_prefix(char **str, int c, size_t len)
 		*str = ft_strjoin(pref, (*str + 1));
 		add_prefix(str, '-', 1);
 	}
+	else if (!*str)
+		*str = ft_strjoin(pref, "");
 	else
 		*str = ft_strjoin(pref, *str);
 	free(to_free);

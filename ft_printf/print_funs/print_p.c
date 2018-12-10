@@ -11,14 +11,28 @@
 /* ************************************************************************** */
 
 #include "../libft/includes/print_funs.h"
+#include "../libft/includes/technical.h"
 
 int    print_p(t_flags *flags, va_list *ap)
 {
-	(void)flags;
-	char *str;
+	int		len;
+	char	*str;
 
-	printf("p\n");
-	str = ft_itoa(va_arg(*ap, int));
+	str = ft_itoa_ulong(va_arg(*ap, unsigned long long), 16);
+
+	len = add_prefix(&str, 'x', 1);
+	len = add_prefix(&str, '0', 1);
+
+	len = ft_strlen(str);
+
+	if (flags->width > len)
+	{
+		if (flags->left_align)
+			len = add_suffix(&str, ' ', flags->width - len);
+		else
+			len = add_prefix(&str, ' ', flags->width - len);
+	}
+
 	ft_putstr(str);
-	return (ft_strlen(str));
+	return (len);
 }

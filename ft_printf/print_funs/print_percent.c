@@ -14,11 +14,23 @@
 
 int    print_percent(t_flags *flags, va_list *ap)
 {
-	(void)flags;
-	char *str;
+	int		len;
+	(void)	ap;
 
-	printf("percent\n");
-	str = ft_itoa(va_arg(*ap, int));
-	ft_putstr(str);
-	return (ft_strlen(str));
+	len = 1;
+
+	if (flags->width)
+	{
+		if (flags->left_align)
+			ft_putchar('%');
+		while (flags->width > len++)
+			ft_putchar(' ');
+		len--;
+		if (!flags->left_align)
+			ft_putchar('%');
+	}
+	else
+		ft_putchar('%');
+
+	return (len);
 }

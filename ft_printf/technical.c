@@ -85,7 +85,7 @@ char		*ft_itoa_long(long long n, int base)
 	return (str);
 }
 
-char		*ft_itoa_ulong(unsigned long long n)
+char		*ft_itoa_ulong(unsigned long long n, int base)
 {
 	unsigned long long	nbr;
 	int					len;
@@ -95,7 +95,7 @@ char		*ft_itoa_ulong(unsigned long long n)
 	nbr = n;
 	while (nbr != 0)
 	{
-		nbr /= 10;
+		nbr /= base;
 		len++;
 	}
 	if (n == 0)
@@ -107,8 +107,11 @@ char		*ft_itoa_ulong(unsigned long long n)
 	{
 		while (n != 0)
 		{
-			str[--len] = (n % 10) + '0';
-			n /= 10;
+			if (n % base < 10)
+				str[--len] = (n % base) + '0';
+			else
+				str[--len] = (n % base) + 'a' - 10;
+			n /= base;
 		}
 	}
 	return (str);
@@ -122,13 +125,13 @@ int			add_prefix(char **str, int c, size_t len)
 	pref = ft_strnew(len);
 	pref = ft_memset(pref, c, len);
 	to_free = *str;
-	if (c == '0' && **str == '-')
+	if (!*str)
+		*str = ft_strjoin(pref, "");
+	else if (c == '0' && **str == '-')
 	{
 		*str = ft_strjoin(pref, (*str + 1));
 		add_prefix(str, '-', 1);
 	}
-	else if (!*str)
-		*str = ft_strjoin(pref, "");
 	else
 		*str = ft_strjoin(pref, *str);
 	free(to_free);
@@ -144,7 +147,10 @@ int			add_suffix(char **str, int c, size_t len)
 	suf = ft_strnew(len);
 	suf = ft_memset(suf, c, len);
 	to_free = *str;
-	*str = ft_strjoin(*str, suf);
+	if (!*str)
+		*str = ft_strjoin("", suf);
+	else
+		*str = ft_strjoin(*str, suf);
 	free(to_free);
 	free(suf);
 	return (ft_strlen(*str));

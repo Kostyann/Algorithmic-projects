@@ -16,25 +16,23 @@
 int    print_u(t_flags *flags, va_list *ap)
 {
 	int		len;
-	int		neg;
 	char	*str;
 
 	if (flags->length == 0)
-		str = ft_itoa_ulong(va_arg(*ap, unsigned int));
+		str = ft_itoa_ulong(va_arg(*ap, unsigned int), 10);
 	else if (flags->length == 1)
-		str = ft_itoa_ulong(va_arg(*ap, unsigned int));
+		str = ft_itoa_ulong(va_arg(*ap, unsigned int), 10);
 	else if (flags->length == 2)
-		str = ft_itoa_ulong(va_arg(*ap, unsigned int));
+		str = ft_itoa_ulong(va_arg(*ap, unsigned int), 10);
 	else if (flags->length == 3)
-		str = ft_itoa_ulong(va_arg(*ap, unsigned long long));
+		str = ft_itoa_ulong(va_arg(*ap, unsigned long long), 10);
 	else
-		str = ft_itoa_ulong(va_arg(*ap, unsigned long));
+		str = ft_itoa_ulong(va_arg(*ap, unsigned long), 10);
 
 	len = ft_strlen(str);
-	neg = (*str == '-') ? 1 : 0;
 
-	if (flags->precision > len - neg)
-		len = add_prefix(&str, '0', flags->precision - len + neg);
+	if (flags->precision > len)
+		len = add_prefix(&str, '0', flags->precision - len);
 	else if (flags->precision == -1 && *str == '0')
 		ft_strdel(&str);
 

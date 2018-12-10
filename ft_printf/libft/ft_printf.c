@@ -96,9 +96,7 @@ int     ft_printf(const char *restrict format, ...)
     sum = 0;
     va_start(ap, format);
     if (*format)
-	{
 	    sum = real_printf(format, &ap, 0);
-	}
     va_end(ap);
     return (sum);
 }

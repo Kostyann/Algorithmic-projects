@@ -18,10 +18,10 @@ int     main(void)
 {
 //	    printf("\n%d\n", printf("@moulitest: %.d %.0d", 0, 0));
 //	 printf("\n%d\n", ft_printf("@moulitest: %.d %.0d", 0, 0));
-		printf("\n%d\n", printf("%x", 14));
-	 printf("\n%d\n", ft_printf("%+ld", 42949672));
+		printf("\n%d\n", printf("@moulitest: %#.o %#.0o", 0, 0));
+	 printf("\n%d\n", ft_printf("@moulitest: %#.o %#.0o", 0, 0));
 
-	 int n = 4106;
+//	 int n = 4106;
 //	 printf("%(16 - %x)\n", 26 % 16);
 /*	    int c = 12;
 	    int b = 8;

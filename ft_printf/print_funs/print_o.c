@@ -11,14 +11,46 @@
 /* ************************************************************************** */
 
 #include "../libft/includes/print_funs.h"
+#include "../libft/includes/technical.h"
 
 int    print_o(t_flags *flags, va_list *ap)
 {
-	(void)flags;
-	char *str;
+	int		len;
+	char	*str;
 
-	printf("o\n");
-	str = ft_itoa(va_arg(*ap, int));
+	if (flags->length == 0)
+		str = ft_itoa_ulong(va_arg(*ap, unsigned int), 8);
+	else if (flags->length == 1)
+		str = ft_itoa_ulong(va_arg(*ap, unsigned int), 8);
+	else if (flags->length == 2)
+		str = ft_itoa_ulong(va_arg(*ap, unsigned int), 8);
+	else if (flags->length == 3)
+		str = ft_itoa_ulong(va_arg(*ap, unsigned long long), 8);
+	else
+		str = ft_itoa_ulong(va_arg(*ap, unsigned long), 8);
+
+	len = ft_strlen(str);
+
+	if (flags->precision > len)
+		len = add_prefix(&str, '0', flags->precision - len);
+	else if (flags->precision == -1 && *str == '0')
+		ft_strdel(&str);
+
+	if (flags->hash && ft_atoi(str))
+		len = add_prefix(&str, '0', 1);
+
+	len = ft_strlen(str);
+
+	if (flags->width > len)
+	{
+		if (flags->left_align)
+			len = add_suffix(&str, ' ', flags->width - len);
+		else if (!flags->precision && flags->zero)
+			len = add_prefix(&str, '0', flags->width - len);
+	}
+	if (flags->width > len)
+		len = add_prefix(&str, ' ', flags->width - len);
+
 	ft_putstr(str);
-	return (ft_strlen(str));
+	return (len);
 }

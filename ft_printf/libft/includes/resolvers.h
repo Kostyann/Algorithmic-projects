@@ -15,9 +15,9 @@
 
 #include "ft_printf.h"
 
-void 	resolve_flags(t_flags *flags, char **format);
-void	resolve_width(t_flags *flags, char **format);
-void	resolve_precision(t_flags *flags, char **format);
-void	resolve_length(t_flags *flags, char **format);
+void 	resolve_flags(t_flags *flags, const char **format);
+void	resolve_width(t_flags *flags, const char **format);
+void	resolve_precision(t_flags *flags, const char **format);
+void	resolve_length(t_flags *flags, const char **format);
 
 #endif

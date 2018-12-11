@@ -25,7 +25,7 @@ typedef int			(*fun_point)(t_flags*, va_list*);
 fun_point ident_fun(const char *restrict str)
 {
 	fun_point fun_refs[11] = {&print_c,  &print_s, &print_p, &print_d,
-										 	&print_i, &print_o, &print_u, &print_x,
+										 	&print_d, &print_o, &print_u, &print_x,
 										 	&print_bigx, &print_f, &print_percent};
 	char	fun_chars[11] = {'c', 's', 'p', 'd', 'i', 'o', 'u', 'x', 'X', 'f', '%'};
 	int		i;
@@ -37,7 +37,7 @@ fun_point ident_fun(const char *restrict str)
 	return (NULL);
 }
 
-int		type_resolve(char **format, va_list *ap)
+int		type_resolve(const char **format, va_list *ap)
 {
 	int 	res = 0;
 	t_flags flags;
@@ -81,7 +81,7 @@ int     real_printf(const char *format, va_list *ap, int res)
 		while (perc > format)
 			ft_putchar(*format++);
 	}
-	if (*format && (pr_chars = type_resolve((char**)&format, ap)))
+	if (*format && (pr_chars = type_resolve(&format, ap)))
         	res = pr_chars + real_printf(format, ap, res);
 	else
         	res = real_printf(format, ap, res);
@@ -98,5 +98,6 @@ int     ft_printf(const char *restrict format, ...)
     if (*format)
 	    sum = real_printf(format, &ap, 0);
     va_end(ap);
+//    system("leaks test");
     return (sum);
 }

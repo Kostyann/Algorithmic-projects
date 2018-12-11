@@ -34,5 +34,6 @@ int    print_p(t_flags *flags, va_list *ap)
 	}
 
 	ft_putstr(str);
+	free(str);
 	return (len);
 }

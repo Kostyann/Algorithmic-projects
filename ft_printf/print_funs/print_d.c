@@ -60,6 +60,7 @@ int    print_d(t_flags *flags, va_list *ap)
 
 
 	ft_putstr(str);
+	free(str);
 	return (len);
 }
 //	printf("d\n");

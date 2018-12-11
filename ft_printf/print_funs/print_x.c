@@ -56,6 +56,7 @@ int    print_x(t_flags *flags, va_list *ap)
 		len = add_prefix(&str, ' ', flags->width - len);
 
 	ft_putstr(str);
+	free(str);
 	return (len);
 }
 

@@ -22,18 +22,22 @@
 
 typedef int			(*fun_point)(t_flags*, va_list*);
 
-fun_point ident_fun(const char *restrict str)
+fun_point ident_fun(const char *restrict str, t_flags *flags)
 {
-	fun_point fun_refs[12] = {&print_c,  &print_s, &print_p, &print_b, &print_d,
-										 	&print_d, &print_o, &print_u, &print_x,
-										 	&print_bigx, &print_f, &print_percent};
-	char	fun_chars[12] = {'c', 's', 'p', 'b', 'd', 'i', 'o', 'u', 'x', 'X', 'f', '%'};
+	fun_point fun_refs[13] = {&print_c,  &print_s, &print_p, &print_b, &print_d,
+						   		&print_d, &print_o, &print_u, &print_x,
+								&print_bigx, &print_f, &print_f, &print_percent};
+	char	fun_chars[13] = {'c', 's', 'p', 'b', 'd', 'i',
+					   		'o', 'u', 'x', 'X', 'f', 'F', '%'};
 	int		i;
 
 	i = -1;
-	while (*str && ++i < 12)
+	while (*str && ++i < 13)
 		if (*str == fun_chars[i])
-        	return fun_refs[i];
+		{
+			flags->id = fun_chars[i];
+			return fun_refs[i];
+		}
 	return (NULL);
 }
 
@@ -52,7 +56,7 @@ int		type_resolve(const char **format, va_list *ap)
 	resolve_length(&flags, format);
 	if (!**format)
 		return (0);
-	if (!(pointer = ident_fun(*format)))
+	if (!(pointer = ident_fun(*format, &flags)))
 		return (0);
 	else
 		res = pointer(&flags, ap);

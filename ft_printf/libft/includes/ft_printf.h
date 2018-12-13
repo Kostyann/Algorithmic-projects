@@ -33,6 +33,7 @@ typedef struct		s_flags
 		l,
 		L
 	}				length;
+	char 			id;
 }					t_flags;
 
 int					ft_printf(const char *restrict format, ...);

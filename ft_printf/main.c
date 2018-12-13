@@ -18,12 +18,9 @@ int     main(void)
 {
 //	    printf("\n%d\n", printf("@moulitest: %.d %.0d", 0, 0));
 //	 printf("\n%d\n", ft_printf("@moulitest: %.d %.0d", 0, 0));
-		printf("\n%d\n", printf("%+-55.8f %.7F", 1.42567999999, 1.42567999999));
-	 printf("\n%d\n", ft_printf("%+-55.8f %.7F", 1.42567999999, 1.42567999999));
+		printf("\n%d\n", printf("%.Lf", 1.42569999));
+	 printf("\n%d\n", ft_printf("%.Lf", 1.42569999));
 
-/*	 long double f = 2.000000;
-	 unsigned long long hard = (unsigned long long) f;
-	 printf("(hard = %lld)\n", hard); */
 
 /*	double inf = 1/0.0;
 	double minus_inf = -1/0.0;

@@ -13,14 +13,39 @@
 #include "../libft/includes/print_funs.h"
 #include "../libft/includes/technical.h"
 
-char 	*btoa(long double f, int precision, int hash)
+static int	power_ten(int power)
+{
+	int	res;
+
+	res = 1;
+	while (power-- > 0)
+		res = res * 10;
+	return (res);
+}
+
+static char	*ft_weird(long double f, char id)
+{
+	char *str;
+	long double inf = 1/0.0;
+	long double minus_inf = -1/0.0;
+
+	str = ft_strnew(9);
+	if (f == inf)
+		return (str = (id == 'f') ? ft_strcat(str, "inf") : ft_strcat(str, "INF"));
+	else if (f == minus_inf)
+		return (str = (id == 'f') ? ft_strcat(str, "-inf") : ft_strcat(str, "-INF"));
+	else
+		return (str = (id == 'f') ? ft_strcat(str, "nan") : ft_strcat(str, "NAN"));
+}
+
+char		*btoa(long double f, int precision, int hash)
 {
 	unsigned long long hard;
 	long double minus_zero = -1 / (1 / 0.0);
 	char *ret;
 	char *temp;
 
-	ret = ft_strnew(32);
+	ret = ft_strnew(3222);
 	if (f < 0 || f == minus_zero)
 	{
 		ret[0] = '-';
@@ -38,12 +63,10 @@ char 	*btoa(long double f, int precision, int hash)
 	{
 		f = (f - hard) * 10;
 		hard = (unsigned long long)(float)f;
-		if (precision == 0 && (f - hard) * 10 > 5)
-			hard++;
-		if (precision == 1 && (f - hard) * 100 > 95)
+		if ((f - hard) * power_ten(precision + 1) > power_ten(precision + 1) - 5)
 		{
-			hard = (hard + 1) * 10;
-			precision--;
+			hard = (hard + 1) * power_ten(precision);
+			precision = 0;
 		}
 		temp = ft_itoa_ulong(hard, 10);
 		ret = ft_strcat(ret, temp);
@@ -52,22 +75,7 @@ char 	*btoa(long double f, int precision, int hash)
 	return (ret);
 }
 
-char 	*ft_weird(long double f, char id)
-{
-	char *str;
-	long double inf = 1/0.0;
-	long double minus_inf = -1/0.0;
-
-	str = ft_strnew(9);
-	if (f == inf)
-		return (str = (id == 'f') ? ft_strcat(str, "inf") : ft_strcat(str, "INF"));
-	else if (f == minus_inf)
-		return (str = (id == 'f') ? ft_strcat(str, "-inf") : ft_strcat(str, "-INF"));
-	else
-		return (str = (id == 'f') ? ft_strcat(str, "nan") : ft_strcat(str, "NAN"));
-}
-
-int		print_f(t_flags *flags, va_list *ap)
+int			print_f(t_flags *flags, va_list *ap)
 {
 	int		len;
 	int		neg;

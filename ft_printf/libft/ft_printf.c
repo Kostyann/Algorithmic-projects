@@ -24,14 +24,14 @@ typedef int			(*fun_point)(t_flags*, va_list*);
 
 fun_point ident_fun(const char *restrict str)
 {
-	fun_point fun_refs[11] = {&print_c,  &print_s, &print_p, &print_d,
+	fun_point fun_refs[12] = {&print_c,  &print_s, &print_p, &print_b, &print_d,
 										 	&print_d, &print_o, &print_u, &print_x,
 										 	&print_bigx, &print_f, &print_percent};
-	char	fun_chars[11] = {'c', 's', 'p', 'd', 'i', 'o', 'u', 'x', 'X', 'f', '%'};
+	char	fun_chars[12] = {'c', 's', 'p', 'b', 'd', 'i', 'o', 'u', 'x', 'X', 'f', '%'};
 	int		i;
 
 	i = -1;
-	while (*str && ++i < 11)
+	while (*str && ++i < 12)
 		if (*str == fun_chars[i])
         	return fun_refs[i];
 	return (NULL);

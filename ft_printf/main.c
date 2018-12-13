@@ -18,8 +18,13 @@ int     main(void)
 {
 //	    printf("\n%d\n", printf("@moulitest: %.d %.0d", 0, 0));
 //	 printf("\n%d\n", ft_printf("@moulitest: %.d %.0d", 0, 0));
-		printf("\n%d\n", printf("%-+22%", "string"));
-	 printf("\n%d\n", ft_printf("%-+22.4lld", 12345));
+		printf("\n%d\n", printf("%-#.8f", 1234567890.32339999999));
+	 printf("\n%d\n", ft_printf("%-#.8f", 1234567890.32339999999));
+
+/*	float f = -12.5f;
+	int * ptr_tmp = (int *)(&f);
+	printf("%x\n",*(ptr_tmp));
+	printf("\n%d\n", ft_printf("%b", *(ptr_tmp))); */
 
 //	 int n = 4106;
 //	 printf("%(16 - %x)\n", 26 % 16);

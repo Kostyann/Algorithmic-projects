@@ -22,7 +22,6 @@ int    print_b(t_flags *flags, va_list *ap);
 int    print_o(t_flags *flags, va_list *ap);
 int    print_u(t_flags *flags, va_list *ap);
 int    print_x(t_flags *flags, va_list *ap);
-int    print_bigx(t_flags *flags, va_list *ap);
 int    print_c(t_flags *flags, va_list *ap);
 int    print_s(t_flags *flags, va_list *ap);
 int    print_p(t_flags *flags, va_list *ap);

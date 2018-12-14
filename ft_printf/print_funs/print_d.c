@@ -19,7 +19,9 @@ int    print_d(t_flags *flags, va_list *ap)
 	int		neg;
 	char	*str;
 
-	if (flags->length == 0)
+	if (flags->id == 'D')
+		str = ft_itoa_long(va_arg(*ap, long), 10);
+	else if (flags->length == 0)
 		str = ft_itoa(va_arg(*ap, int));
 	else if (flags->length == 1)
 		str = ft_itoa((char) va_arg(*ap, int));

@@ -11,15 +11,16 @@
 /* ************************************************************************** */
 
 #include "libft/includes/ft_printf.h"
+#include <limits.h>
 
 int     ft_printf(const char *restrict format, ...);
 
 int     main(void)
 {
-//	    printf("\n%d\n", printf("@moulitest: %.d %.0d", 0, 0));
-//	 printf("\n%d\n", ft_printf("@moulitest: %.d %.0d", 0, 0));
-		printf("\n%d\n", printf("%.Lf", 1.42569999));
-	 printf("\n%d\n", ft_printf("%.Lf", 1.42569999));
+//		printf("\n%d\n", printf("%.5Lf", -9223372.036854775808));
+//	 printf("\n%d\n", ft_printf("%.5Lf", -9223372.036854775808));
+		printf("\n%d\n", printf("%hhu, %hhu", 0, UCHAR_MAX + 42));
+	 printf("\n%d\n", ft_printf("%hhu, %hhu", 0, UCHAR_MAX + 42));
 
 
 /*	double inf = 1/0.0;

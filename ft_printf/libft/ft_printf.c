@@ -24,15 +24,16 @@ typedef int			(*fun_point)(t_flags*, va_list*);
 
 fun_point ident_fun(const char *restrict str, t_flags *flags)
 {
-	fun_point fun_refs[13] = {&print_c,  &print_s, &print_p, &print_b, &print_d,
-						   		&print_d, &print_o, &print_u, &print_x,
-								&print_bigx, &print_f, &print_f, &print_percent};
-	char	fun_chars[13] = {'c', 's', 'p', 'b', 'd', 'i',
-					   		'o', 'u', 'x', 'X', 'f', 'F', '%'};
+	fun_point fun_refs[16] = {&print_c,  &print_s, &print_p, &print_b, &print_d,
+						   		&print_d, &print_d, &print_o, &print_o, &print_u,
+						   		&print_u, &print_x,
+								&print_x, &print_f, &print_f, &print_percent};
+	char	fun_chars[16] = {'c', 's', 'p', 'b', 'd', 'D', 'i',
+					   		'o', 'O', 'u', 'U', 'x', 'X', 'f', 'F', '%'};
 	int		i;
 
 	i = -1;
-	while (*str && ++i < 13)
+	while (*str && ++i < 16)
 		if (*str == fun_chars[i])
 		{
 			flags->id = fun_chars[i];

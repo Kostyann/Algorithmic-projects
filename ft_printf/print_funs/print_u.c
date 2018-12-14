@@ -18,7 +18,9 @@ int    print_u(t_flags *flags, va_list *ap)
 	int		len;
 	char	*str;
 
-	if (flags->length == 0)
+	if (flags->id == 'U')
+		str = ft_itoa_ulong(va_arg(*ap, unsigned long), 10);
+	else if (flags->length == 0)
 		str = ft_itoa_ulong(va_arg(*ap, unsigned int), 10);
 	else if (flags->length == 1)
 		str = ft_itoa_ulong(va_arg(*ap, unsigned int), 10);

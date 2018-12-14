@@ -15,6 +15,7 @@
 
 int    print_x(t_flags *flags, va_list *ap)
 {
+	int		i;
 	int		len;
 	char	*str;
 
@@ -28,6 +29,14 @@ int    print_x(t_flags *flags, va_list *ap)
 		str = ft_itoa_ulong(va_arg(*ap, unsigned long long), 16);
 	else
 		str = ft_itoa_ulong(va_arg(*ap, unsigned long), 16);
+
+	if (flags->id == 'X')
+	{
+		i = -1;
+		while (str[++i])
+			if (str[i] >= 'a' && str[i] <= 'z')
+				str[i] = str[i] - 32;
+	}
 
 	len = ft_strlen(str);
 
@@ -48,7 +57,7 @@ int    print_x(t_flags *flags, va_list *ap)
 
 	if (flags->hash && ft_atoi(str))
 	{
-		len = add_prefix(&str, 'x', 1);
+		len = (flags->id == 'x') ? add_prefix(&str, 'x', 1) : add_prefix(&str, 'X', 1);
 		len = add_prefix(&str, '0', 1);
 	}
 

@@ -66,13 +66,3 @@ int    print_d(t_flags *flags, va_list *ap)
 	free(str);
 	return (len);
 }
-//	printf("d\n");
-/*	printf("(left_align = %d)\n", flags->left_align);
-	printf("(add_plus = %d)\n", flags->add_plus);
-	printf("(space = %d)\n", flags->space);
-	printf("(zero = %d)\n", flags->zero);
-	printf("(hash = %d)\n", flags->hash);
-	printf("(width = %d)\n", flags->width);
-	printf("(precision = %d)\n", flags->precision);
-	printf("(length = %d)\n", flags->length); */
-

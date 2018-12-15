@@ -17,8 +17,8 @@ int     ft_printf(const char *restrict format, ...);
 
 int     main(void)
 {
-//		printf("\n%d\n", printf("%f", 0.0));
-//	 printf("\n%d\n", ft_printf("%f", 0.0));
+		printf("\n%d\n", printf("%f", 0.0));
+	 printf("\n%d\n", ft_printf("%f", 0.0));
 
 
 /*	double inf = 1/0.0;

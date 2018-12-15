@@ -12,7 +12,7 @@
 
 #include "libft/includes/resolvers.h"
 
-void 	resolve_flags(t_flags *flags, const char **format)
+void	resolve_flags(t_flags *flags, const char **format)
 {
 	while (**format && (**format == '-' || **format == '+' || **format == ' '
 						|| **format == '0' || **format == '#'))
@@ -38,13 +38,14 @@ void 	resolve_flags(t_flags *flags, const char **format)
 void	resolve_width(t_flags *flags, const char **format)
 {
 	char *str;
+
 	if (**format && **format >= '0' && **format <= '9')
 	{
-		str = ft_itoa(flags->width = ft_atoi(*format));
+		flags->width = ft_atoi(*format);
+		str = ft_itoa(flags->width);
 		(*format) += ft_strlen(str);
 		free(str);
 	}
-
 }
 
 void	resolve_precision(t_flags *flags, const char **format)
@@ -53,11 +54,11 @@ void	resolve_precision(t_flags *flags, const char **format)
 
 	if (**format && **format == '.' && ft_atoi(*format + 1))
 	{
-		str = ft_itoa(flags->precision = ft_atoi(++(*format)));
+		flags->precision = ft_atoi(++(*format));
+		str = ft_itoa(flags->precision);
 		(*format) += ft_strlen(str);
 		free(str);
 	}
-
 	else if (**format && **format == '.')
 	{
 		flags->precision = -1;
@@ -69,29 +70,27 @@ void	resolve_precision(t_flags *flags, const char **format)
 
 void	resolve_length(t_flags *flags, const char **format)
 {
-	if (!**format)
-		return ;
-	if (**format == 'h' && *(*format + 1) == 'h')
+	if (*format && **format == 'h' && *(*format + 1) == 'h')
 	{
 		flags->length = 1;
 		(*format) += 2;
 	}
-	else if (**format == 'h')
+	else if (*format && **format == 'h')
 	{
 		flags->length = 2;
 		(*format)++;
 	}
-	else if (**format == 'l' && *(*format + 1) == 'l')
+	else if (*format && **format == 'l' && *(*format + 1) == 'l')
 	{
 		flags->length = 3;
 		(*format) += 2;
 	}
-	else if (**format == 'l')
+	else if (*format && **format == 'l')
 	{
 		flags->length = 4;
 		(*format)++;
 	}
-	else if (**format == 'L')
+	else if (*format && **format == 'L')
 	{
 		flags->length = 5;
 		(*format)++;

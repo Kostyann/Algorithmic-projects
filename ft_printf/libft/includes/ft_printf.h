@@ -19,11 +19,11 @@
 
 typedef struct		s_flags
 {
-	int				left_align;
-	int				add_plus;
-	int				space;
-	int				zero;
-	int				hash;
+	unsigned int				left_align: 1;
+	unsigned int				add_plus: 1;
+	unsigned int				space: 1;
+	unsigned int				zero: 1;
+	unsigned int				hash: 1;
 	int				width;
 	int				precision;
 	enum {

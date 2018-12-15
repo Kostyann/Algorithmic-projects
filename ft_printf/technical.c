@@ -12,35 +12,6 @@
 
 #include "libft/includes/technical.h"
 
-/*char		*ft_itoa_lbase(long long n, int base)
-{
-	int		neg;
-	int		len;
-	char	*str;
-
-	neg = 1;
-	len = ft_len(n);
-	if (n == 0)
-	{
-		if ((str = ft_strnew(1)))
-			str[0] = '0';
-		return (str);
-	}
-	if (n < 0)
-		neg = -1;
-	if ((str = ft_strnew(len)))
-	{
-		if (neg == -1)
-			str[0] = '-';
-		while (n != 0)
-		{
-			str[--len] = (n % base) * neg + '0';
-			n /= base;
-		}
-	}
-	return (str);
-} */
-
 static int	ft_len(long long nbr, int base)
 {
 	int	len;
@@ -48,6 +19,19 @@ static int	ft_len(long long nbr, int base)
 	len = 0;
 	if (nbr < 0)
 		len++;
+	while (nbr != 0)
+	{
+		nbr /= base;
+		len++;
+	}
+	return (len);
+}
+
+static int	ft_ulen(unsigned long long nbr, int base)
+{
+	int	len;
+
+	len = 0;
 	while (nbr != 0)
 	{
 		nbr /= base;
@@ -87,17 +71,10 @@ char		*ft_itoa_long(long long n, int base)
 
 char		*ft_itoa_ulong(unsigned long long n, int base)
 {
-	unsigned long long	nbr;
-	int					len;
-	char 				*str;
+	int		len;
+	char	*str;
 
-	len = 0;
-	nbr = n;
-	while (nbr != 0)
-	{
-		nbr /= base;
-		len++;
-	}
+	len = ft_ulen(n, base);
 	if (n == 0)
 	{
 		if ((str = ft_strnew(1)))

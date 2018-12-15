@@ -17,42 +17,41 @@ int    print_s(t_flags *flags, va_list *ap)
 {
 	int 	i;
 	int		len;
+	char 	*temp;
 	char	*str;
 
 	i = 0;
-	if (!(str = va_arg(*ap, char*)))
+	if (!(temp = va_arg(*ap, char*)))
 	{
 		ft_putstr("(null)");
 		return (6);
 	}
+	len = ft_strlen(temp);
 
-	len = ft_strlen(str);
-
-	if (flags->precision && flags->precision < len)
+	if (flags->precision == -1)
+	{
+		str = ft_strnew(0);
+		len = 0;
+	}
+	else if (flags->precision && flags->precision < len)
+	{
+		str = ft_strndup(temp, flags->precision);
 		len = flags->precision;
+	}
+	else
+		str = ft_strdup(temp);
 
 	if (flags->width > len)
 	{
 		if (flags->left_align)
-		{
-			while (i < len)
-				ft_putchar(str[i++]);
-			while (flags->width > len++)
-				ft_putchar(' ');
-		}
+			len = add_suffix(&str, ' ', flags->width - len);
 		else
-		{
-			while (flags->width > len + i++)
-				ft_putchar(' ');
-			i = 0;
-			while (i < len)
-				ft_putchar(str[i++]);
-		}
+			len = add_prefix(&str, ' ', flags->width - len);
 		len = flags->width;
 	}
-	else
-		while (i < len)
-			ft_putchar(str[i++]);
 
+	ft_putnstr(str, len);
+	if (*str)
+		free(str);
 	return (len);
 }

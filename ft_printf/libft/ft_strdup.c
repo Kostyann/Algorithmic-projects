@@ -21,18 +21,19 @@ char	*ft_strdup(const char *src)
 	i = 0;
 	j = 0;
 	res = 0;
-	while (src[i])
-		i++;
-	if ((res = (char*)malloc(i * sizeof(char) + 1)))
+	if (src)
 	{
-		while (src[j])
+		while (src[i])
+			i++;
+		if ((res = (char*)malloc(i * sizeof(char) + 1)))
 		{
-			res[j] = src[j];
-			j++;
+			while (src[j])
+			{
+				res[j] = src[j];
+				j++;
+			}
+			res[j] = '\0';
 		}
-		res[j] = '\0';
 	}
-	else
-		return (NULL);
 	return (res);
 }

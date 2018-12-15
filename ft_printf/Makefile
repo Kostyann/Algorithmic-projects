@@ -1,8 +1,8 @@
 CC = gcc
 FLAGS = -Wall -Wextra
-LIBFLAGS = -L libft/ -lft
 SOURCES = main.c resolvers.c technical.c print_funs/*.c libft/*.c
 OBJECTS = *.o
+
 NAME = libftprintf.a
 
 all: $(SOURCES) $(NAME)
@@ -24,5 +24,5 @@ re: fclean all
 
 main: re
 	@rm -f $(OBJECTS)
-	@$(CC) -o test $(NAME) $(LIBFLAGS)
+	@$(CC) -o test $(NAME)
 	@./test

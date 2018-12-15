@@ -20,8 +20,15 @@ int    print_p(t_flags *flags, va_list *ap)
 
 	str = ft_itoa_ulong(va_arg(*ap, unsigned long long), 16);
 
-	len = add_prefix(&str, 'x', 1);
-	len = add_prefix(&str, '0', 1);
+	len = ft_strlen(str);
+	if (len == 1 && flags->precision == -1)
+		ft_strdel(&str);
+
+	if (flags->precision > len)
+		add_prefix(&str, '0', flags->precision - len);
+
+	add_prefix(&str, 'x', 1);
+	add_prefix(&str, '0', 1);
 
 	len = ft_strlen(str);
 

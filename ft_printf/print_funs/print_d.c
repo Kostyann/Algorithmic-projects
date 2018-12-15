@@ -38,9 +38,10 @@ int    print_d(t_flags *flags, va_list *ap)
 	if (flags->precision > len - neg)
 		len = add_prefix(&str, '0', flags->precision - len + neg);
 	else if (flags->precision == -1 && *str == '0')
+	{
 		ft_strdel(&str);
-
-	len = ft_strlen(str);
+		len = 0;
+	}
 
 	if ((flags->add_plus || flags->space) && !neg)
 		len++;

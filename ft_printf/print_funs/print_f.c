@@ -41,21 +41,19 @@ static char	*ft_weird(long double f, char id)
 char		*btoa(long double f, int precision, int hash)
 {
 	unsigned long long hard;
-	long double minus_zero = -1 / (1 / 0.0);
 	char *ret;
 	char *temp;
 
-	ret = ft_strnew(3222);
-//	printf("(minus_zero = %Lf)\n", minus_zero);
-//	printf("(f = %Lf)\n", f);
-	if (f < 0 || f == minus_zero)
+	ret = ft_strnew(32);
+	if (f < 0.0)
 	{
-//		printf("Kaka\n");
 		ret[0] = '-';
 		f = -f;
 	}
 
 	hard = (unsigned long long)f;
+	if (precision == -1 && (f - hard) * 10 > 5)
+		hard++;
 	temp = ft_itoa_ulong(hard, 10);
 	ret = ft_strcat(ret, temp);
 	free(temp);
@@ -64,15 +62,8 @@ char		*btoa(long double f, int precision, int hash)
 	precision = (precision == 0) ? 6 : precision;
 	while (precision-- > 0)
 	{
-//		printf("(precision = %d)\n", precision);
-//		printf("(f1 = %Lf)\n", f);
-//		printf("(hard1 = %llu)\n", hard);
 		f = (f - hard) * 10.0;
-//		printf("(f2 = %Lf)\n", f);
-
-
 		hard = (unsigned long long)(float)f;
-//		printf("(hard1 = %llu)\n", hard);
 		if ((f - hard) * power_ten(precision + 1) > power_ten(precision + 1) - 5)
 		{
 			hard = (hard + 1) * power_ten(precision);
@@ -81,7 +72,6 @@ char		*btoa(long double f, int precision, int hash)
 		temp = ft_itoa_ulong(hard, 10);
 		ret = ft_strcat(ret, temp);
 		free(temp);
-//		printf("________________\n");
 	}
 	return (ret);
 }

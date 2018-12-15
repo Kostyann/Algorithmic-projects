@@ -35,13 +35,13 @@ int    print_o(t_flags *flags, va_list *ap)
 
 	if (flags->precision > len)
 		len = add_prefix(&str, '0', flags->precision - len);
-	else if (flags->precision == -1 && *str == '0')
+	else if (flags->precision == -1 && *str == '0' && !flags->hash)
 	{
 		ft_strdel(&str);
 		len = 0;
 	}
 
-	if (flags->hash && (len != 1 || *str != '0'))
+	if (flags->hash && str && *str != '0')
 		len = add_prefix(&str, '0', 1);
 
 	len = ft_strlen(str);

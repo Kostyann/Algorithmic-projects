@@ -17,16 +17,18 @@ int    print_c(t_flags *flags, va_list *ap)
 {
 	int		len;
 	char	c;
+	char	s;
 
 	len = 1;
 	c = va_arg(*ap, int);
+	s = flags->zero ? '0' : ' ';
 
 	if (flags->width)
 	{
 		if (flags->left_align)
 			ft_putchar(c);
 		while (flags->width > len++)
-			ft_putchar(' ');
+			ft_putchar(s);
 		len--;
 		if (!flags->left_align)
 			ft_putchar(c);

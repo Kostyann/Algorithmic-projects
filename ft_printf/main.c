@@ -17,12 +17,8 @@ int     ft_printf(const char *restrict format, ...);
 
 int     main(void)
 {
-//		printf("\n%d\n", printf("%.5Lf", -9223372.036854775808));
-//	 printf("\n%d\n", ft_printf("%.5Lf", -9223372.036854775808));
-		printf("\n%d\n", printf("%f", 0.0));
-	 printf("\n%d\n", ft_printf("%f", 0.0));
-		printf("\n%d\n", printf("%.f", 0.6));
-	 printf("\n%d\n", ft_printf("%.f", 0.6));
+//		printf("\n%d\n", printf("%f", 0.0));
+//	 printf("\n%d\n", ft_printf("%f", 0.0));
 
 
 /*	double inf = 1/0.0;
@@ -32,7 +28,6 @@ int     main(void)
 
 	ft_printf("positive infinity: %f\n",inf);
 	ft_printf("negative infinity: %f\n",minus_inf);
-	ft_printf("negative zero: %f\n",minus_zero);
 	ft_printf("not a number: %f\n",nan);
 
 	ft_printf("+inf + 2.0 = %f\n",inf + 2.0);

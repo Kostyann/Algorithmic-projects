@@ -16,16 +16,19 @@
 int    print_s(t_flags *flags, va_list *ap)
 {
 	int 	i;
+	int 	f_temp;
 	int		len;
 	char 	*temp;
 	char	*str;
 
 	i = 0;
-	if (!(temp = va_arg(*ap, char*)))
+	f_temp = 0;
+	if (!(temp = va_arg(*ap, char*)) && flags->precision != -1)
 	{
-		ft_putstr("(null)");
-		return (6);
+		temp = ft_strdup("(null)");
+		f_temp = 1;
 	}
+
 	len = ft_strlen(temp);
 
 	if (flags->precision == -1)
@@ -45,13 +48,16 @@ int    print_s(t_flags *flags, va_list *ap)
 	{
 		if (flags->left_align)
 			len = add_suffix(&str, ' ', flags->width - len);
+		else if (flags->precision <= 0 && flags->zero)
+			len = add_prefix(&str, '0', flags->width - len);
 		else
 			len = add_prefix(&str, ' ', flags->width - len);
 		len = flags->width;
 	}
 
 	ft_putnstr(str, len);
-	if (*str)
-		free(str);
+	free(str);
+	if (f_temp)
+		free(temp);
 	return (len);
 }

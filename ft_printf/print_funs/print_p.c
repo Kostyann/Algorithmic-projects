@@ -36,6 +36,8 @@ int    print_p(t_flags *flags, va_list *ap)
 	{
 		if (flags->left_align)
 			len = add_suffix(&str, ' ', flags->width - len);
+		else if (!flags->precision && flags->zero)
+			len = add_prefix(&str, '0', flags->width - len);
 		else
 			len = add_prefix(&str, ' ', flags->width - len);
 	}

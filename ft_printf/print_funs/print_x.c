@@ -12,35 +12,14 @@
 
 #include "../libft/includes/print_funs.h"
 
-int    print_x(t_flags *flags, va_list *ap)
+int	print_x(t_flags *flags, va_list *ap)
 {
-	int		i;
 	int		len;
 	char	*str;
 
-	if (flags->length == 0)
-		str = ft_itoa_ulong(va_arg(*ap, unsigned int), 16);
-	else if (flags->length == 1)
-		str = ft_itoa_ulong((unsigned char)va_arg(*ap, unsigned int), 16);
-	else if (flags->length == 2)
-		str = ft_itoa_ulong((unsigned short)va_arg(*ap, unsigned int), 16);
-	else if (flags->length == 3)
-		str = ft_itoa_ulong(va_arg(*ap, unsigned long long), 16);
-	else
-		str = ft_itoa_ulong(va_arg(*ap, unsigned long), 16);
-
-	if (flags->id == 'X')
-	{
-		i = -1;
-		while (str[++i])
-			if (str[i] >= 'a' && str[i] <= 'z')
-				str[i] = str[i] - 32;
-	}
-
+	get_un_string(&str, flags, ap, 16);
 	len = ft_strlen(str);
-
 	fix_precision(&len, flags, &str, 0);
-
 	if (flags->width > (len + (flags->hash * 2)))
 	{
 		if (flags->left_align)
@@ -50,14 +29,13 @@ int    print_x(t_flags *flags, va_list *ap)
 	}
 	if (flags->hash && ft_atoi(str))
 	{
-		len = (flags->id == 'x') ? add_prefix(&str, 'x', 1) : add_prefix(&str, 'X', 1);
+		len = (flags->id == 'x') ? add_prefix(&str, 'x', 1) :
+				add_prefix(&str, 'X', 1);
 		len = add_prefix(&str, '0', 1);
 	}
 	if (flags->width > len)
 		len = add_prefix(&str, ' ', flags->width - len);
-
 	ft_putstr(str);
 	free(str);
 	return (len);
 }
-

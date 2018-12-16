@@ -12,17 +12,14 @@
 
 #include "../libft/includes/print_funs.h"
 
-int    print_u(t_flags *flags, va_list *ap)
+int	print_u(t_flags *flags, va_list *ap)
 {
 	int		len;
 	char	*str;
 
-	get_string(&str, flags, ap, 10);
-
+	get_un_string(&str, flags, ap, 10);
 	len = ft_strlen(str);
-
 	fix_precision(&len, flags, &str, 0);
-
 	if (flags->width > len)
 	{
 		if (flags->left_align)
@@ -32,7 +29,6 @@ int    print_u(t_flags *flags, va_list *ap)
 		else
 			len = add_prefix(&str, ' ', flags->width - len);
 	}
-
 	ft_putstr(str);
 	free(str);
 	return (len);

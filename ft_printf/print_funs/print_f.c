@@ -12,7 +12,7 @@
 
 #include "../libft/includes/print_funs.h"
 
-static int	power_ten(int power)
+static int	pow_ten(int power)
 {
 	int	res;
 
@@ -24,24 +24,29 @@ static int	power_ten(int power)
 
 static char	*ft_weird(long double f, char id)
 {
-	char *str;
-	long double inf = 1/0.0;
-	long double minus_inf = -1/0.0;
+	char		*str;
+	long double	inf;
+	long double	minus_inf;
 
 	str = ft_strnew(9);
+	inf = 1 / 0.0;
+	minus_inf = -1 / 0.0;
 	if (f == inf)
-		return (str = (id == 'f') ? ft_strcat(str, "inf") : ft_strcat(str, "INF"));
+		return (str = (id == 'f') ?
+				ft_strcat(str, "inf") : ft_strcat(str, "INF"));
 	else if (f == minus_inf)
-		return (str = (id == 'f') ? ft_strcat(str, "-inf") : ft_strcat(str, "-INF"));
+		return (str = (id == 'f') ?
+				ft_strcat(str, "-inf") : ft_strcat(str, "-INF"));
 	else
-		return (str = (id == 'f') ? ft_strcat(str, "nan") : ft_strcat(str, "NAN"));
+		return (str = (id == 'f') ?
+				ft_strcat(str, "nan") : ft_strcat(str, "NAN"));
 }
 
 char		*btoa(long double f, int precision, int hash)
 {
-	unsigned long long hard;
-	char *ret;
-	char *temp;
+	unsigned long long	hard;
+	char				*ret;
+	char				*temp;
 
 	ret = ft_strnew(32);
 	if (f < 0.0)
@@ -62,7 +67,7 @@ char		*btoa(long double f, int precision, int hash)
 	{
 		f = (f - hard) * 10.0;
 		hard = (unsigned long long)(float)f;
-		if ((f - hard) * power_ten(precision + 1) > power_ten(precision + 1) - 5)
+		if ((f - hard) * pow_ten(precision + 1) > pow_ten(precision + 1) - 5)
 		{
 			hard = (hard + 1) * power_ten(precision);
 			precision = 0;
@@ -76,10 +81,10 @@ char		*btoa(long double f, int precision, int hash)
 
 int			print_f(t_flags *flags, va_list *ap)
 {
-	int		len;
-	int		neg;
-	char	*str;
-	char 	*dot;
+	int			len;
+	int			neg;
+	char		*str;
+	char		*dot;
 	long double	f;
 
 	if (flags->length == 5)

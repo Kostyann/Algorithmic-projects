@@ -13,9 +13,9 @@
 #ifndef PRINT_HELPERS_H
 # define PRINT_HELPERS_H
 
-#include "technical.h"
+# include "technical.h"
 
 void	fix_precision(int *len, t_flags *flags, char **str, int neg);
-void	get_string(char **str, t_flags *flags, va_list *ap, int base);
+void	get_un_string(char **str, t_flags *flags, va_list *ap, size_t base);
 
 #endif

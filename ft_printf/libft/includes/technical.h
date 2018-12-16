@@ -13,7 +13,7 @@
 #ifndef TECHNICAL_H
 # define TECHNICAL_H
 
-#include "ft_printf.h"
+# include "ft_printf.h"
 
 char		*ft_itoa_long(long long n, int base);
 char		*ft_itoa_ulong(unsigned long long n, int base);

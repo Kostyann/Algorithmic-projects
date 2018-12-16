@@ -17,21 +17,9 @@ int		print_b(t_flags *flags, va_list *ap)
 	int		len;
 	char	*str;
 
-	if (flags->length == 0)
-		str = ft_itoa_ulong(va_arg(*ap, unsigned int), 2);
-	else if (flags->length == 1)
-		str = ft_itoa_ulong(va_arg(*ap, unsigned int), 2);
-	else if (flags->length == 2)
-		str = ft_itoa_ulong(va_arg(*ap, unsigned int), 2);
-	else if (flags->length == 3)
-		str = ft_itoa_ulong(va_arg(*ap, unsigned long long), 2);
-	else
-		str = ft_itoa_ulong(va_arg(*ap, unsigned long), 2);
-
+	get_un_string(&str, flags, ap, 2);
 	len = ft_strlen(str);
-
 	fix_precision(&len, flags, &str, 0);
-
 	if (flags->width > len)
 	{
 		if (flags->left_align)
@@ -41,7 +29,6 @@ int		print_b(t_flags *flags, va_list *ap)
 		else
 			len = add_prefix(&str, ' ', flags->width - len);
 	}
-
 	ft_putstr(str);
 	free(str);
 	return (len);

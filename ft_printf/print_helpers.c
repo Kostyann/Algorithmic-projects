@@ -24,9 +24,11 @@ void	fix_precision(int *len, t_flags *flags, char **str, int neg)
 	}
 }
 
-void	get_string(char **str, t_flags *flags, va_list *ap, int base)
+void	get_un_string(char **str, t_flags *flags, va_list *ap, size_t base)
 {
-	if (flags->id == 'U')
+	int	i;
+
+	if (flags->id == 'U' || flags->id == 'O')
 		*str = ft_itoa_ulong(va_arg(*ap, unsigned long), base);
 	else if (flags->length == 0)
 		*str = ft_itoa_ulong(va_arg(*ap, unsigned int), base);
@@ -38,4 +40,11 @@ void	get_string(char **str, t_flags *flags, va_list *ap, int base)
 		*str = ft_itoa_ulong(va_arg(*ap, unsigned long long), base);
 	else
 		*str = ft_itoa_ulong(va_arg(*ap, unsigned long), base);
+	if (flags->id == 'X')
+	{
+		i = -1;
+		while ((*str)[++i])
+			if ((*str)[i] >= 'a' && (*str)[i] <= 'z')
+				(*str)[i] = (*str)[i] - 32;
+	}
 }

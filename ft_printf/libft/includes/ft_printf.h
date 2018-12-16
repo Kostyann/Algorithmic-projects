@@ -13,17 +13,17 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-#include "libft.h"
-#include <stdarg.h>
-#include <stdlib.h>
+# include "libft.h"
+# include <stdarg.h>
+# include <stdlib.h>
 
 typedef struct		s_flags
 {
-	unsigned int				left_align: 1;
-	unsigned int				add_plus: 1;
-	unsigned int				space: 1;
-	unsigned int				zero: 1;
-	unsigned int				hash: 1;
+	unsigned int	left_align: 1;
+	unsigned int	add_plus: 1;
+	unsigned int	space: 1;
+	unsigned int	zero: 1;
+	unsigned int	hash: 1;
 	int				width;
 	int				precision;
 	enum {
@@ -33,7 +33,7 @@ typedef struct		s_flags
 		l,
 		L
 	}				length;
-	char 			id;
+	char			id;
 }					t_flags;
 
 int					ft_printf(const char *restrict format, ...);

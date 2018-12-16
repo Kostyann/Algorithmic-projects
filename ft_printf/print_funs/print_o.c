@@ -13,33 +13,17 @@
 #include "../libft/includes/print_funs.h"
 #include "../libft/includes/technical.h"
 
-int    print_o(t_flags *flags, va_list *ap)
+int	print_o(t_flags *flags, va_list *ap)
 {
 	int		len;
 	char	*str;
 
-	if (flags->id == 'O')
-		str = ft_itoa_ulong(va_arg(*ap, unsigned long), 8);
-	else if (flags->length == 0)
-		str = ft_itoa_ulong(va_arg(*ap, unsigned int), 8);
-	else if (flags->length == 1)
-		str = ft_itoa_ulong((unsigned char)va_arg(*ap, unsigned int), 8);
-	else if (flags->length == 2)
-		str = ft_itoa_ulong((unsigned short)va_arg(*ap, unsigned int), 8);
-	else if (flags->length == 3)
-		str = ft_itoa_ulong(va_arg(*ap, unsigned long long), 8);
-	else
-		str = ft_itoa_ulong(va_arg(*ap, unsigned long), 8);
-
+	get_un_string(&str, flags, ap, 8);
 	len = ft_strlen(str);
-
 	fix_precision(&len, flags, &str, 0);
-
 	if (flags->hash && str && *str != '0')
 		len = add_prefix(&str, '0', 1);
-
 	len = ft_strlen(str);
-
 	if (flags->width > len)
 	{
 		if (flags->left_align)
@@ -49,7 +33,6 @@ int    print_o(t_flags *flags, va_list *ap)
 		else
 			len = add_prefix(&str, ' ', flags->width - len);
 	}
-
 	ft_putstr(str);
 	free(str);
 	return (len);

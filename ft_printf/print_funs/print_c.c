@@ -11,9 +11,8 @@
 /* ************************************************************************** */
 
 #include "../libft/includes/print_funs.h"
-#include "../libft/includes/technical.h"
 
-int    print_c(t_flags *flags, va_list *ap)
+int	print_c(t_flags *flags, va_list *ap)
 {
 	int		len;
 	char	c;
@@ -22,7 +21,6 @@ int    print_c(t_flags *flags, va_list *ap)
 	len = 1;
 	c = va_arg(*ap, int);
 	s = flags->zero ? '0' : ' ';
-
 	if (flags->width)
 	{
 		if (flags->left_align)
@@ -35,6 +33,5 @@ int    print_c(t_flags *flags, va_list *ap)
 	}
 	else
 		ft_putchar(c);
-
 	return (len);
 }

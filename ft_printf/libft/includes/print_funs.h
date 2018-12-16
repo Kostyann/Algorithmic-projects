@@ -14,8 +14,9 @@
 # define PRINT_FUNS_H
 
 #include "ft_printf.h"
-#include <stdarg.h>
-#include <stdlib.h>
+#include "print_helpers.h"
+#include "technical.h"
+#include "resolvers.h"
 
 int    print_d(t_flags *flags, va_list *ap);
 int    print_b(t_flags *flags, va_list *ap);

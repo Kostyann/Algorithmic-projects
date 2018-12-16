@@ -11,50 +11,53 @@
 /* ************************************************************************** */
 
 #include "../libft/includes/print_funs.h"
-#include "../libft/includes/technical.h"
 
-int    print_s(t_flags *flags, va_list *ap)
+static void	fix_str_prec(int *len, char **str, char **temp, int precision)
 {
-	int 	i;
-	int 	f_temp;
+	if (precision == -1)
+	{
+		*str = ft_strnew(0);
+		*len = 0;
+	}
+	else if (precision && precision < *len)
+	{
+		*str = ft_strndup(*temp, precision);
+		*len = precision;
+	}
+	else
+		*str = ft_strdup(*temp);
+}
+
+static void	fix_width(int *len, char **str, t_flags *flags)
+{
+	if (flags->width > *len)
+	{
+		if (flags->left_align)
+			add_suffix(str, ' ', flags->width - *len);
+		else if (flags->precision <= 0 && flags->zero)
+			add_prefix(str, '0', flags->width - *len);
+		else
+			add_prefix(str, ' ', flags->width - *len);
+		*len = flags->width;
+	}
+}
+
+int			print_s(t_flags *flags, va_list *ap)
+{
+	int		f_temp;
 	int		len;
-	char 	*temp;
+	char	*temp;
 	char	*str;
 
-	i = 0;
 	f_temp = 0;
 	if (!(temp = va_arg(*ap, char*)) && flags->precision != -1)
 	{
 		temp = ft_strdup("(null)");
 		f_temp = 1;
 	}
-
 	len = ft_strlen(temp);
-
-	if (flags->precision == -1)
-	{
-		str = ft_strnew(0);
-		len = 0;
-	}
-	else if (flags->precision && flags->precision < len)
-	{
-		str = ft_strndup(temp, flags->precision);
-		len = flags->precision;
-	}
-	else
-		str = ft_strdup(temp);
-
-	if (flags->width > len)
-	{
-		if (flags->left_align)
-			len = add_suffix(&str, ' ', flags->width - len);
-		else if (flags->precision <= 0 && flags->zero)
-			len = add_prefix(&str, '0', flags->width - len);
-		else
-			len = add_prefix(&str, ' ', flags->width - len);
-		len = flags->width;
-	}
-
+	fix_str_prec(&len, &str, &temp, flags->precision);
+	fix_width(&len, &str, flags);
 	ft_putnstr(str, len);
 	free(str);
 	if (f_temp)

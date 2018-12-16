@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../libft/includes/print_funs.h"
-#include "../libft/includes/technical.h"
 
 static int	power_ten(int power)
 {
@@ -50,7 +49,6 @@ char		*btoa(long double f, int precision, int hash)
 		ret[0] = '-';
 		f = -f;
 	}
-
 	hard = (unsigned long long)f;
 	if (precision == -1 && (f - hard) * 10 > 5)
 		hard++;

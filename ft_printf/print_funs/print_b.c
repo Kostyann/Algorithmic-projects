@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../libft/includes/print_funs.h"
-#include "../libft/includes/technical.h"
 
 int		print_b(t_flags *flags, va_list *ap)
 {
@@ -31,13 +30,7 @@ int		print_b(t_flags *flags, va_list *ap)
 
 	len = ft_strlen(str);
 
-	if (flags->precision > len)
-		len = add_prefix(&str, '0', flags->precision - len);
-	else if (flags->precision == -1 && *str == '0')
-	{
-		ft_strdel(&str);
-		len = 0;
-	}
+	fix_precision(&len, flags, &str, 0);
 
 	if (flags->width > len)
 	{
@@ -45,9 +38,9 @@ int		print_b(t_flags *flags, va_list *ap)
 			len = add_suffix(&str, ' ', flags->width - len);
 		else if (!flags->precision && flags->zero)
 			len = add_prefix(&str, '0', flags->width - len);
+		else
+			len = add_prefix(&str, ' ', flags->width - len);
 	}
-	if (flags->width > len)
-		len = add_prefix(&str, ' ', flags->width - len);
 
 	ft_putstr(str);
 	free(str);

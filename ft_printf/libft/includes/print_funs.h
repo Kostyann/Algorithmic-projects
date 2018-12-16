@@ -26,6 +26,6 @@ int    print_c(t_flags *flags, va_list *ap);
 int    print_s(t_flags *flags, va_list *ap);
 int    print_p(t_flags *flags, va_list *ap);
 int    print_f(t_flags *flags, va_list *ap);
-int    print_percent(t_flags *flags, va_list *ap);
+int    print_else(t_flags *flags, va_list *ap);
 
 #endif

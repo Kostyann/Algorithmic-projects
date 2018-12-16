@@ -12,7 +12,7 @@
 
 #include "../libft/includes/print_funs.h"
 
-int    print_percent(t_flags *flags, va_list *ap)
+int    print_else(t_flags *flags, va_list *ap)
 {
 	int		len;
 	char 	s;

@@ -15,72 +15,45 @@
 #include "includes/resolvers.h"
 #include "includes/print_funs.h"
 
-/*static void	setup_arr(t_handler *handlers)
+typedef int	(*t_point)(t_flags*, va_list*);
+
+static void	fun_refs(t_point *pointer)
 {
-	handlers['%'] = &ft_printf_handle_escape;
-	handlers['s'] = &ft_printf_handle_str;
-	handlers['S'] = &ft_printf_handle_wstr;
-	handlers['p'] = &ft_printf_handle_ptr;
-	handlers['d'] = &ft_printf_handle_int;
-	handlers['D'] = &ft_printf_handle_long;
-	handlers['i'] = &ft_printf_handle_int;
-	handlers['o'] = &ft_printf_handle_octal;
-	handlers['O'] = &ft_printf_handle_long;
-	handlers['u'] = &ft_printf_handle_unsigned;
-	handlers['U'] = &ft_printf_handle_long;
-	handlers['x'] = &ft_printf_handle_hex;
-	handlers['X'] = &ft_printf_handle_hex;
-	handlers['c'] = &ft_printf_handle_char;
-	handlers['C'] = &ft_printf_handle_wchar;
-	handlers['b'] = &ft_printf_handle_binary;
-	handlers['f'] = &ft_printf_handle_float;
-	handlers['n'] = &ft_printf_handle_charswritten;
+	pointer['c'] = &print_c;
+	pointer['s'] = &print_s;
+	pointer['p'] = &print_p;
+	pointer['b'] = &print_b;
+	pointer['d'] = &print_d;
+	pointer['D'] = &print_d;
+	pointer['i'] = &print_d;
+	pointer['o'] = &print_o;
+	pointer['O'] = &print_o;
+	pointer['u'] = &print_u;
+	pointer['U'] = &print_u;
+	pointer['x'] = &print_x;
+	pointer['X'] = &print_x;
+	pointer['f'] = &print_f;
+	pointer['F'] = &print_f;
 }
 
-t_handler	ft_printf_get_handler(char c)
+t_point		ident_fun(const char *restrict str, t_flags *flags)
 {
-	static t_handler	*handlers = NULL;
+	static t_point	*pointer = NULL;
 
-	if (handlers == NULL)
+	if (pointer == NULL)
 	{
-		handlers = ft_memalloc(sizeof(*handlers) * 256);
-		if (handlers != NULL)
-			setup_arr(handlers);
+		pointer = ft_memalloc(sizeof(*pointer) * 256);
+		if (pointer)
+			fun_refs(pointer);
 	}
-	return (handlers[(int)c]);
-} */
-
-typedef int			(*t_point)(t_flags*, va_list*);
-
-t_point	ident_fun(const char *restrict str, t_flags *flags)
-{
-	t_point	fun_refs[15] = {&print_c, &print_s, &print_p, &print_b, &print_d,
-								&print_d, &print_d, &print_o, &print_o, &print_u,
-								&print_u, &print_x,
-								&print_x, &print_f, &print_f};
-	char	fun_chars[15] = {'c', 's', 'p', 'b', 'd', 'D', 'i',
-							'o', 'O', 'u', 'U', 'x', 'X', 'f', 'F'};
-	int		i;
-
-	i = -1;
-	if (str)
-	{
-		while (*str && ++i < 15)
-			if (*str == fun_chars[i])
-			{
-				flags->id = fun_chars[i];
-				return (fun_refs[i]);
-			}
-		if (*str)
-		{
-			flags->id = *str;
-			return (&print_percent);
-		}
-	}
-	return (NULL);
+	flags->id = *str;
+	if (pointer[(int)*str])
+		return (pointer[(int)*str]);
+	else
+		return (&print_else);
 }
 
-int		type_resolve(const char **format, va_list *ap)
+int			type_resolve(const char **format, va_list *ap)
 {
 	int		res;
 	t_flags	flags;
@@ -96,15 +69,13 @@ int		type_resolve(const char **format, va_list *ap)
 	resolve_length(&flags, format);
 	if (!**format)
 		return (0);
-	if (!(pointer = ident_fun(*format, &flags)))
-		return (0);
-	else
-		res = pointer(&flags, ap);
+	pointer = ident_fun(*format, &flags);
+	res = pointer(&flags, ap);
 	(*format)++;
 	return (res);
 }
 
-int		real_printf(const char *format, va_list *ap, int res)
+int			real_printf(const char *format, va_list *ap, int res)
 {
 	int		pr_chars;
 	char	*perc;
@@ -132,7 +103,7 @@ int		real_printf(const char *format, va_list *ap, int res)
 	return (res);
 }
 
-int		ft_printf(const char *restrict format, ...)
+int			ft_printf(const char *restrict format, ...)
 {
 	va_list	ap;
 	int		sum;

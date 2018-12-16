@@ -13,12 +13,14 @@
 #include "libft/includes/ft_printf.h"
 #include <limits.h>
 
+#include <stdio.h>
+
 int     ft_printf(const char *restrict format, ...);
 
 int     main(void)
 {
-		printf("\n%d\n", printf("@moulitest: %#.x %#.0x", 0, 0));
-	 printf("\n%d\n", ft_printf("@moulitest: %#.x %#.0x", 0, 0));
+		printf("\n%d\n", printf("%.3f", 12.345678));
+	 printf("\n%d\n", ft_printf("%.3f", 12.345678));
 
 
 /*	double inf = 1/0.0;

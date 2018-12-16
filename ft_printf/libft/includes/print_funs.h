@@ -18,6 +18,8 @@
 # include "technical.h"
 # include "resolvers.h"
 
+# define FRACTION_LEN (len - (dot - str) - 1)
+
 int	print_d(t_flags *flags, va_list *ap);
 int	print_b(t_flags *flags, va_list *ap);
 int	print_o(t_flags *flags, va_list *ap);

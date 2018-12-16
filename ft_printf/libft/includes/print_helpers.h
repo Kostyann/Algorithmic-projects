@@ -17,5 +17,6 @@
 
 void	fix_precision(int *len, t_flags *flags, char **str, int neg);
 void	get_un_string(char **str, t_flags *flags, va_list *ap, size_t base);
+char	*btof(long double f, int precision, int hash);
 
 #endif

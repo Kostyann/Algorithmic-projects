@@ -12,16 +12,6 @@
 
 #include "../libft/includes/print_funs.h"
 
-static int	pow_ten(int power)
-{
-	int	res;
-
-	res = 1;
-	while (power-- > 0)
-		res = res * 10;
-	return (res);
-}
-
 static char	*ft_weird(long double f, char id)
 {
 	char		*str;
@@ -42,41 +32,26 @@ static char	*ft_weird(long double f, char id)
 				ft_strcat(str, "nan") : ft_strcat(str, "NAN"));
 }
 
-char		*btoa(long double f, int precision, int hash)
+static void	fix_fwidth(char **str, t_flags *flags, int n)
 {
-	unsigned long long	hard;
-	char				*ret;
-	char				*temp;
+	int len;
 
-	ret = ft_strnew(32);
-	if (f < 0.0)
+	len = ft_strlen(*str);
+	if ((flags->add_plus || flags->space) && !n && **str != 'n' && **str != 'N')
+		len++;
+	if (flags->width > len)
 	{
-		ret[0] = '-';
-		f = -f;
+		if (flags->left_align)
+			len = add_suffix(str, ' ', flags->width - len);
+		else if (flags->zero && **str >= '0' && **str <= '9')
+			len = add_prefix(str, '0', flags->width - len);
 	}
-	hard = (unsigned long long)f;
-	if (precision == -1 && (f - hard) * 10 > 5)
-		hard++;
-	temp = ft_itoa_ulong(hard, 10);
-	ret = ft_strcat(ret, temp);
-	free(temp);
-	if (precision != -1 || hash)
-		ret = ft_strcat(ret, ".");
-	precision = (precision == 0) ? 6 : precision;
-	while (precision-- > 0)
-	{
-		f = (f - hard) * 10.0;
-		hard = (unsigned long long)(float)f;
-		if ((f - hard) * pow_ten(precision + 1) > pow_ten(precision + 1) - 5)
-		{
-			hard = (hard + 1) * power_ten(precision);
-			precision = 0;
-		}
-		temp = ft_itoa_ulong(hard, 10);
-		ret = ft_strcat(ret, temp);
-		free(temp);
-	}
-	return (ret);
+	if (flags->add_plus && !n && **str != 'n' && **str != 'N')
+		len = add_prefix(str, '+', 1);
+	else if (flags->space && !n && **str != 'n' && **str != 'N')
+		len = add_prefix(str, ' ', 1);
+	if (flags->width > len)
+		len = add_prefix(str, ' ', flags->width - len);
 }
 
 int			print_f(t_flags *flags, va_list *ap)
@@ -88,47 +63,21 @@ int			print_f(t_flags *flags, va_list *ap)
 	long double	f;
 
 	if (flags->length == 5)
-	{
 		f = va_arg(*ap, long double);
-		str = btoa(f, flags->precision, flags->hash);
-	}
 	else
-	{
 		f = va_arg(*ap, double);
-		if (f == 1 / 0.0 || f == -1 / 0.0 || f != f)
-			str = ft_weird(f, flags->id);
-		else
-			str = btoa(f, flags->precision, flags->hash);
-	}
-
+	if (flags->length != 5 && (f == 1 / 0.0 || f == -1 / 0.0 || f != f))
+		str = ft_weird(f, flags->id);
+	else
+		str = btof(f, flags->precision, flags->hash);
 	len = ft_strlen(str);
 	dot = ft_strchr(str, '.');
 	neg = (*str == '-') ? 1 : 0;
-
-	if (flags->precision > len - (dot - str) - 1)
-		len = add_suffix(&str, '0', flags->precision - len + (dot - str) + 1);
-	else if (dot && flags->precision > 0 && flags->precision < len - (dot - str) - 1)
+	if (flags->precision > FRACTION_LEN)
+		len = add_suffix(&str, '0', flags->precision - FRACTION_LEN);
+	else if (dot && flags->precision > 0 && flags->precision < FRACTION_LEN)
 		str[dot - str + flags->precision + 1] = '\0';
-
-	len = ft_strlen(str);
-
-	if ((flags->add_plus || flags->space) && !neg && *str != 'n' && *str != 'N')
-		len++;
-
-	if (flags->width > len)
-	{
-		if (flags->left_align)
-			len = add_suffix(&str, ' ', flags->width - len);
-		else if (flags->zero && *str >= '0' && *str <= '9')
-			len = add_prefix(&str, '0', flags->width - len);
-	}
-	if (flags->add_plus && !neg && *str != 'n' && *str != 'N')
-		len = add_prefix(&str, '+', 1);
-	else if (flags->space && !neg && *str != 'n' && *str != 'N')
-		len = add_prefix(&str, ' ', 1);
-	if (flags->width > len)
-		len = add_prefix(&str, ' ', flags->width - len);
-
+	fix_fwidth(&str, flags, neg);
 	ft_putstr(str);
 	free(str);
 	return (len);

@@ -27,19 +27,6 @@ static int	ft_len(long long nbr, int base)
 	return (len);
 }
 
-static int	ft_ulen(unsigned long long nbr, int base)
-{
-	int	len;
-
-	len = 0;
-	while (nbr != 0)
-	{
-		nbr /= base;
-		len++;
-	}
-	return (len);
-}
-
 char		*ft_itoa_long(long long n, int base)
 {
 	int		neg;
@@ -71,10 +58,14 @@ char		*ft_itoa_long(long long n, int base)
 
 char		*ft_itoa_ulong(unsigned long long n, int base)
 {
-	int		len;
-	char	*str;
+	int					len;
+	char				*str;
+	unsigned long long	nbr;
 
-	len = ft_ulen(n, base);
+	len = 1;
+	nbr = n;
+	while ((nbr /= base) != 0)
+		len++;
 	if (n == 0)
 	{
 		if ((str = ft_strnew(1)))

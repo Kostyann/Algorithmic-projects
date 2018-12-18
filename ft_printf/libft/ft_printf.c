@@ -62,10 +62,7 @@ int			type_resolve(const char **format, va_list *ap)
 	ft_bzero(&flags, sizeof(flags));
 	if (!(*(++*format)))
 		return (0);
-	resolve_flags(&flags, format);
-	resolve_width(&flags, format);
-	resolve_precision(&flags, format);
-	resolve_length(&flags, format);
+	resolve_flags(&flags, format, ap);
 	if (!**format)
 		return (0);
 	pointer = ident_fun(*format, &flags);

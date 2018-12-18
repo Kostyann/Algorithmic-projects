@@ -19,8 +19,8 @@ int     ft_printf(const char *restrict format, ...);
 
 int     main(void)
 {
-		printf("\n%d\n", printf("%.3f", 12.345678));
-	 printf("\n%d\n", ft_printf("%.3f", 12.345678));
+		printf("\n%d\n", printf("%23.3f", 12.345678));
+	 printf("\n%d\n", ft_printf("%23.3f", 12.345678));
 
 
 /*	double inf = 1/0.0;

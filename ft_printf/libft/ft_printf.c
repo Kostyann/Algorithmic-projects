@@ -65,6 +65,10 @@ int			type_resolve(const char **format, va_list *ap)
 	resolve_flags(&flags, format, ap);
 	if (!**format)
 		return (0);
+	if (flags.left_align)
+		flags.zero = 0;
+	if (flags.add_plus)
+		flags.space = 0;
 	pointer = ident_fun(*format, &flags);
 	res = pointer(&flags, ap);
 	(*format)++;

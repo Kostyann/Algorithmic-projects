@@ -63,27 +63,24 @@ static void	resolve_length(t_flags *flags, const char **format)
 	if (*format && **format == 'h' && *(*format + 1) == 'h')
 	{
 		flags->length = 1;
-		(*format) += 2;
+		(*format) += 1;
 	}
 	else if (*format && **format == 'h')
 	{
 		flags->length = 2;
-		(*format)++;
 	}
 	else if (*format && **format == 'l' && *(*format + 1) == 'l')
 	{
 		flags->length = 3;
-		(*format) += 2;
+		(*format) += 1;
 	}
 	else if (*format && **format == 'l')
 	{
 		flags->length = 4;
-		(*format)++;
 	}
 	else if (*format && **format == 'L')
 	{
 		flags->length = 5;
-		(*format)++;
 	}
 }
 
@@ -91,7 +88,8 @@ void		resolve_flags(t_flags *flags, const char **format, va_list *ap)
 {
 	while (**format && (**format == '-' || **format == '+' || **format == ' '
 			|| **format == '0' || **format == '#' || **format == '.' ||
-			**format == '*' || (**format >= '0' && **format <= '9')))
+			**format == '*' || (**format >= '0' && **format <= '9') ||
+			**format == 'h' || **format == 'l' || **format == 'L'))
 	{
 		if (**format == '-')
 			flags->left_align = 1;
@@ -105,13 +103,10 @@ void		resolve_flags(t_flags *flags, const char **format, va_list *ap)
 			flags->hash = 1;
 		else if (**format == '.')
 			resolve_precision(flags, format, ap);
+		else if (**format == 'h' || **format == 'l' || **format == 'L')
+			resolve_length(flags, format);
 		else
 			resolve_width(flags, format, ap);
 		(*format)++;
 	}
-	resolve_length(flags, format);
-	if (flags->left_align)
-		flags->zero = 0;
-	if (flags->add_plus)
-		flags->space = 0;
 }

@@ -14,9 +14,7 @@
 # define PRINT_FUNS_H
 
 # include "ft_printf.h"
-# include "print_helpers.h"
 # include "technical.h"
-# include "resolvers.h"
 
 # define FRACTION_LEN (len - (dot - str) - 1)
 

@@ -32,7 +32,7 @@ static char	*ft_weird(long double f, char id)
 				ft_strcat(str, "nan") : ft_strcat(str, "NAN"));
 }
 
-static void	fix_fwidth(char **str, t_flags *flags, int n)
+static int	fix_fwidth(char **str, t_flags *flags, int n)
 {
 	int len;
 
@@ -52,6 +52,7 @@ static void	fix_fwidth(char **str, t_flags *flags, int n)
 		len = add_prefix(str, ' ', 1);
 	if (flags->width > len)
 		len = add_prefix(str, ' ', flags->width - len);
+	return (len);
 }
 
 int			print_f(t_flags *flags, va_list *ap)
@@ -77,7 +78,7 @@ int			print_f(t_flags *flags, va_list *ap)
 		len = add_suffix(&str, '0', flags->precision - FRACTION_LEN);
 	else if (dot && flags->precision > 0 && flags->precision < FRACTION_LEN)
 		str[dot - str + flags->precision + 1] = '\0';
-	fix_fwidth(&str, flags, neg);
+	len = fix_fwidth(&str, flags, neg);
 	ft_putstr(str);
 	free(str);
 	return (len);

@@ -1,24 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnstr.c                                       :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmerkulo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/15 12:25:01 by kmerkulo          #+#    #+#             */
-/*   Updated: 2018/12/15 12:25:09 by kmerkulo         ###   ########.fr       */
+/*   Created: 2018/10/25 17:59:15 by kmerkulo          #+#    #+#             */
+/*   Updated: 2018/10/25 17:59:17 by kmerkulo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "../includes/libft.h"
 
-void	ft_putnstr(char const *s, size_t n)
+void	*ft_memset(void *b, int c, size_t len)
 {
-	size_t	len;
-	int		i;
+	size_t			i;
+	char			*d;
+	unsigned char	q;
 
-	len = ft_strlen(s);
-	i = n < len ? n : len;
-	if (s)
-		write(1, s, i);
+	i = 0;
+	d = (char*)b;
+	q = (unsigned char)c;
+	while (i < len)
+	{
+		d[i] = q;
+		i++;
+	}
+	return ((void*)d);
 }

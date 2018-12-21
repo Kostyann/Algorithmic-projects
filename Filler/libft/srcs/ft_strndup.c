@@ -1,24 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnstr.c                                       :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmerkulo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/15 12:25:01 by kmerkulo          #+#    #+#             */
-/*   Updated: 2018/12/15 12:25:09 by kmerkulo         ###   ########.fr       */
+/*   Created: 2018/10/30 13:55:41 by kmerkulo          #+#    #+#             */
+/*   Updated: 2018/10/30 13:55:42 by kmerkulo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "../includes/libft.h"
 
-void	ft_putnstr(char const *s, size_t n)
+char	*ft_strndup(const char *src, unsigned int n)
 {
-	size_t	len;
-	int		i;
+	unsigned int	i;
+	int				j;
+	char			*res;
 
-	len = ft_strlen(s);
-	i = n < len ? n : len;
-	if (s)
-		write(1, s, i);
+	i = 0;
+	j = -1;
+	res = 0;
+	if (src)
+	{
+		while (src[i])
+			i++;
+		if (n > i)
+			n = i;
+		if ((res = (char*)malloc(n * sizeof(char) + 1)))
+		{
+			while (src[++j] && n-- > 0)
+				res[j] = src[j];
+			res[j] = '\0';
+		}
+	}
+	return (res);
 }

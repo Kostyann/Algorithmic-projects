@@ -1,24 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnstr.c                                       :+:      :+:    :+:   */
+/*   print_percent.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmerkulo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/15 12:25:01 by kmerkulo          #+#    #+#             */
-/*   Updated: 2018/12/15 12:25:09 by kmerkulo         ###   ########.fr       */
+/*   Created: 2018/12/07 20:33:27 by kmerkulo          #+#    #+#             */
+/*   Updated: 2018/12/07 20:33:29 by kmerkulo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "../../../includes/ft_printf.h"
 
-void	ft_putnstr(char const *s, size_t n)
+int	print_else(t_flags *flags, va_list *ap)
 {
-	size_t	len;
-	int		i;
+	int		len;
+	char	s;
 
-	len = ft_strlen(s);
-	i = n < len ? n : len;
-	if (s)
-		write(1, s, i);
+	(void)ap;
+	len = 1;
+	s = flags->zero ? '0' : ' ';
+	if (flags->width)
+	{
+		if (flags->left_align)
+			ft_putchar(flags->id);
+		while (flags->width > len++)
+			ft_putchar(s);
+		len--;
+		if (!flags->left_align)
+			ft_putchar(flags->id);
+	}
+	else
+		ft_putchar(flags->id);
+	return (len);
 }

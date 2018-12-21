@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnstr.c                                       :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmerkulo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/15 12:25:01 by kmerkulo          #+#    #+#             */
-/*   Updated: 2018/12/15 12:25:09 by kmerkulo         ###   ########.fr       */
+/*   Created: 2018/10/27 20:50:34 by kmerkulo          #+#    #+#             */
+/*   Updated: 2018/10/27 20:50:35 by kmerkulo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "../includes/libft.h"
 
-void	ft_putnstr(char const *s, size_t n)
+void	ft_striteri(char *s, void (*f) (unsigned int, char*))
 {
-	size_t	len;
-	int		i;
+	unsigned int i;
 
-	len = ft_strlen(s);
-	i = n < len ? n : len;
-	if (s)
-		write(1, s, i);
+	i = 0;
+	if (s && f)
+	{
+		while (s[i])
+		{
+			f(i, &s[i]);
+			i++;
+		}
+	}
 }

@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnstr.c                                       :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmerkulo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/15 12:25:01 by kmerkulo          #+#    #+#             */
-/*   Updated: 2018/12/15 12:25:09 by kmerkulo         ###   ########.fr       */
+/*   Created: 2018/10/28 17:35:59 by kmerkulo          #+#    #+#             */
+/*   Updated: 2018/10/28 17:36:00 by kmerkulo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "../includes/libft.h"
 
-void	ft_putnstr(char const *s, size_t n)
+void	ft_putendl_fd(char const *s, int fd)
 {
-	size_t	len;
-	int		i;
-
-	len = ft_strlen(s);
-	i = n < len ? n : len;
 	if (s)
-		write(1, s, i);
+	{
+		while (*s)
+		{
+			ft_putchar_fd(*s, fd);
+			s++;
+		}
+		ft_putchar_fd('\n', fd);
+	}
 }

@@ -1,24 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnstr.c                                       :+:      :+:    :+:   */
+/*   ft_strtrimc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmerkulo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/15 12:25:01 by kmerkulo          #+#    #+#             */
-/*   Updated: 2018/12/15 12:25:09 by kmerkulo         ###   ########.fr       */
+/*   Created: 2018/10/30 13:57:05 by kmerkulo          #+#    #+#             */
+/*   Updated: 2018/10/30 13:57:06 by kmerkulo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "../includes/libft.h"
 
-void	ft_putnstr(char const *s, size_t n)
+char	*ft_strtrimc(char const *s, char c)
 {
-	size_t	len;
-	int		i;
+	int		j;
+	int		len;
+	char	*str;
 
-	len = ft_strlen(s);
-	i = n < len ? n : len;
 	if (s)
-		write(1, s, i);
+	{
+		j = 0;
+		while (*s == c)
+			s++;
+		len = ft_strlen(s);
+		if (len < 1)
+			return ((str = ft_strnew(1)));
+		while (s[len - 1] == c)
+			len--;
+		if ((str = ft_strnew(len)))
+		{
+			while (len-- > 0)
+			{
+				str[j] = s[j];
+				j++;
+			}
+		}
+		return (str);
+	}
+	return (NULL);
 }

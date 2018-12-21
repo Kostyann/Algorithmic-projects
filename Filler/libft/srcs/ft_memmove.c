@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnstr.c                                       :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmerkulo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/15 12:25:01 by kmerkulo          #+#    #+#             */
-/*   Updated: 2018/12/15 12:25:09 by kmerkulo         ###   ########.fr       */
+/*   Created: 2018/10/26 11:38:13 by kmerkulo          #+#    #+#             */
+/*   Updated: 2018/10/26 11:38:16 by kmerkulo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "../includes/libft.h"
 
-void	ft_putnstr(char const *s, size_t n)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	size_t	len;
-	int		i;
+	size_t	i;
+	char	*c_dst;
+	char	*c_src;
 
-	len = ft_strlen(s);
-	i = n < len ? n : len;
-	if (s)
-		write(1, s, i);
+	i = -1;
+	c_dst = (char*)dst;
+	c_src = (char*)src;
+	if (dst > src)
+		while ((int)--len >= 0)
+			c_dst[len] = c_src[len];
+	else
+		while (++i < len)
+			c_dst[i] = c_src[i];
+	return (dst);
 }

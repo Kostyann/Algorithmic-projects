@@ -1,24 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnstr.c                                       :+:      :+:    :+:   */
+/*   ft_strmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmerkulo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/15 12:25:01 by kmerkulo          #+#    #+#             */
-/*   Updated: 2018/12/15 12:25:09 by kmerkulo         ###   ########.fr       */
+/*   Created: 2018/10/28 15:19:22 by kmerkulo          #+#    #+#             */
+/*   Updated: 2018/10/28 15:19:23 by kmerkulo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "../includes/libft.h"
 
-void	ft_putnstr(char const *s, size_t n)
+char	*ft_strmap(char const *s, char (*f) (char))
 {
-	size_t	len;
 	int		i;
+	char	*str;
 
-	len = ft_strlen(s);
-	i = n < len ? n : len;
-	if (s)
-		write(1, s, i);
+	i = 0;
+	str = NULL;
+	if (s && f)
+	{
+		if ((str = ft_strnew(ft_strlen(s))))
+		{
+			while (s[i])
+			{
+				str[i] = f(s[i]);
+				i++;
+			}
+		}
+	}
+	return (str);
 }

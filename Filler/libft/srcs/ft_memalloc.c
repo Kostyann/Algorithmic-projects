@@ -1,24 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnstr.c                                       :+:      :+:    :+:   */
+/*   ft_memalloc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmerkulo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/15 12:25:01 by kmerkulo          #+#    #+#             */
-/*   Updated: 2018/12/15 12:25:09 by kmerkulo         ###   ########.fr       */
+/*   Created: 2018/10/25 11:11:24 by kmerkulo          #+#    #+#             */
+/*   Updated: 2018/10/25 11:11:25 by kmerkulo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "../includes/libft.h"
 
-void	ft_putnstr(char const *s, size_t n)
+void	*ft_memalloc(size_t size)
 {
-	size_t	len;
-	int		i;
+	void	*mem;
+	char	*ch;
+	size_t	i;
 
-	len = ft_strlen(s);
-	i = n < len ? n : len;
-	if (s)
-		write(1, s, i);
+	i = 0;
+	if ((mem = malloc(size)))
+	{
+		ch = (char *)mem;
+		while (i < size)
+		{
+			ch[i] = 0;
+			i++;
+		}
+		mem = (void *)ch;
+		return (mem);
+	}
+	else
+		return (NULL);
 }

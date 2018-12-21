@@ -1,24 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnstr.c                                       :+:      :+:    :+:   */
+/*   filler.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmerkulo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/15 12:25:01 by kmerkulo          #+#    #+#             */
-/*   Updated: 2018/12/15 12:25:09 by kmerkulo         ###   ########.fr       */
+/*   Created: 2018/12/20 13:10:46 by kmerkulo          #+#    #+#             */
+/*   Updated: 2018/12/20 13:11:27 by kmerkulo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "libft/includes/libft.h"
+#include <limits.h>
 
-void	ft_putnstr(char const *s, size_t n)
+#include <stdio.h>
+#include <fcntl.h>
+
+int		main(void)
 {
-	size_t	len;
-	int		i;
+	char	*line;
+	int		fd;
 
-	len = ft_strlen(s);
-	i = n < len ? n : len;
-	if (s)
-		write(1, s, i);
+	fd = open("txt.txt", O_RDONLY);
+	get_next_line(fd, &line);
+	if (line[10] == '1')
+		ft_printf("%d %d\n", 1, 2);
+	else if (line[10] == '2')
+		ft_printf("%d %d\n", 4, 0);
+
+//	ft_printf("%d %d\n", 1, 2);
+	return (0);
 }

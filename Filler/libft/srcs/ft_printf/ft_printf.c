@@ -10,9 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
-#include "includes/ft_printf.h"
-#include "includes/print_funs.h"
+#include "../../includes/libft.h"
+#include "../../includes/ft_printf.h"
 
 typedef int	(*t_point)(t_flags*, va_list*);
 

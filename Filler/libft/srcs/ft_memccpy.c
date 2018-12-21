@@ -1,24 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnstr.c                                       :+:      :+:    :+:   */
+/*   ft_memccpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmerkulo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/15 12:25:01 by kmerkulo          #+#    #+#             */
-/*   Updated: 2018/12/15 12:25:09 by kmerkulo         ###   ########.fr       */
+/*   Created: 2018/10/26 10:18:39 by kmerkulo          #+#    #+#             */
+/*   Updated: 2018/10/26 10:18:42 by kmerkulo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "../includes/libft.h"
 
-void	ft_putnstr(char const *s, size_t n)
+void	*ft_memccpy(void *restrict dst, const void *restrict src,
+					int c, size_t n)
 {
-	size_t	len;
-	int		i;
+	size_t			i;
+	unsigned char	*dest;
+	unsigned char	*sour;
+	unsigned char	cc;
 
-	len = ft_strlen(s);
-	i = n < len ? n : len;
-	if (s)
-		write(1, s, i);
+	i = 0;
+	dest = (unsigned char*)dst;
+	sour = (unsigned char*)src;
+	cc = (unsigned char)c;
+	while ((i < n))
+	{
+		dest[i] = sour[i];
+		if (sour[i] == cc)
+			return (&dest[i + 1]);
+		i++;
+	}
+	return (NULL);
 }

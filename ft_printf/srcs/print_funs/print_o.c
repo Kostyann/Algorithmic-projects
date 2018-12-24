@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_p.c                                          :+:      :+:    :+:   */
+/*   print_o.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmerkulo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/07 20:33:11 by kmerkulo          #+#    #+#             */
-/*   Updated: 2018/12/07 20:33:13 by kmerkulo         ###   ########.fr       */
+/*   Created: 2018/12/07 20:30:43 by kmerkulo          #+#    #+#             */
+/*   Updated: 2018/12/07 20:30:45 by kmerkulo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/includes/print_funs.h"
+#include "../../libft/includes/print_funs.h"
+#include "../../libft/includes/technical.h"
 
-int	print_p(t_flags *flags, va_list *ap)
+int	print_o(t_flags *flags, va_list *ap)
 {
 	int		len;
 	char	*str;
 
-	str = ft_itoa_ulong(va_arg(*ap, unsigned long long), 16);
+	get_un_string(&str, flags, ap, 8);
 	len = ft_strlen(str);
-	if (len == 1 && flags->precision == -1)
-		ft_strdel(&str);
-	if (flags->precision > len)
-		add_prefix(&str, '0', flags->precision - len);
-	add_prefix(&str, 'x', 1);
-	add_prefix(&str, '0', 1);
+	fix_precision(&len, flags, &str, 0);
+	if (flags->hash && str && *str != '0')
+		len = add_prefix(&str, '0', 1);
 	len = ft_strlen(str);
 	if (flags->width > len)
 	{

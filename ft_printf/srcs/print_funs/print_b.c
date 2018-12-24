@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_o.c                                          :+:      :+:    :+:   */
+/*   print_i.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmerkulo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/07 20:30:43 by kmerkulo          #+#    #+#             */
-/*   Updated: 2018/12/07 20:30:45 by kmerkulo         ###   ########.fr       */
+/*   Created: 2018/12/07 20:30:36 by kmerkulo          #+#    #+#             */
+/*   Updated: 2018/12/07 20:30:37 by kmerkulo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/includes/print_funs.h"
-#include "../libft/includes/technical.h"
+#include "../../libft/includes/print_funs.h"
 
-int	print_o(t_flags *flags, va_list *ap)
+int		print_b(t_flags *flags, va_list *ap)
 {
 	int		len;
 	char	*str;
 
-	get_un_string(&str, flags, ap, 8);
+	get_un_string(&str, flags, ap, 2);
 	len = ft_strlen(str);
 	fix_precision(&len, flags, &str, 0);
-	if (flags->hash && str && *str != '0')
-		len = add_prefix(&str, '0', 1);
-	len = ft_strlen(str);
 	if (flags->width > len)
 	{
 		if (flags->left_align)

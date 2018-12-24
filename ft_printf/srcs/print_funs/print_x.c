@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/includes/print_funs.h"
+#include "../../libft/includes/print_funs.h"
 
 int	print_x(t_flags *flags, va_list *ap)
 {

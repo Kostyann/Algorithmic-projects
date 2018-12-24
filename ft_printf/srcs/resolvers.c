@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/includes/technical.h"
+#include "../libft/includes/technical.h"
 
 static void	resolve_width(t_flags *flags, const char **format, va_list *ap)
 {

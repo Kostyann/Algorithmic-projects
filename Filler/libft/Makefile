@@ -23,7 +23,7 @@ OBJ_DIR	= obj/
 SRC =		resolvers.c technical.c print_helpers.c ft_printf.c \
             print_b.c print_c.c print_d.c print_else.c print_f.c print_o.c \
             print_p.c print_s.c print_u.c print_x.c \
-            ft_atoi.c ft_bzero.c ft_isalnum.c \
+            ft_atoi.c ft_bzero.c ft_isalnum.c ft_digits.c\
             ft_isalpha.c ft_isascii.c ft_isblank.c ft_isdigit.c ft_islower.c \
             ft_isnumber.c ft_isprint.c ft_isupper.c ft_itoa.c ft_lstadd.c \
             ft_lstdel.c ft_lstdelone.c ft_lstiter.c ft_lstmap.c ft_lstnew.c \

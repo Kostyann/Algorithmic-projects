@@ -1,36 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_percent.c                                    :+:      :+:    :+:   */
+/*   ft_digits.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmerkulo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/07 20:33:27 by kmerkulo          #+#    #+#             */
-/*   Updated: 2018/12/07 20:33:29 by kmerkulo         ###   ########.fr       */
+/*   Created: 2018/12/24 13:02:23 by kmerkulo          #+#    #+#             */
+/*   Updated: 2018/12/24 13:02:29 by kmerkulo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/includes/print_funs.h"
+#include "../includes/libft.h"
 
-int	print_else(t_flags *flags, va_list *ap)
+int	ft_digits(int c)
 {
-	int		len;
-	char	s;
+	int i;
 
-	(void)ap;
-	len = 1;
-	s = flags->zero ? '0' : ' ';
-	if (flags->width)
+	i = 0;
+	while (c != 0)
 	{
-		if (flags->left_align)
-			ft_putchar(flags->id);
-		while (flags->width > len++)
-			ft_putchar(s);
-		len--;
-		if (!flags->left_align)
-			ft_putchar(flags->id);
+		c /= 10;
+		i++;
 	}
-	else
-		ft_putchar(flags->id);
-	return (len);
+	return (i);
 }

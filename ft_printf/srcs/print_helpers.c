@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/includes/technical.h"
+#include "../libft/includes/technical.h"
 
 void		fix_precision(int *len, t_flags *flags, char **str, int neg)
 {

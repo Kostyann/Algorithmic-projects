@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/includes/technical.h"
+#include "../libft/includes/technical.h"
 
 static int	ft_len(long long nbr, int base)
 {

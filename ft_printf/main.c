@@ -19,8 +19,9 @@ int     ft_printf(const char *restrict format, ...);
 
 int     main(void)
 {
-		printf("\n%d\n", printf("haha%23.3f", 12.345678));
-	 printf("\n%d\n", ft_printf("haha%23.3f", 12.345678));
+		printf("\n%d\n", printf("Kostya i %030.2s %d", "Stas molodeq", 24));
+	 printf("\n%d\n", ft_printf("Kostya i %030.2s %d", "Stas molodeq", 24));
+
 
 
 /*	double inf = 1/0.0;

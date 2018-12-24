@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/includes/print_funs.h"
+#include "../../libft/includes/print_funs.h"
 
 static void	fix_str_prec(int *len, char **str, char **temp, int precision)
 {

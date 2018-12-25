@@ -35,7 +35,6 @@ void	fix_piece(char **piece, char num)
 	int i = -1;
 	int j;
 
-	num = (num == '1') ? 'O' : 'X';
 	while (piece[++i])
 	{
 		j = -1;
@@ -113,7 +112,7 @@ int		try_place(char **piece, char **field, int x, int y)
 	return (1);
 }
 
-int		ft_compare(char **piece, char **field, int prime[2], int temp[2])
+int		ft_closer(char **piece, char **field, int prime[2], int temp[2])
 {
 	char me = find_me(piece);
 	char he = (me == 'O') ? 'X' : 'O';
@@ -140,14 +139,25 @@ int		ft_compare(char **piece, char **field, int prime[2], int temp[2])
 	return (0);
 }
 
-void	place_piece(char **field, char **piece, char num)
+int		ft_diag(char **piece, int prime[2], int temp[2], int opos[2])
+{
+	int p_dist;
+	int t_dist;
+
+	p_dist = find_dist(piece, prime, opos[0], opos[1]);
+	t_dist = find_dist(piece, temp, opos[0], opos[1]);
+	if (t_dist < p_dist)
+		return (1);
+	return (0);
+}
+
+void	place_piece(char **field, char **piece, int opos[2])
 {
 	int	prime[2] = {-1, -1};
 	int temp[2] = {-1, -1};
 	int i = -1;
 	int j = -1;
 
-	fix_piece(piece, num);
 	while (field[++i])
 	{
 		j = -1;
@@ -157,7 +167,8 @@ void	place_piece(char **field, char **piece, char num)
 			{
 				temp[0] = i;
 				temp[1] = j;
-				if (prime[0] == -1 || ft_compare(piece, field, prime, temp))
+				if (prime[0] == -1 || ft_diag(piece, prime, temp, opos)
+					|| ft_closer(piece, field, prime, temp))
 				{
 					prime[0] = temp[0];
 					prime[1] = temp[1];
@@ -173,17 +184,37 @@ void	place_piece(char **field, char **piece, char num)
 	ft_printf("%d %d\n", prime[0], prime[1]);
 }
 
+void	find_opos(char **field, char c, int opos[2], int xy[2])
+{
+	int i = -1;
+	int j = -1;
+
+	while (field[++i])
+	{
+		j = -1;
+		while (field[i][++j])
+		{
+			if (field[i][j] == c)
+			{
+				opos[0] = ((xy[0] / 2) > i) ? xy[0] - 1 - i : xy[0] - i - 1;
+				opos[1] = ((xy[1] / 2) > j) ? xy[1] - 1 : 0;
+				return ;
+			}
+		}
+	}
+}
+
 int		main(void)
 {
 	char	*line;
 	int		fd;
-	int 	x;
-	int 	y;
+	int 	xyf[2] = {0, 0};
+	int 	xyp[2] = {0, 0};
 	char 	pl_num;
 	char 	**field;
 	char 	**piece;
+	int		opos[2] = {-1, -1};
 
-	x = 0;
 //	fd = open("test.txt", O_RDONLY);
 	fd = 0;
 
@@ -191,21 +222,25 @@ int		main(void)
 	{
 		pl_num = line[10];
 		free(line);
+		pl_num = (pl_num == '1') ? 'O' : 'X';
 	}
 	while ((get_next_line(fd, &line) == 1))
 		{
-			x = ft_atoi(&line[8]);
-			y = ft_atoi(&line[8 + ft_digits(x) + 1]);
+			xyf[0] = ft_atoi(&line[8]);
+			xyf[1] = ft_atoi(&line[8 + ft_digits(xyf[0]) + 1]);
 			free(line);
 			get_next_line(fd, &line);
-			field = make_field(fd, x, y);
+			field = make_field(fd, xyf[0], xyf[1]);
 			free(line);
+			if (opos[0] == -1)
+				find_opos(field, pl_num, opos, xyf);
 			get_next_line(fd, &line);
-			x = ft_atoi(&line[6]);
-			y = ft_atoi(&line[6 + ft_digits(x) + 1]);
-			piece = make_field(fd, x, y);
+			xyp[0] = ft_atoi(&line[6]);
+			xyp[1] = ft_atoi(&line[6 + ft_digits(xyp[0]) + 1]);
+			piece = make_field(fd, xyp[0], xyp[1]);
 			free(line);
-			place_piece(field, piece, pl_num);
+			fix_piece(piece, pl_num);
+			place_piece(field, piece, opos);
 		}
 
 	return (0);

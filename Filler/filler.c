@@ -35,19 +35,48 @@ void	fix_piece(char **piece, char num)
 	int i = -1;
 	int j;
 
-	if (num == '1')
-		num = 'O';
-	else if (num == '2')
-		num = 'X';
+	num = (num == '1') ? 'O' : 'X';
 	while (piece[++i])
 	{
 		j = -1;
 		while (piece[i][++j])
-		{
 			if (piece[i][j] == '*')
 				piece[i][j] = num;
-		}
 	}
+}
+
+char	find_me(char **piece)
+{
+	int i = -1;
+	int j;
+
+	while (piece[++i])
+	{
+		j = -1;
+		while (piece[i][++j])
+			if (piece[i][j] != '.')
+				return (piece[i][j]);
+	}
+	return (0);
+}
+
+#define ABS(x) ((x)<0 ? -(x) : (x))
+
+int		find_dist(char **piece, int coord[2], int x, int y)
+{
+	int i = -1;
+	int j;
+	int dist;
+
+	dist = 0;
+	while (piece[++i])
+	{
+		j = -1;
+		while (piece[i][++j])
+			if (piece[i][j] != '.')
+				dist += ABS(coord[0] + i - x + coord[1] + j - y);
+	}
+	return (dist);
 }
 
 int		try_place(char **piece, char **field, int x, int y)
@@ -84,10 +113,37 @@ int		try_place(char **piece, char **field, int x, int y)
 	return (1);
 }
 
+int		ft_compare(char **piece, char **field, int prime[2], int temp[2])
+{
+	char me = find_me(piece);
+	char he = (me == 'O') ? 'X' : 'O';
+	int i = -1;
+	int j;
+	int p_dist;
+	int t_dist;
+
+	p_dist = 0;
+	t_dist = 0;
+	while (field[++i])
+	{
+		j = -1;
+		while (field[i][++j]) {
+			if (field[i][j] == he || field[i][j] == he + 32)
+			{
+				p_dist += find_dist(piece, prime, i, j);
+				t_dist += find_dist(piece, temp, i, j);
+			}
+		}
+	}
+	if (t_dist < p_dist)
+		return (1);
+	return (0);
+}
+
 void	place_piece(char **field, char **piece, char num)
 {
-	int	x = 0;
-	int y = 0;
+	int	prime[2] = {-1, -1};
+	int temp[2] = {-1, -1};
 	int i = -1;
 	int j = -1;
 
@@ -99,12 +155,22 @@ void	place_piece(char **field, char **piece, char num)
 		{
 			if (try_place(piece, field, i, j))
 			{
-				x = i;
-				y = j;
+				temp[0] = i;
+				temp[1] = j;
+				if (prime[0] == -1 || ft_compare(piece, field, prime, temp))
+				{
+					prime[0] = temp[0];
+					prime[1] = temp[1];
+				}
 			}
 		}
 	}
-	ft_printf("%d %d\n", x, y);
+	if (prime[0] == -1)
+	{
+		prime[0] = 0;
+		prime[1] = 0;
+	}
+	ft_printf("%d %d\n", prime[0], prime[1]);
 }
 
 int		main(void)

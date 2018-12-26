@@ -44,6 +44,89 @@ void	fix_piece(char **piece, char num)
 	}
 }
 
+void	map_field(char **field, char symb)
+{
+	int i;
+	int j;
+	int go = 1;
+	int num = -1;
+//	char me = (symb == 'O') ? 'X' : 'O';
+
+	while (go && num < 8)
+	{
+		go = 0;
+		i = -1;
+		num++;
+	/*	while (field[++i])
+			ft_printf("%s\n", field[i]);
+		ft_printf("go = %d\n", go); */
+		i = -1;
+		while (field[++i])
+		{
+			j = -1;
+			while (field[i][++j])
+			{
+				if (field[i][j] == '.')
+				{
+					/*if (i > 0)
+					{
+						if (j > 0 && field[i - 1][j - 1] != me)
+							go = 1;
+						else if (field[i - 1][j] != me)
+							go = 1;
+						else if (field[i - 1][j + 1] && field[i - 1][j + 1] != me)
+							go = 1;
+					}
+					else if (j > 0 && field[i][j - 1] != me)
+						go = 1;
+					else if (field[i][j + 1] && field[i][j + 1] != me)
+						go = 1;
+					else if (field[i + 1])
+					{
+						if (j > 0 && field[i + 1][j - 1] != me)
+							go = 1;
+						else if (field[i + 1][j] != me)
+							go = 1;
+						else if (field[i + 1][j + 1] && field[i + 1][j + 1] != me)
+							go = 1;
+					} */
+					go = 1;
+			//		ft_printf("go2 = %d\n", go);
+				}
+				else if (field[i][j] == symb || field[i][j] == symb +32 ||
+						field[i][j] == '0' + num)
+				{
+					if (i > 0)
+					{
+						if (j > 0 && field[i - 1][j - 1] == '.')
+							field[i - 1][j - 1] = '0' + num + 1;
+						if (field[i - 1][j] == '.')
+							field[i - 1][j] = '0' + num + 1;
+						if (field[i - 1][j + 1] && field[i - 1][j + 1] == '.')
+							field[i - 1][j + 1] = '0' + num + 1;
+					}
+					if (j > 0 && field[i][j - 1] == '.')
+						field[i][j - 1] = '0' + num + 1;
+					if (field[i][j + 1] && field[i][j + 1] == '.')
+						field[i][j + 1] = '0' + num + 1;
+					if (field[i + 1])
+					{
+						if (j > 0 && field[i + 1][j - 1] == '.')
+							field[i + 1][j - 1] = '0' + num + 1;
+						if (field[i + 1][j] == '.')
+							field[i + 1][j] = '0' + num + 1;
+						if (field[i + 1][j + 1] && field[i + 1][j + 1] == '.')
+							field[i + 1][j + 1] = '0' + num + 1;
+					}
+				}
+			}
+
+		}
+	}
+
+
+}
+
 char	find_me(char **piece)
 {
 	int i = -1;
@@ -53,7 +136,7 @@ char	find_me(char **piece)
 	{
 		j = -1;
 		while (piece[i][++j])
-			if (piece[i][j] != '.')
+			if (!ft_isnumber(piece[i][j]))
 				return (piece[i][j]);
 	}
 	return (0);
@@ -72,7 +155,7 @@ int		find_dist(char **piece, int coord[2], int x, int y)
 	{
 		j = -1;
 		while (piece[i][++j])
-			if (piece[i][j] != '.')
+			if (!ft_isnumber(piece[i][j]))
 				dist += ABS(coord[0] + i - x + coord[1] + j - y);
 	}
 	return (dist);
@@ -83,7 +166,7 @@ int		try_place(char **piece, char **field, int x, int y)
 	int n = 0;
 	int i = -1;
 	int j = -1;
-
+//	ft_printf("kaka\n");
 	/*	while (*field)
 				ft_printf("%s\n", *field++);
 			while (*piece)
@@ -102,7 +185,7 @@ int		try_place(char **piece, char **field, int x, int y)
 				if (field[x + i][y + j] == piece[i][j] ||
 					 field[x + i][y + j] == piece[i][j] + 32)
 					n++;
-				else if (field[x + i][y + j] != '.')
+				else if (!(ft_isnumber(field[x + i][y + j])) && field[x + i][y + j] != '.')
 					return (0);
 			}
 		}
@@ -127,7 +210,9 @@ int		ft_closer(char **piece, char **field, int prime[2], int temp[2])
 	{
 		j = -1;
 		while (field[i][++j]) {
-			if (field[i][j] == he || field[i][j] == he + 32)
+			if ((field[i][j] == he || field[i][j] == he + 32) &&
+				((j > 0 && ft_isnumber(field[i][j - 1])) ||
+				(field[i][j + 1] && ft_isnumber(field[i][j + 1]))))
 			{
 				p_dist += find_dist(piece, prime, i, j);
 				t_dist += find_dist(piece, temp, i, j);
@@ -139,24 +224,13 @@ int		ft_closer(char **piece, char **field, int prime[2], int temp[2])
 	return (0);
 }
 
-int		ft_diag(char **piece, int prime[2], int temp[2], int opos[2])
-{
-	int p_dist;
-	int t_dist;
-
-	p_dist = find_dist(piece, prime, opos[0], opos[1]);
-	t_dist = find_dist(piece, temp, opos[0], opos[1]);
-	if (t_dist < p_dist)
-		return (1);
-	return (0);
-}
-
-void	place_piece(char **field, char **piece, int opos[2])
+void	place_piece(char **field, char **piece)
 {
 	int	prime[2] = {-1, -1};
 	int temp[2] = {-1, -1};
 	int i = -1;
 	int j = -1;
+
 
 	while (field[++i])
 	{
@@ -167,8 +241,7 @@ void	place_piece(char **field, char **piece, int opos[2])
 			{
 				temp[0] = i;
 				temp[1] = j;
-				if (prime[0] == -1 || ft_diag(piece, prime, temp, opos)
-					|| ft_closer(piece, field, prime, temp))
+				if (prime[0] == -1 || ft_closer(piece, field, prime, temp))
 				{
 					prime[0] = temp[0];
 					prime[1] = temp[1];
@@ -184,26 +257,6 @@ void	place_piece(char **field, char **piece, int opos[2])
 	ft_printf("%d %d\n", prime[0], prime[1]);
 }
 
-void	find_opos(char **field, char c, int opos[2], int xy[2])
-{
-	int i = -1;
-	int j = -1;
-
-	while (field[++i])
-	{
-		j = -1;
-		while (field[i][++j])
-		{
-			if (field[i][j] == c)
-			{
-				opos[0] = ((xy[0] / 2) > i) ? xy[0] - 1 - i : xy[0] - i - 1;
-				opos[1] = ((xy[1] / 2) > j) ? xy[1] - 1 : 0;
-				return ;
-			}
-		}
-	}
-}
-
 int		main(void)
 {
 	char	*line;
@@ -211,9 +264,9 @@ int		main(void)
 	int 	xyf[2] = {0, 0};
 	int 	xyp[2] = {0, 0};
 	char 	pl_num;
+	char	en_num;
 	char 	**field;
 	char 	**piece;
-	int		opos[2] = {-1, -1};
 
 //	fd = open("test.txt", O_RDONLY);
 	fd = 0;
@@ -223,6 +276,7 @@ int		main(void)
 		pl_num = line[10];
 		free(line);
 		pl_num = (pl_num == '1') ? 'O' : 'X';
+		en_num = (pl_num == 'O') ? 'X' : 'O';
 	}
 	while ((get_next_line(fd, &line) == 1))
 		{
@@ -232,15 +286,14 @@ int		main(void)
 			get_next_line(fd, &line);
 			field = make_field(fd, xyf[0], xyf[1]);
 			free(line);
-			if (opos[0] == -1)
-				find_opos(field, pl_num, opos, xyf);
 			get_next_line(fd, &line);
 			xyp[0] = ft_atoi(&line[6]);
 			xyp[1] = ft_atoi(&line[6 + ft_digits(xyp[0]) + 1]);
 			piece = make_field(fd, xyp[0], xyp[1]);
 			free(line);
 			fix_piece(piece, pl_num);
-			place_piece(field, piece, opos);
+			map_field(field, en_num);
+			place_piece(field, piece);
 		}
 
 	return (0);

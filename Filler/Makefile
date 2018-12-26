@@ -63,32 +63,32 @@ s03: all
 
 m00p1: all
 	@cd resources && ./filler_vm -p1 ../kmerkulo.filler \
-    	 -p2 players/hcao.filler -f maps/map00
+    	 -p2 players/carli.filler -f maps/map00
 
 m01p1: all
 	@cd resources && ./filler_vm -p1 ../kmerkulo.filler \
-    	 -p2 players/hcao.filler -f maps/map01
+    	 -p2 players/carli.filler -f maps/map01
 
 m02p1: all
 	@cd resources && ./filler_vm -p1 ../kmerkulo.filler \
-    	 -p2 players/hcao.filler -f maps/map02
+    	 -p2 players/carli.filler -f maps/map02
 
 m03p1: all
 	@cd resources && ./filler_vm -p1 ../kmerkulo.filler \
-	 -p2 players/hcao.filler -f maps/map03
+	 -p2 players/carli.filler -f maps/map03
 
 m00p2: all
-	@cd resources && ./filler_vm -p1 players/hcao.filler \
+	@cd resources && ./filler_vm -p1 players/carli.filler \
     -p2 ../kmerkulo.filler -f maps/map00
 
 m01p2: all
-	@cd resources && ./filler_vm -p1 players/hcao.filler \
+	@cd resources && ./filler_vm -p1 players/carli.filler \
     -p2 ../kmerkulo.filler -f maps/map01
 
 m02p2: all
-	@cd resources && ./filler_vm -p1 players/hcao.filler \
+	@cd resources && ./filler_vm -p1 players/carli.filler \
     -p2 ../kmerkulo.filler -f maps/map02
 
 m03p2: all
-	@cd resources && ./filler_vm -p1 players/hcao.filler \
+	@cd resources && ./filler_vm -p1 players/carli.filler \
     -p2 ../kmerkulo.filler -f maps/map03

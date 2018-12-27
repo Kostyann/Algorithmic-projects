@@ -13,7 +13,8 @@
 #ifndef FILLER_H
 # define FILLER_H
 
-int 	**make_field(char en_num, int fd, int i, int j);
+int		**make_field(char en_num, int fd, int i, int j);
 void	map_field(int **field);
+void	free_field(int **field);
 
 #endif

@@ -41,9 +41,7 @@ int		try_place(int **piece, int **field, int x, int y)
 			}
 		}
 	}
-	if (n != 1)
-		return (0);
-	return (1);
+	return (n == 1 ? 1 : 0);
 }
 
 int		ft_closer(int **piece, int **field, int prime[2], int temp[2])
@@ -98,11 +96,6 @@ void	place_piece(int **field, int **piece)
 			}
 		}
 	}
-	if (prime[0] == -1)
-	{
-		prime[0] = 0;
-		prime[1] = 0;
-	}
 	ft_printf("%d %d\n", prime[0], prime[1]);
 }
 
@@ -110,14 +103,13 @@ int		main(void)
 {
 	char	*line;
 	int		fd;
-	int 	xy[2] = {0, 0};
+	int		xy[2] = {0, 0};
 	char	en_num;
-	int 	**field;
-	int 	**piece;
+	int		**field;
+	int		**piece;
 
 //	fd = open("test.txt", O_RDONLY);
 	fd = 0;
-
 	if ((get_next_line(fd, &line) == 1))
 	{
 		en_num = line[10];
@@ -125,21 +117,22 @@ int		main(void)
 		en_num = (en_num == '1') ? 'X' : 'O';
 	}
 	while ((get_next_line(fd, &line) == 1))
-		{
-			xy[0] = ft_atoi(&line[8]);
-			xy[1] = ft_atoi(&line[8 + ft_digits(xy[0]) + 1]);
-			free(line);
-			get_next_line(fd, &line);
-			field = make_field(en_num, fd, xy[0], xy[1]);
-			free(line);
-			get_next_line(fd, &line);
-			xy[0] = ft_atoi(&line[6]);
-			xy[1] = ft_atoi(&line[6 + ft_digits(xy[0]) + 1]);
-			piece = make_field(en_num, fd, xy[0], xy[1]);
-			free(line);
-			map_field(field);
-			place_piece(field, piece);
-		}
-
+	{
+		xy[0] = ft_atoi(&line[8]);
+		xy[1] = ft_atoi(&line[8 + ft_digits(xy[0]) + 1]);
+		free(line);
+		get_next_line(fd, &line);
+		field = make_field(en_num, fd, xy[0], xy[1]);
+		free(line);
+		get_next_line(fd, &line);
+		xy[0] = ft_atoi(&line[6]);
+		xy[1] = ft_atoi(&line[6 + ft_digits(xy[0]) + 1]);
+		piece = make_field(en_num, fd, xy[0], xy[1]);
+		free(line);
+		map_field(field);
+		place_piece(field, piece);
+		free_field(field);
+		free_field(piece);
+	}
 	return (0);
 }

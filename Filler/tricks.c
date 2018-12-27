@@ -13,6 +13,15 @@
 #include "libft/includes/libft.h"
 #include "filler.h"
 
+void	free_field(int **field)
+{
+	int i = -1;
+
+	while (field[++i])
+		free(field[i]);
+	free(field);
+}
+
 int 	**make_field(char en_num, int fd, int i, int j)
 {
 	char	*line;
@@ -38,6 +47,7 @@ int 	**make_field(char en_num, int fd, int i, int j)
 				res[k][n] = -1;
 		}
 		res[k][n] = 0;
+		free(line);
 	}
 	res[k] = 0;
 	return (res);

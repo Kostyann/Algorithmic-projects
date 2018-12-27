@@ -27,7 +27,7 @@ int	print_x(t_flags *flags, va_list *ap)
 		else if (!flags->precision && flags->zero)
 			len = add_prefix(&str, '0', flags->width - len - (flags->hash * 2));
 	}
-	if (flags->hash && ft_atoi(str))
+	if (flags->hash && len > 1)
 	{
 		len = (flags->id == 'x') ? add_prefix(&str, 'x', 1) :
 				add_prefix(&str, 'X', 1);

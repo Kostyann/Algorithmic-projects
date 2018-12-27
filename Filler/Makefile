@@ -19,7 +19,7 @@ LIBC =		libft.a
 
 OBJ_DIR =	obj/
 
-SRC =		filler.c
+SRC =		filler.c tricks.c
 OBJ =		$(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
 all:		$(LIBC) $(NAME)

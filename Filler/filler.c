@@ -44,78 +44,58 @@ int		try_place(int **piece, int **field, int x, int y)
 	return (n == 1 ? 1 : 0);
 }
 
-int		ft_closer(int **piece, int **field, int prime[2], int temp[2])
+int		ft_dist(int **piece, int **field, int k, int n)
 {
 	int i;
 	int j;
-	int p_dist;
-	int t_dist;
+	int dist;
 
 	i = -1;
-	p_dist = 0;
-	t_dist = 0;
+	dist = 0;
 	while (piece[++i])
 	{
 		j = -1;
 		while (piece[i][++j])
-		{
 			if (piece[i][j] == -1)
-			{
-				p_dist += field[prime[0] + i][prime[1] + j];
-				t_dist += field[temp[0] + i][temp[1] + j];
-			}
-		}
+				dist += field[k + i][n + j];
 	}
-	if (t_dist < p_dist)
-		return (1);
-	return (0);
+	return (dist);
 }
 
 void	place_piece(int **field, int **piece)
 {
-	int	prime[2] = {-1, -1};
-	int temp[2] = {-1, -1};
+	int	prime[2];
+	int dist;
+	int temp;
 	int i;
 	int j;
 
+	prime[0] = -1;
+	prime[1] = -1;
 	i = -1;
 	while (field[++i])
 	{
 		j = -1;
 		while (field[i][++j])
 		{
-			if (try_place(piece, field, i, j))
+			if (try_place(piece, field, i, j) && ((prime[0] == -1) ||
+				(temp = ft_dist(piece, field, i, j)) < dist))
 			{
-				temp[0] = i;
-				temp[1] = j;
-				if (prime[0] == -1 || ft_closer(piece, field, prime, temp))
-				{
-					prime[0] = temp[0];
-					prime[1] = temp[1];
-				}
+				prime[0] = i;
+				prime[1] = j;
+				dist = (temp > 0) ? temp : ft_dist(piece, field, i, j);
 			}
 		}
 	}
 	ft_printf("%d %d\n", prime[0], prime[1]);
 }
 
-int		main(void)
+void	filler(int fd, char en_num, int xy[2])
 {
 	char	*line;
-	int		fd;
-	int		xy[2] = {0, 0};
-	char	en_num;
 	int		**field;
 	int		**piece;
 
-//	fd = open("test.txt", O_RDONLY);
-	fd = 0;
-	if ((get_next_line(fd, &line) == 1))
-	{
-		en_num = line[10];
-		free(line);
-		en_num = (en_num == '1') ? 'X' : 'O';
-	}
 	while ((get_next_line(fd, &line) == 1))
 	{
 		xy[0] = ft_atoi(&line[8]);
@@ -134,5 +114,23 @@ int		main(void)
 		free_field(field);
 		free_field(piece);
 	}
+}
+
+int		main(void)
+{
+	char	*line;
+	int		xy[2];
+	char	en_num;
+
+	xy[0] = 0;
+	xy[1] = 0;
+	en_num = 0;
+	if ((get_next_line(0, &line) == 1))
+	{
+		en_num = line[10];
+		free(line);
+		en_num = (en_num == '1') ? 'X' : 'O';
+	}
+	filler(0, en_num, xy);
 	return (0);
 }

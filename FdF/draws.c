@@ -73,54 +73,48 @@ void	draw_line(t_fdf *fdf)
 	}
 }
 
-void	set_coords(t_fdf *fdf, int k, int n, char *num)
+void	set_coords(t_fdf *fdf, int k, int n)
 {
 	fdf->x0 = fdf->x1;
 	fdf->y0 = fdf->y1;
 	fdf->x1 = fdf->q * (n - fdf->cols / 2);
 	fdf->y1 = fdf->q * (k - fdf->rows / 2);
-	fdf->z1 = fdf->q * ft_atoi(num);
+	fdf->z1 = fdf->q * fdf->field[k][n];
 	rotate(fdf);
 	fdf->color = 0x0000FF;
 }
 
-void	draw_loop(t_fdf *fdf, int k, int n, char **nums)
+void	draw_loop(t_fdf *fdf, int k, int n)
 {
 	char	**nums1;
 
 	nums1 = NULL;
-	if (nums[n + 1])
+	if (n + 1 < fdf->cols)
 	{
-		set_coords(fdf, k, n, nums[n]);
-		set_coords(fdf, k, n + 1, nums[n + 1]);
+		set_coords(fdf, k, n);
+		set_coords(fdf, k, n + 1);
 		draw_line(fdf);
 	}
-	if (fdf->field[k + 1])
+	if (k + 1 < fdf->rows)
 	{
-		nums1 = ft_strsplit(fdf->field[k + 1], ' ');
-		set_coords(fdf, k, n, nums[n]);
-		set_coords(fdf, k + 1, n, nums1[n]);
+		set_coords(fdf, k, n);
+		set_coords(fdf, k + 1, n);
 		draw_line(fdf);
 	}
-	if (nums1 != NULL)
-		free_array(&nums1);
 }
 
 void	draw(t_fdf *fdf)
 {
-	char	**nums;
 	int		k;
 	int		n;
 
 	k = -1;
 	ft_bzero(fdf->img_addr, HEIGHT * WIDTH * fdf->bpp / 8);
-	while (fdf->field[++k])
+	while (++k < fdf->rows)
 	{
 		n = -1;
-		nums = ft_strsplit(fdf->field[k], ' ');
-		while (nums[++n])
-			draw_loop(fdf, k, n, nums);
-		free_array(&nums);
+		while (++n < fdf->cols)
+			draw_loop(fdf, k, n);
 	}
 //	ft_printf("x = %f\n", fdf->x);
 //	ft_printf("y = %f\n", fdf->y);

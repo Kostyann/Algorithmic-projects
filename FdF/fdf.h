@@ -43,7 +43,7 @@ typedef struct	s_fdf
 	int		sx;
 	int		sy;
 
-	char	**field;
+	int		**field;
 	int		x1;
 	int		y1;
 	int		x0;
@@ -58,8 +58,8 @@ typedef struct	s_fdf
 
 void			rotate(t_fdf *fdf);
 void			draw_line(t_fdf *fdf);
-void			set_coords(t_fdf *fdf, int k, int n, char *num);
-void			draw_loop(t_fdf *fdf, int k, int n, char **nums);
+void			set_coords(t_fdf *fdf, int k, int n);
+void			draw_loop(t_fdf *fdf, int k, int n);
 void			draw(t_fdf *fdf);
 
 void			img_put_pixel(t_fdf *fdf, int x, int y, int color);

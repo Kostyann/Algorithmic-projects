@@ -44,7 +44,9 @@ void	count_dimensions(t_fdf *fdf)
 void	get_field(t_fdf *fdf)
 {
 	char	*line;
+	char	**nums;
 	int		k;
+	int		n;
 
 	k = -1;
 	fdf->y0 = 1;
@@ -52,9 +54,17 @@ void	get_field(t_fdf *fdf)
 	count_dimensions(fdf);
 	close(fdf->fd);
 	fdf->fd = open(fdf->name, O_RDONLY);
-	fdf->field = (char**)malloc(sizeof(char*) * (fdf->rows + 1));
+	fdf->field = (int**)malloc(sizeof(int*) * (fdf->rows + 1));
 	while (++k < fdf->rows && (get_next_line(fdf->fd, &line) == 1))
-		fdf->field[k] = line;
+	{
+		nums = ft_strsplit(line, ' ');
+		n = -1;
+		fdf->field[k] = (int*)malloc(sizeof(int) * (fdf->cols));
+		while (nums[++n])
+			fdf->field[k][n] = ft_atoi(nums[n]);
+		free(line);
+		free_array(&nums);
+	}
 	fdf->field[k] = 0;
 }
 

@@ -41,7 +41,10 @@ SRC =		resolvers.c technical.c print_helpers.c ft_printf.c \
 
 OBJ = 	$(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
+.PHONY: all
+
 all: 		$(NAME)
+	@:
 
 $(NAME): 	$(OBJ)
 	@ar -rc $(NAME) $(OBJ)

@@ -13,8 +13,6 @@
 #include "libft/includes/libft.h"
 #include "filler.h"
 
-#include <fcntl.h>
-
 int		try_place(int **piece, int **field, int x, int y)
 {
 	int n;

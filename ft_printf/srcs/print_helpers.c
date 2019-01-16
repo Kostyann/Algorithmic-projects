@@ -12,7 +12,7 @@
 
 #include "../libft/includes/technical.h"
 
-void		fix_precision(int *len, t_flags *flags, char **str, int neg)
+void			fix_precision(int *len, t_flags *flags, char **str, int neg)
 {
 	if (flags->precision > *len - neg)
 		*len = add_prefix(str, '0', flags->precision - *len + neg);
@@ -24,7 +24,8 @@ void		fix_precision(int *len, t_flags *flags, char **str, int neg)
 	}
 }
 
-void		get_un_string(char **str, t_flags *flags, va_list *ap, size_t base)
+void			get_un_string(char **str, t_flags *flags, va_list *ap,
+								size_t base)
 {
 	int	i;
 
@@ -49,17 +50,17 @@ void		get_un_string(char **str, t_flags *flags, va_list *ap, size_t base)
 	}
 }
 
-static int	pow_ten(int power)
+static float	pow_ten(int power)
 {
-	int	res;
+	float	res;
 
-	res = 1;
+	res = 1.0;
 	while (power-- > 0)
-		res = res * 10;
+		res = res * 10.0;
 	return (res);
 }
 
-static void	fix_frecision(int precision, unsigned long long hard,
+static void		fix_frecision(int precision, unsigned long long hard,
 							long double f, char **ret)
 {
 	char *temp;
@@ -79,7 +80,7 @@ static void	fix_frecision(int precision, unsigned long long hard,
 	}
 }
 
-char		*btof(long double f, int precision, int hash)
+char			*btof(long double f, int precision, int hash)
 {
 	unsigned long long	hard;
 	char				*ret;

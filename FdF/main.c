@@ -28,10 +28,10 @@ void	count_dimensions(t_fdf *fdf)
 		nums = ft_strsplit(line, ' ');
 		n = -1;
 		while (nums[++n])
-			if ((temp = ft_atoi(nums[n])) < fdf->tweaks->min_z)
-				fdf->tweaks->min_z = temp;
-			else if (temp > fdf->tweaks->max_z)
-				fdf->tweaks->max_z = temp;
+			if ((temp = ft_atoi(nums[n])) < fdf->min_z)
+				fdf->min_z = temp;
+			else if (temp > fdf->max_z)
+				fdf->max_z = temp;
 		free(line);
 		free_array(&nums);
 	}
@@ -47,8 +47,8 @@ void	get_field(t_fdf *fdf)
 	int		n;
 
 	k = -1;
-	fdf->tweaks->max_z = 1;
-	fdf->tweaks->min_z = 0;
+	fdf->max_z = 1;
+	fdf->min_z = 0;
 	count_dimensions(fdf);
 	close(fdf->fd);
 	fdf->fd = open(fdf->name, O_RDONLY);
@@ -79,14 +79,15 @@ void	set_tweaks(t_fdf *fdf)
 
 	q1 = WIDTH / 1.3 / fdf->cols;
 	q2 = HEIGHT / 1.3 / fdf->rows;
-	q3 = HEIGHT / 2.5 / (fdf->tweaks->max_z - fdf->tweaks->min_z);
-	fdf->tweaks->q = (q1 < q2) ? q1 : q2;
-	fdf->tweaks->q = (fdf->tweaks->q < q3) ? fdf->tweaks->q : q3;
-	fdf->tweaks->alt = 1.0;
-	fdf->tweaks->shift_x = 0;
-	fdf->tweaks->shift_y = 0;
-	fdf->tweaks->rot_x = 0;
-	fdf->tweaks->rot_y = 0;
+	q3 = HEIGHT / 2.5 / (fdf->max_z - fdf->min_z);
+	fdf->q = (q1 < q2) ? q1 : q2;
+	fdf->q = (fdf->q < q3) ? fdf->q : q3;
+	fdf->alt = 1.0;
+	fdf->color_delta = 0;
+	fdf->shift_x = 0;
+	fdf->shift_y = 0;
+	fdf->rot_x = 0;
+	fdf->rot_y = 0;
 }
 
 int		mouse_move(int x, int y, void *param)
@@ -94,25 +95,25 @@ int		mouse_move(int x, int y, void *param)
 	t_fdf *fdf;
 
 	fdf = (t_fdf*)param;
-	if ((abs(y - fdf->tweaks->rot_y) > abs(x - fdf->tweaks->rot_x)) && fdf->tweaks->rot_y)
+	if ((abs(y - fdf->rot_y) > abs(x - fdf->rot_x)) && fdf->rot_y)
 	{
-		if (y > fdf->tweaks->rot_y)
+		if (y > fdf->rot_y)
 			fdf->x -= 0.1;
-		else if (y < fdf->tweaks->rot_y)
+		else if (y < fdf->rot_y)
 			fdf->x += 0.1;
 		draw(fdf);
-		fdf->tweaks->rot_x = x;
-		fdf->tweaks->rot_y = y;
+		fdf->rot_x = x;
+		fdf->rot_y = y;
 	}
-	else if (fdf->tweaks->rot_x)
+	else if (fdf->rot_x)
 	{
-		if (x > fdf->tweaks->rot_x)
+		if (x > fdf->rot_x)
 			fdf->y += 0.1;
-		else if (x < fdf->tweaks->rot_x)
+		else if (x < fdf->rot_x)
 			fdf->y -= 0.1;
 		draw(fdf);
-		fdf->tweaks->rot_x = x;
-		fdf->tweaks->rot_y = y;
+		fdf->rot_x = x;
+		fdf->rot_y = y;
 	}
 	return (0);
 }
@@ -122,19 +123,19 @@ int		mouse_move2(int x, int y, void *param)
 	t_fdf *fdf;
 
 	fdf = (t_fdf*)param;
-	if (x > fdf->tweaks->rot_x && fdf->tweaks->rot_x)
+	if (x > fdf->rot_x && fdf->rot_x)
 	{
 		fdf->z += 0.1;
 		draw(fdf);
-		fdf->tweaks->rot_x = x;
-		fdf->tweaks->rot_y = y;
+		fdf->rot_x = x;
+		fdf->rot_y = y;
 	}
-	if (x < fdf->tweaks->rot_x && fdf->tweaks->rot_x)
+	if (x < fdf->rot_x && fdf->rot_x)
 	{
 		fdf->z -= 0.1;
 		draw(fdf);
-		fdf->tweaks->rot_x = x;
-		fdf->tweaks->rot_y = y;
+		fdf->rot_x = x;
+		fdf->rot_y = y;
 	}
 	return (0);
 }
@@ -147,8 +148,8 @@ int		mouse_release(int button, int x, int y, void *param)
 	(void)y;
 
 	fdf = (t_fdf*)param;
-	fdf->tweaks->rot_x = 0;
-	fdf->tweaks->rot_y = 0;
+	fdf->rot_x = 0;
+	fdf->rot_y = 0;
 	return (0);
 }
 
@@ -159,36 +160,36 @@ int		mouse_press(int button, int x, int y, void *param)
 	fdf = (t_fdf*)param;
 	if (button == 1)
 	{
-		fdf->tweaks->rot_x = x;
-		fdf->tweaks->rot_y = y;
+		fdf->rot_x = x;
+		fdf->rot_y = y;
 		mlx_hook(fdf->win_ptr, 6, 1L << 2, &mouse_move, fdf);
 		mlx_hook(fdf->win_ptr, 5, 1L << 3, &mouse_release, fdf);
 	}
 	if (button == 2)
 	{
-		fdf->tweaks->rot_x = x;
-		fdf->tweaks->rot_y = y;
+		fdf->rot_x = x;
+		fdf->rot_y = y;
 		mlx_hook(fdf->win_ptr, 6, 1L << 2, &mouse_move2, fdf);
 		mlx_hook(fdf->win_ptr, 5, 1L << 3, &mouse_release, fdf);
 	}
 	if (button == 4)
 	{
-		fdf->tweaks->q -= 1;
+		fdf->q -= 1;
 		draw(fdf);
 	}
 	if (button == 5)
 	{
-		fdf->tweaks->q += 1;
+		fdf->q += 1;
 		draw(fdf);
 	}
 	if (button == 6)
 	{
-		fdf->tweaks->alt -= 0.1;
+		fdf->alt -= 0.1;
 		draw(fdf);
 	}
 	if (button == 7)
 	{
-		fdf->tweaks->alt += 0.1;
+		fdf->alt += 0.1;
 		draw(fdf);
 	}
 	return (0);
@@ -196,15 +197,15 @@ int		mouse_press(int button, int x, int y, void *param)
 
 void	start_fdf(t_fdf *fdf)
 {
-	get_field(fdf);
-	set_tweaks(fdf);
-	close(fdf->fd);
 	fdf->mlx_ptr = mlx_init();
 	fdf->win_ptr = mlx_new_window(fdf->mlx_ptr, WIDTH, HEIGHT, "fdf 42");
 	fdf->img_ptr = mlx_new_image(fdf->mlx_ptr, WIDTH, HEIGHT);
 	fdf->bpp = 32;
 	fdf->img_addr = mlx_get_data_addr(fdf->img_ptr,
 									  &fdf->bpp, &fdf->s_line, &fdf->endian);
+	get_field(fdf);
+	set_tweaks(fdf);
+	close(fdf->fd);
 	draw(fdf);
 	mlx_hook(fdf->win_ptr, 4, 1L << 1, &mouse_press, fdf);
 	mlx_hook(fdf->win_ptr, 2, 1L << 0, &deal_key, fdf);
@@ -214,20 +215,23 @@ void	start_fdf(t_fdf *fdf)
 
 int		main(int ac, char **av)
 {
-	t_fdf fdf;
+	t_fdf *fdf;
 
+	ft_printf("size = %d\n", sizeof(t_fdf));
+	if (!(fdf = (t_fdf*)ft_memalloc(sizeof(t_fdf))))
+		return (0);
 	if (ac == 2)
 	{
-		fdf.name = av[1];
-		if ((fdf.fd = open(fdf.name, O_RDONLY)) == -1)
+		fdf->name = av[1];
+		if ((fdf->fd = open(fdf->name, O_RDONLY)) == -1)
 		{
-			ft_printf("No file %s\n", fdf.name);
+			ft_printf("No file %s\n", fdf->name);
 			return (0);
 		}
-		fdf.x = 0.959931;
-		fdf.y = 0;
-		fdf.z = 0.785398;
-		start_fdf(&fdf);
+		fdf->x = 0.959931;
+		fdf->y = 0;
+		fdf->z = 0.785398;
+		start_fdf(fdf);
 	}
 	else
 		ft_printf("Usage: %s <filename> [ case_size z_size ]\n", av[0]);

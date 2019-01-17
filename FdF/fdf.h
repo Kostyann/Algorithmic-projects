@@ -21,18 +21,6 @@
 # define WIDTH 1280
 # define HEIGHT 720
 
-typedef struct	s_tweaks
-{
-	int		q;
-	float	alt;
-	int		shift_x;
-	int		shift_y;
-	int		max_z;
-	int		min_z;
-	int		rot_x;
-	int		rot_y;
-}				t_tweaks;
-
 typedef struct	s_fdf
 {
 	char	*name;
@@ -46,26 +34,45 @@ typedef struct	s_fdf
 	int		s_line;
 	int		endian;
 
+	int		**field;
+	int		x1;
+	int		y1;
+	int		x_curr;
+	int		y_curr;
+	int		x0;
+	int		y0;
+	int		z1;
+
 	int		cols;
 	int		rows;
-	t_tweaks	*tweaks;
 
 	int		dx;
 	int		dy;
 	int		sx;
 	int		sy;
 
-	int		**field;
-	int		x1;
-	int		y1;
-	int		x0;
-	int		y0;
-	int		z1;
+	int		color1;
+	int		color_curr;
+	int		color0;
+	int		color_delta;
 
-	int		color;
+	// Angles
+
 	float	x;
 	float	y;
 	float	z;
+
+	// Tweaks
+
+	int		q;
+	float	alt;
+	int		shift_x;
+	int		shift_y;
+	int		max_z;
+	int		min_z;
+	int		rot_x;
+	int		rot_y;
+
 }				t_fdf;
 
 

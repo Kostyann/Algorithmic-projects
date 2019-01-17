@@ -21,6 +21,18 @@
 # define WIDTH 1280
 # define HEIGHT 720
 
+typedef struct	s_tweaks
+{
+	int		q;
+	float	alt;
+	int		shift_x;
+	int		shift_y;
+	int		max_z;
+	int		min_z;
+	int		rot_x;
+	int		rot_y;
+}				t_tweaks;
+
 typedef struct	s_fdf
 {
 	char	*name;
@@ -36,7 +48,7 @@ typedef struct	s_fdf
 
 	int		cols;
 	int		rows;
-	int		q;
+	t_tweaks	*tweaks;
 
 	int		dx;
 	int		dy;
@@ -55,6 +67,9 @@ typedef struct	s_fdf
 	float	y;
 	float	z;
 }				t_fdf;
+
+
+
 
 void			rotate(t_fdf *fdf);
 void			draw_line(t_fdf *fdf);

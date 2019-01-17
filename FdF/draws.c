@@ -55,8 +55,8 @@ void	draw_line(t_fdf *fdf)
 	error[0] = fdf->dx + fdf->dy;
 	while (1)
 	{
-		img_put_pixel(fdf, WIDTH / 2 + fdf->x0,
-				HEIGHT / 2 + fdf->y0, fdf->color);
+		img_put_pixel(fdf, WIDTH / 2 + fdf->x0 + fdf->tweaks->shift_x,
+				HEIGHT / 2 + fdf->y0 + fdf->tweaks->shift_y, fdf->color);
 		if (fdf->x0 == fdf->x1 && fdf->y0 == fdf->y1)
 			break ;
 		error[1] = 2 * error[0];
@@ -77,11 +77,16 @@ void	set_coords(t_fdf *fdf, int k, int n)
 {
 	fdf->x0 = fdf->x1;
 	fdf->y0 = fdf->y1;
-	fdf->x1 = fdf->q * (n - fdf->cols / 2);
-	fdf->y1 = fdf->q * (k - fdf->rows / 2);
-	fdf->z1 = fdf->q * fdf->field[k][n];
+	fdf->x1 = fdf->tweaks->q * (n - fdf->cols / 2);
+	fdf->y1 = fdf->tweaks->q * (k - fdf->rows / 2);
+	fdf->z1 = fdf->tweaks->q * fdf->field[k][n] * fdf->tweaks->alt;
+	if (fdf->z1 > (fdf->tweaks->q * fdf->tweaks->max_z / 3 * 2))
+		fdf->color = 0xFFFFFF;
+	else if (fdf->z1 > (fdf->tweaks->q * fdf->tweaks->max_z / 5))
+		fdf->color = 0x7A220F;
+	else
+		fdf->color = 0x058929;
 	rotate(fdf);
-	fdf->color = 0x0000FF;
 }
 
 void	draw_loop(t_fdf *fdf, int k, int n)
@@ -120,7 +125,5 @@ void	draw(t_fdf *fdf)
 //	ft_printf("y = %f\n", fdf->y);
 //	ft_printf("z = %f\n", fdf->z);
 //	ft_printf("______________\n");
-	fdf->x0 = 0;
-	fdf->y0 = 0;
 	mlx_put_image_to_window(fdf->mlx_ptr, fdf->win_ptr, fdf->img_ptr, 0, 0);
 }

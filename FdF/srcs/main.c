@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../includes/fdf.h"
 #include <stdio.h>
 
 void	count_dimensions(t_fdf *fdf)
@@ -217,7 +217,6 @@ int		main(int ac, char **av)
 {
 	t_fdf *fdf;
 
-	ft_printf("size = %d\n", sizeof(t_fdf));
 	if (!(fdf = (t_fdf*)ft_memalloc(sizeof(t_fdf))))
 		return (0);
 	if (ac == 2)

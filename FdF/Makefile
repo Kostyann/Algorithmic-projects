@@ -13,12 +13,13 @@
 NAME = fdf
 
 CC =		clang
-CFLAGS =	-Wall -Wextra
+CFLAGS =	-Wall -Wextra -Werror
 LIB_DIR =	libft/
 LIBC =		libft.a
 MLX_DIR =	-I /usr/local/include
 FRAMEWORK = -L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit
 
+SRC_DIR = srcs/
 OBJ_DIR =	obj/
 
 SRC =		main.c draws.c technical.c
@@ -41,7 +42,7 @@ $(OBJ):		| $(OBJ_DIR)
 $(OBJ_DIR):
 	@mkdir $(OBJ_DIR)
 
-$(OBJ_DIR)%.o:	%.c
+$(OBJ_DIR)%.o:	$(SRC_DIR)%.c
 	@$(CC) -c $< -o $@ $(CFLAGS)
 
 

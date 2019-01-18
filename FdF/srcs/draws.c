@@ -122,16 +122,16 @@ void	draw(t_fdf *fdf)
 			draw_loop(fdf, k, n);
 	}
 	mlx_put_image_to_window(fdf->mlx_ptr, fdf->win_ptr, fdf->img_ptr, 0, 0);
-	mlx_string_put(fdf->mlx_ptr, fdf->win_ptr, 30, 590, 0x0BADF3,
+	mlx_string_put(fdf->mlx_ptr, fdf->win_ptr, 30, 590, 0x9E18F5,
 			"Hold Z or X to see the Lightshow!;)");
-	mlx_string_put(fdf->mlx_ptr, fdf->win_ptr, 30, 610, 0xEF0E0A,
+	mlx_string_put(fdf->mlx_ptr, fdf->win_ptr, 30, 610, 0xF5F843,
 			"Press 1, 2, 3, 4 or 5 to choose different types of projection");
-	mlx_string_put(fdf->mlx_ptr, fdf->win_ptr, 30, 630, 0xEF0E0A,
+	mlx_string_put(fdf->mlx_ptr, fdf->win_ptr, 30, 630, 0xF5F843,
 			"Press Q, W, E, A, S, D (or use mouse buttons) to rotate");
-	mlx_string_put(fdf->mlx_ptr, fdf->win_ptr, 30, 650, 0xEF0E0A,
+	mlx_string_put(fdf->mlx_ptr, fdf->win_ptr, 30, 650, 0xF5F843,
 			"Use arrows to move along X or Y axis");
-	mlx_string_put(fdf->mlx_ptr, fdf->win_ptr, 30, 670, 0xEF0E0A,
+	mlx_string_put(fdf->mlx_ptr, fdf->win_ptr, 30, 670, 0x0BADF3,
 			"Scroll up/down to change a scale");
-	mlx_string_put(fdf->mlx_ptr, fdf->win_ptr, 30, 690, 0xEF0E0A,
+	mlx_string_put(fdf->mlx_ptr, fdf->win_ptr, 30, 690, 0x0BADF3,
 			"Scroll left/right to change an altitude");
 }

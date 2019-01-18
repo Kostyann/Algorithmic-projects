@@ -60,3 +60,12 @@ pyramide: all
 
 mars: all
 	@./$(NAME) test_maps/mars.fdf
+
+pyra: all
+	@./$(NAME) test_maps/pyra.fdf
+
+100_6: all
+	@./$(NAME) test_maps/100-6.fdf
+
+10_70: all
+	@./$(NAME) test_maps/10-70.fdf

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
-#include <stdio.h>
 
 void	count_dimensions(t_fdf *fdf)
 {
@@ -22,6 +21,8 @@ void	count_dimensions(t_fdf *fdf)
 	int		temp;
 
 	k = 0;
+	fdf->max_z = 1;
+	fdf->min_z = 0;
 	while ((get_next_line(fdf->fd, &line) == 1))
 	{
 		k++;
@@ -33,7 +34,7 @@ void	count_dimensions(t_fdf *fdf)
 			else if (temp > fdf->max_z)
 				fdf->max_z = temp;
 		free(line);
-		free_array(&nums);
+		ft_memdel_arr((void***)&nums);
 	}
 	fdf->cols = n;
 	fdf->rows = k;
@@ -47,11 +48,6 @@ void	get_field(t_fdf *fdf)
 	int		n;
 
 	k = -1;
-	fdf->max_z = 1;
-	fdf->min_z = 0;
-	count_dimensions(fdf);
-	close(fdf->fd);
-	fdf->fd = open(fdf->name, O_RDONLY);
 	fdf->field = (int**)malloc(sizeof(int*) * (fdf->rows + 1));
 	while (++k < fdf->rows && (get_next_line(fdf->fd, &line) == 1))
 	{
@@ -61,7 +57,7 @@ void	get_field(t_fdf *fdf)
 		while (nums[++n])
 			fdf->field[k][n] = ft_atoi(nums[n]);
 		free(line);
-		free_array(&nums);
+		ft_memdel_arr((void***)&nums);
 		if (n != fdf->cols)
 		{
 			ft_printf("Found wrong line length. Exiting.\n");
@@ -90,111 +86,6 @@ void	set_tweaks(t_fdf *fdf)
 	fdf->rot_y = 0;
 }
 
-int		mouse_move(int x, int y, void *param)
-{
-	t_fdf *fdf;
-
-	fdf = (t_fdf*)param;
-	if ((abs(y - fdf->rot_y) > abs(x - fdf->rot_x)) && fdf->rot_y)
-	{
-		if (y > fdf->rot_y)
-			fdf->x -= 0.1;
-		else if (y < fdf->rot_y)
-			fdf->x += 0.1;
-		draw(fdf);
-		fdf->rot_x = x;
-		fdf->rot_y = y;
-	}
-	else if (fdf->rot_x)
-	{
-		if (x > fdf->rot_x)
-			fdf->y += 0.1;
-		else if (x < fdf->rot_x)
-			fdf->y -= 0.1;
-		draw(fdf);
-		fdf->rot_x = x;
-		fdf->rot_y = y;
-	}
-	return (0);
-}
-
-int		mouse_move2(int x, int y, void *param)
-{
-	t_fdf *fdf;
-
-	fdf = (t_fdf*)param;
-	if (x > fdf->rot_x && fdf->rot_x)
-	{
-		fdf->z += 0.1;
-		draw(fdf);
-		fdf->rot_x = x;
-		fdf->rot_y = y;
-	}
-	if (x < fdf->rot_x && fdf->rot_x)
-	{
-		fdf->z -= 0.1;
-		draw(fdf);
-		fdf->rot_x = x;
-		fdf->rot_y = y;
-	}
-	return (0);
-}
-
-int		mouse_release(int button, int x, int y, void *param)
-{
-	t_fdf *fdf;
-	(void)button;
-	(void)x;
-	(void)y;
-
-	fdf = (t_fdf*)param;
-	fdf->rot_x = 0;
-	fdf->rot_y = 0;
-	return (0);
-}
-
-int		mouse_press(int button, int x, int y, void *param)
-{
-	t_fdf *fdf;
-
-	fdf = (t_fdf*)param;
-	if (button == 1)
-	{
-		fdf->rot_x = x;
-		fdf->rot_y = y;
-		mlx_hook(fdf->win_ptr, 6, 1L << 2, &mouse_move, fdf);
-		mlx_hook(fdf->win_ptr, 5, 1L << 3, &mouse_release, fdf);
-	}
-	if (button == 2)
-	{
-		fdf->rot_x = x;
-		fdf->rot_y = y;
-		mlx_hook(fdf->win_ptr, 6, 1L << 2, &mouse_move2, fdf);
-		mlx_hook(fdf->win_ptr, 5, 1L << 3, &mouse_release, fdf);
-	}
-	if (button == 4)
-	{
-		fdf->q -= 1;
-		draw(fdf);
-	}
-	if (button == 5)
-	{
-		fdf->q += 1;
-		draw(fdf);
-	}
-	if (button == 6)
-	{
-		fdf->alt -= 0.1;
-		draw(fdf);
-	}
-	if (button == 7)
-	{
-		fdf->alt += 0.1;
-		draw(fdf);
-	}
-	return (0);
-}
-
 void	start_fdf(t_fdf *fdf)
 {
 	fdf->mlx_ptr = mlx_init();
@@ -202,7 +93,10 @@ void	start_fdf(t_fdf *fdf)
 	fdf->img_ptr = mlx_new_image(fdf->mlx_ptr, WIDTH, HEIGHT);
 	fdf->bpp = 32;
 	fdf->img_addr = mlx_get_data_addr(fdf->img_ptr,
-									  &fdf->bpp, &fdf->s_line, &fdf->endian);
+			&fdf->bpp, &fdf->s_line, &fdf->endian);
+	count_dimensions(fdf);
+	close(fdf->fd);
+	fdf->fd = open(fdf->name, O_RDONLY);
 	get_field(fdf);
 	set_tweaks(fdf);
 	close(fdf->fd);

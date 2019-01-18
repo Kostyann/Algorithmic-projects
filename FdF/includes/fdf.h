@@ -56,13 +56,9 @@ typedef struct	s_fdf
 	int		color0;
 	int		color_delta;
 
-	// Angles
-
 	float	x;
 	float	y;
 	float	z;
-
-	// Tweaks
 
 	int		q;
 	float	alt;
@@ -75,19 +71,13 @@ typedef struct	s_fdf
 
 }				t_fdf;
 
+void			img_put_pixel(t_fdf *fdf, int x, int y);
 
-
-
-void			rotate(t_fdf *fdf);
-void			draw_line(t_fdf *fdf);
-void			set_coords(t_fdf *fdf, int k, int n);
-void			draw_loop(t_fdf *fdf, int k, int n);
 void			draw(t_fdf *fdf);
 
-void			img_put_pixel(t_fdf *fdf, int x, int y, int color);
-void			free_array(char ***array);
-int				deal_key2(int key, t_fdf *fdf);
 int				deal_key(int key, void *param);
 int				my_close(void *param);
+
+int				mouse_press(int button, int x, int y, void *param);
 
 #endif

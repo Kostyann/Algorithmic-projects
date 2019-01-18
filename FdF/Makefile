@@ -22,7 +22,7 @@ FRAMEWORK = -L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit
 SRC_DIR = srcs/
 OBJ_DIR =	obj/
 
-SRC =		main.c draws.c technical.c
+SRC =		main.c draws.c pixel_n_color.c keys_fun.c mouse_fun.c
 OBJ =		$(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
 .PHONY: all

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fdf.h"
+#include "../include/fdf.h"
 
 double	percent(int start, int end, int curr)
 {

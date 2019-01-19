@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fdf.h"
+#include "../include/fdf.h"
 
 int		deal_key3(int key, t_fdf *fdf)
 {

@@ -21,20 +21,22 @@ FRAMEWORK = -L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit
 
 SRC_DIR = srcs/
 OBJ_DIR =	obj/
+INCL_DIR = include/
 
 SRC =		main.c draws.c pixel_n_color.c keys_fun.c mouse_fun.c
 OBJ =		$(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
 .PHONY: all
 
-all:		$(LIBC) $(NAME)
+all:		$(NAME)
 	@:
 
 $(LIBC):
 	@$(MAKE) -C libft
 
-$(NAME):	$(OBJ)
+$(NAME):	$(LIBC) $(OBJ)
 	@$(CC) -o $(NAME) $(OBJ) $(MLX_DIR) $(FRAMEWORK) -L$(LIB_DIR) -lft $(CFLAGS)
+	@echo "\033[34mCompiled successfully!\033[0m"
 
 
 $(OBJ):		| $(OBJ_DIR)
@@ -42,12 +44,12 @@ $(OBJ):		| $(OBJ_DIR)
 $(OBJ_DIR):
 	@mkdir $(OBJ_DIR)
 
-$(OBJ_DIR)%.o:	$(SRC_DIR)%.c
+$(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(INCL_DIR)*.h
 	@$(CC) -c $< -o $@ $(CFLAGS)
-
 
 clean:
 	@rm -rf $(OBJ_DIR)
+	@echo "\033[32mCleaned!\033[0m"
 fclean:		clean
 	@rm -f $(NAME)
 re:			fclean all

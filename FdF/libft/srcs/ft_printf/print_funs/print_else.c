@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/ft_printf.h"
+#include "../../../include/ft_printf.h"
 
 int	print_else(t_flags *flags, va_list *ap)
 {

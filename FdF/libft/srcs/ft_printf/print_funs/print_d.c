@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/ft_printf.h"
+#include "../../../include/ft_printf.h"
 
 static void	get_local_string(char **str, t_flags *flags, va_list *ap, int *len)
 {

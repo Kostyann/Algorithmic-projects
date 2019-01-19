@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/ft_printf.h"
+#include "../../include/ft_printf.h"
 
 void			fix_precision(int *len, t_flags *flags, char **str, int neg)
 {

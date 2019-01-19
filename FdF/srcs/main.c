@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fdf.h"
+#include "../include/fdf.h"
 
 void	count_dimensions(t_fdf *fdf)
 {

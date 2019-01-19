@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/ft_printf.h"
+#include "../../../include/ft_printf.h"
 
 static char	*ft_weird(long double f, char id)
 {

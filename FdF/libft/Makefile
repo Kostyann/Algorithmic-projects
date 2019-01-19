@@ -14,11 +14,12 @@ NAME = libft.a
 
 CC = gcc
 FLAGS = -Wall -Wextra -Werror
-SRC_DIR = srcs/
 PRINTF_DIR = srcs/ft_printf/
 PRINTFUNS_DIR = srcs/ft_printf/print_funs/
 
+SRC_DIR = srcs/
 OBJ_DIR	= obj/
+INCL_DIR = include/
 
 SRC =		resolvers.c technical.c print_helpers.c ft_printf.c \
             print_b.c print_c.c print_d.c print_else.c print_f.c print_o.c \
@@ -49,23 +50,28 @@ all:		$(NAME)
 $(NAME): 	$(OBJ)
 	@ar -rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
+	@echo "\033[32mLibrary compiled!\033[0m"
 
 $(OBJ):		| $(OBJ_DIR)
 
 $(OBJ_DIR):
 	@mkdir $(OBJ_DIR)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INCL_DIR)libft.h
+	@echo "\033[32mCompiling $<...\033[0m"
 	@$(CC) -c $< -o $@ $(FLAGS)
 
-$(OBJ_DIR)%.o: $(PRINTF_DIR)%.c
+$(OBJ_DIR)%.o: $(PRINTF_DIR)%.c $(INCL_DIR)ft_printf.h
 	@$(CC) -c $< -o $@ $(FLAGS)
+	@echo "\033[32mCompiling $<...\033[0m"
 
-$(OBJ_DIR)%.o: $(PRINTFUNS_DIR)%.c
+$(OBJ_DIR)%.o: $(PRINTFUNS_DIR)%.c $(INCL_DIR)ft_printf.h
 	@$(CC) -c $< -o $@ $(FLAGS)
+	@echo "\033[32mCompiling $<...\033[0m"
 
 clean:
 	@rm -rf $(OBJ_DIR)
+	@echo "\033[32mCleaned!\033[0m"
 
 fclean: clean
 	@rm -f $(NAME)

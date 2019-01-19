@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fdf.h"
+#include "../include/fdf.h"
 
 void	draw_line(t_fdf *fdf)
 {

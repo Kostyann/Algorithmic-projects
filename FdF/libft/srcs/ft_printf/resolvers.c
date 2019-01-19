@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/ft_printf.h"
+#include "../../include/ft_printf.h"
 
 static void	resolve_width(t_flags *flags, const char **format, va_list *ap)
 {

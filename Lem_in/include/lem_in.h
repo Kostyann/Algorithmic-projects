@@ -37,7 +37,6 @@ typedef struct		s_farm
 typedef struct		s_path
 {
 	int				depth;
-	int				found;
 	t_room			**path;
 }					t_path;
 

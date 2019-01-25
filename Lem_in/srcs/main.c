@@ -185,6 +185,30 @@ void	print_paths(t_path **paths)
 	}
 }
 
+// Function that finds broken needle in a haystack (add to libft?)
+
+char	*ft_strbrstr(const char *haystack, const char *needle)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	if (!needle[i])
+		return ((char*)haystack);
+	while (haystack[i])
+	{
+		while (haystack[i + j] == needle[j] && haystack[i + j])
+			j++;
+		if (needle[j] == '\0')
+			return ((char*)haystack);
+		i++;
+	}
+	return (NULL);
+}
+
+// ^ function that finds broken needle in a haystack (add to libft?)
+
 int		find_paths(t_farm *farm, t_room *start, t_path **paths, int *checked, int *j)
 {
 	int	i = -1;
@@ -199,11 +223,9 @@ int		find_paths(t_farm *farm, t_room *start, t_path **paths, int *checked, int *
 
 	while (start->edges[++i])
 	{
-		ft_printf("start - %s edge - %s\n", start->name, start->edges[i]->name);
 		if (start->edges[i]->index == farm->e_index)
 		{
 			paths[*j]->path[++(paths[*j]->depth)] = start->edges[i];
-			//	paths[*j]->found = 1;
 			checked[start->index] = 0;
 			return (1);
 		}
@@ -229,8 +251,6 @@ int		find_paths(t_farm *farm, t_room *start, t_path **paths, int *checked, int *
 
 		}
 	}
-
-
 	return (0);
 }
 
@@ -238,14 +258,14 @@ t_path	**get_paths(t_farm *farm)
 {
 	t_path	**paths;
 	int 	*checked;
-	int 	ways = 10;
 	int 	j = 0;
 
 	checked = (int*)ft_memalloc(sizeof(int) * (farm->quantity + 1));
-	paths = (t_path**)ft_memalloc(sizeof(t_path*) * (ways + 1));
+	paths = (t_path**)ft_memalloc(sizeof(t_path*) * (farm->quantity + 1));
 
 	find_paths(farm, farm->rooms[farm->s_index], paths, checked, &j);
-	print_paths(paths);
+	paths[j] = 0;
+
 //	int i = -1;
 //	while (++i < farm->quantity)
 //		ft_printf("%d ", checked[i]);
@@ -265,6 +285,8 @@ int		main()
 	farm = make_farm(rooms);
 	print_farm(farm);
 	paths = get_paths(farm);
+	print_paths(paths);
+//	ft_printf("%s\n", ft_strbrstr("12345789", "12567"));
 	system("leaks -q lem-in > leaks.txt");
 	return (0);
 }

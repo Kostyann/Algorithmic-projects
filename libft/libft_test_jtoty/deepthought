@@ -1,9 +1,9 @@
 = Host-specific information ====================================================
 $> hostname; uname -msr
-e1r2p13.unit.ua
+e1r9p13.unit.ua
 Darwin 17.4.0 x86_64
 $> date
-Wed Oct 31 14:43:06 EET 2018
+Wed Jan 23 17:55:29 EET 2019
 $> gcc --version
 Apple LLVM version 9.0.0 (clang-900.0.39.2)
 Target: x86_64-apple-darwin17.4.0
@@ -27,7 +27,7 @@ ar -rc libft.a *.o
 ranlib libft.a
 
 $> ls -la libft.a
--rw-r--r--  1 kmerkulo  2018  57376 Oct 31 14:43 /Users/kmerkulo/ls/libft.a
+-rw-r--r--  1 kmerkulo  2018  58392 Jan 23 17:55 ../libft//libft.a
 
 = Part1_functions ==============================================================
 

@@ -1,0 +1,2 @@
+Process 17674: 196 nodes malloced for 17 KB
+Process 17674: 0 leaks for 0 total leaked bytes.

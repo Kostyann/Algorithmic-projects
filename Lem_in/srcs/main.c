@@ -171,40 +171,50 @@ void	print_paths(t_path **paths)
 	while (paths[++j])
 	{
 		i = -1;
-		ft_printf("Depth %d\n", paths[j]->depth);
-		ft_printf("Path: ");
-		while (paths[j]->path[++i])
+		if (!paths[j]->invalid)
 		{
+			ft_printf("Depth %d\n", paths[j]->depth);
+			ft_printf("Invalid? %d\n", paths[j]->invalid);
+			ft_printf("Path: ");
+			while (paths[j]->path[++i])
+			{
 //		ft_printf("lala\n");
-			if (i == 0)
-				ft_printf("%s", paths[j]->path[i]->name);
-			else
-				ft_printf("--> %s", paths[j]->path[i]->name);
+				if (i == 0)
+					ft_printf("%s", paths[j]->path[i]);
+				else
+					ft_printf("--> %s", paths[j]->path[i]);
+			}
+			ft_printf("\n");
 		}
-		ft_printf("\n");
 	}
 }
 
 // Function that finds broken needle in a haystack (add to libft?)
 
-char	*ft_strbrstr(const char *haystack, const char *needle)
+int		ft_strbrstr(char **haystack, char **needle)
 {
 	int i;
 	int j;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	if (!needle[i])
-		return ((char*)haystack);
-	while (haystack[i])
+	while (haystack[++i])
 	{
-		while (haystack[i + j] == needle[j] && haystack[i + j])
+		while (ft_strequ(haystack[i + j], needle[j]) && haystack[i + j])
 			j++;
-		if (needle[j] == '\0')
-			return ((char*)haystack);
-		i++;
+		if (!needle[j])
+			return (1);
 	}
-	return (NULL);
+	i = -1;
+	j = 0;
+	while (needle[++i])
+	{
+		while (ft_strequ(needle[i + j], haystack[j]) && needle[i + j])
+			j++;
+		if (!haystack[j])
+			return (1);
+	}
+	return (0);
 }
 
 // ^ function that finds broken needle in a haystack (add to libft?)
@@ -215,17 +225,17 @@ int		find_paths(t_farm *farm, t_room *start, t_path **paths, int *checked, int *
 	if (!paths[*j])
 	{
 		paths[*j] = (t_path*)ft_memalloc(sizeof(t_path));
-		paths[*j]->path = (t_room**)ft_memalloc(sizeof(t_room*) * (farm->quantity + 1));
+		paths[*j]->path = (char**)ft_memalloc(sizeof(char*) * (farm->quantity + 1));
 		paths[*j]->depth = -1;
 	}
 	checked[start->index] = 1;
-	paths[*j]->path[++(paths[*j]->depth)] = start;
+	paths[*j]->path[++(paths[*j]->depth)] = start->name;
 
 	while (start->edges[++i])
 	{
 		if (start->edges[i]->index == farm->e_index)
 		{
-			paths[*j]->path[++(paths[*j]->depth)] = start->edges[i];
+			paths[*j]->path[++(paths[*j]->depth)] = start->edges[i]->name;
 			checked[start->index] = 0;
 			return (1);
 		}
@@ -236,8 +246,8 @@ int		find_paths(t_farm *farm, t_room *start, t_path **paths, int *checked, int *
 			{
 				(*j)++;
 				paths[*j] = (t_path*)ft_memalloc(sizeof(t_path));
-				paths[*j]->path = (t_room**)ft_memalloc(sizeof(t_room*)
-														* (farm->quantity+1));
+				paths[*j]->path = (char**)ft_memalloc(sizeof(char*)
+														* (farm->quantity * 2 + 1));
 				paths[*j]->depth = paths[*j - 1]->depth - 2;
 				paths[*j]->path = ft_memcpy(paths[*j]->path,
 						paths[*j - 1]->path,
@@ -254,6 +264,30 @@ int		find_paths(t_farm *farm, t_room *start, t_path **paths, int *checked, int *
 	return (0);
 }
 
+void	check_valid(t_path **paths)
+{
+	int	i = -1;
+	int	j;
+
+	while (paths[++i])
+	{
+		if (!paths[i]->invalid)
+		{
+			j = 0;
+			while (paths[i + ++j])
+			{
+				if (ft_strbrstr(paths[i]->path, paths[i + j]->path) && !paths[i + j]->invalid)
+				{
+					if (paths[i]->depth > paths[i + j]->depth)
+						paths[i]->invalid = 1;
+					else
+						paths[i + j]->invalid = 1;
+				}
+			}
+		}
+	}
+}
+
 t_path	**get_paths(t_farm *farm)
 {
 	t_path	**paths;
@@ -264,12 +298,14 @@ t_path	**get_paths(t_farm *farm)
 	paths = (t_path**)ft_memalloc(sizeof(t_path*) * (farm->quantity + 1));
 
 	find_paths(farm, farm->rooms[farm->s_index], paths, checked, &j);
-	paths[j] = 0;
+	ft_memdel((void**)&paths[j]->path);
+	ft_memdel((void**)&paths[j]);
 
 //	int i = -1;
 //	while (++i < farm->quantity)
 //		ft_printf("%d ", checked[i]);
 
+	check_valid(paths);
 
 	free(checked);
 	return (paths);
@@ -286,7 +322,7 @@ int		main()
 	print_farm(farm);
 	paths = get_paths(farm);
 	print_paths(paths);
-//	ft_printf("%s\n", ft_strbrstr("12345789", "12567"));
+//	ft_printf("Is there needle? - %d\n", ft_strbrstr(paths[6]->path, paths[4]->path));
 	system("leaks -q lem-in > leaks.txt");
 	return (0);
 }

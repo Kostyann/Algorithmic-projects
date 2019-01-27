@@ -18,7 +18,7 @@
 typedef struct		s_room
 {
 	char			*name;
-	int				index;
+	char			*index;
 	int				x;
 	int				y;
 	int				ants;
@@ -29,8 +29,8 @@ typedef struct		s_room
 typedef struct		s_farm
 {
 	int				quantity;
-	int				s_index;
-	int				e_index;
+	char			*s_index;
+	char			*e_index;
 	t_room			**rooms;
 }					t_farm;
 

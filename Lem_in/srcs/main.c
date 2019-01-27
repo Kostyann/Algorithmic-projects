@@ -66,7 +66,7 @@ t_room	**get_rooms()
 	valid = 1;
 	i = -1;
 	rooms = (t_room**)ft_memalloc(sizeof(t_room*) * (nodes + 1));
-	fd = open("test.txt", O_RDONLY);
+	fd = open("tests/test.txt", O_RDONLY);
 //	fd = 1;
 	while ((get_next_line(fd, &line) > 0) && valid)
 	{
@@ -86,10 +86,10 @@ t_room	**get_rooms()
 			end = 1;
 		else if (ft_strchr(line, ' '))
 		{
-			rooms[i] = (t_room*)ft_memalloc(sizeof(t_room));
+			rooms[i] = (t_room*)ft_memalloc(sizeof(t_room) + 1);
 			split = ft_strsplit(line, ' ');
 			rooms[i]->name = ft_strdup(split[0]);
-			rooms[i]->index = i;
+			rooms[i]->index = ft_itoa(i);
 			//	ft_printf("name %d - %s\n", i, rooms[i]->name);
 			rooms[i]->x = ft_atoi(split[1]);
 			rooms[i]->y = ft_atoi(split[2]);
@@ -137,9 +137,9 @@ t_farm	*make_farm(t_room **rooms)
 	i = -1;
 	while (farm->rooms[++i])
 		if (farm->rooms[i]->status == 1)
-			farm->s_index = i;
+			farm->s_index = ft_itoa(i);
 		else if (farm->rooms[i]->status == 2)
-			farm->e_index = i;
+			farm->e_index = ft_itoa(i);
 	return (farm);
 }
 
@@ -149,12 +149,12 @@ void	print_farm(t_farm *farm)
 	int j;
 
 	ft_printf("Number of rooms - %d\n", farm->quantity);
-	ft_printf("Start index - %d\n", farm->s_index);
-	ft_printf("End index - %d\n", farm->e_index);
+	ft_printf("Start index - %s\n", farm->s_index);
+	ft_printf("End index - %s\n", farm->e_index);
 	while (farm->rooms[++i])
 	{
 		j = -1;
-		ft_printf("%-3d ", farm->rooms[i]->index);
+		ft_printf("%-3s ", farm->rooms[i]->index);
 		ft_printf("%-6s ", farm->rooms[i]->name);
 		while (farm->rooms[i]->edges[++j])
 			ft_printf("->%-7s", farm->rooms[i]->edges[j]->name);
@@ -168,15 +168,16 @@ void	print_paths(t_path **paths)
 	int	i = -1;
 	int j = -1;
 
+
 	while (paths[++j])
 	{
 		i = -1;
 		if (!paths[j]->invalid)
 		{
 			ft_printf("Depth %d\n", paths[j]->depth);
-			ft_printf("Invalid? %d\n", paths[j]->invalid);
+//			ft_printf("Invalid? %d\n", paths[j]->invalid);
 			ft_printf("Path: ");
-			while (paths[j]->path[++i])
+			while (++i <= paths[j]->depth)
 			{
 //		ft_printf("lala\n");
 				if (i == 0)
@@ -200,7 +201,7 @@ int		ft_strbrstr(char **haystack, char **needle)
 	j = 0;
 	while (haystack[++i])
 	{
-		while (ft_strequ(haystack[i + j], needle[j]) && haystack[i + j])
+		while (haystack[i + j] && ft_strequ(haystack[i + j], needle[j]))
 			j++;
 		if (!needle[j])
 			return (1);
@@ -209,7 +210,7 @@ int		ft_strbrstr(char **haystack, char **needle)
 	j = 0;
 	while (needle[++i])
 	{
-		while (ft_strequ(needle[i + j], haystack[j]) && needle[i + j])
+		while (needle[i + j] && ft_strequ(needle[i + j], haystack[j]))
 			j++;
 		if (!haystack[j])
 			return (1);
@@ -222,43 +223,35 @@ int		ft_strbrstr(char **haystack, char **needle)
 int		find_paths(t_farm *farm, t_room *start, t_path **paths, int *checked, int *j)
 {
 	int	i = -1;
-	if (!paths[*j])
-	{
-		paths[*j] = (t_path*)ft_memalloc(sizeof(t_path));
-		paths[*j]->path = (char**)ft_memalloc(sizeof(char*) * (farm->quantity + 1));
-		paths[*j]->depth = -1;
-	}
-	checked[start->index] = 1;
-	paths[*j]->path[++(paths[*j]->depth)] = start->name;
+	checked[ft_atoi(start->index)] = 1;
+	paths[*j]->path[++(paths[*j]->depth)] = start->index;
 
 	while (start->edges[++i])
 	{
-		if (start->edges[i]->index == farm->e_index)
+		if (ft_strequ(start->edges[i]->index, farm->e_index))
 		{
-			paths[*j]->path[++(paths[*j]->depth)] = start->edges[i]->name;
-			checked[start->index] = 0;
+			paths[*j]->path[++(paths[*j]->depth)] = start->edges[i]->index;
+			checked[ft_atoi(start->index)] = 0;
 			return (1);
 		}
-		if (!(checked[start->edges[i]->index]))
+		if (!(checked[ft_atoi(start->edges[i]->index)]))
 		{
-
 			if (find_paths(farm, start->edges[i], paths, checked, j))
 			{
 				(*j)++;
-				paths[*j] = (t_path*)ft_memalloc(sizeof(t_path));
+				paths[*j] = (t_path*)ft_memalloc(sizeof(t_path) + 1);
 				paths[*j]->path = (char**)ft_memalloc(sizeof(char*)
 														* (farm->quantity * 2 + 1));
 				paths[*j]->depth = paths[*j - 1]->depth - 2;
 				paths[*j]->path = ft_memcpy(paths[*j]->path,
 						paths[*j - 1]->path,
-						sizeof(paths[*j - 1]->path) * paths[*j - 1]->depth);
+						sizeof(paths[*j - 1]->path) * (paths[*j - 1]->depth - 1));
 			}
 			else
 			{
 				paths[*j]->path[(paths[*j]->depth)--] = 0;
-				checked[start->edges[i]->index] = 0;
+				checked[ft_atoi(start->edges[i]->index)] = 0;
 			}
-
 		}
 	}
 	return (0);
@@ -295,17 +288,20 @@ t_path	**get_paths(t_farm *farm)
 	int 	j = 0;
 
 	checked = (int*)ft_memalloc(sizeof(int) * (farm->quantity + 1));
-	paths = (t_path**)ft_memalloc(sizeof(t_path*) * (farm->quantity + 1));
-
-	find_paths(farm, farm->rooms[farm->s_index], paths, checked, &j);
+	paths = (t_path**)ft_memalloc(sizeof(t_path*) * (farm->quantity / 2 * (farm->quantity + 1)));
+	paths[j] = (t_path*)ft_memalloc(sizeof(t_path) + 1);
+	paths[j]->path = (char**)ft_memalloc(sizeof(char*) * (farm->quantity + 1));
+	paths[j]->depth = -1;
+	find_paths(farm, farm->rooms[ft_atoi(farm->s_index)], paths, checked, &j);
 	ft_memdel((void**)&paths[j]->path);
 	ft_memdel((void**)&paths[j]);
 
-//	int i = -1;
 //	while (++i < farm->quantity)
 //		ft_printf("%d ", checked[i]);
 
+
 	check_valid(paths);
+
 
 	free(checked);
 	return (paths);
@@ -322,7 +318,6 @@ int		main()
 	print_farm(farm);
 	paths = get_paths(farm);
 	print_paths(paths);
-//	ft_printf("Is there needle? - %d\n", ft_strbrstr(paths[6]->path, paths[4]->path));
 	system("leaks -q lem-in > leaks.txt");
 	return (0);
 }

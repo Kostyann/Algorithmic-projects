@@ -140,6 +140,7 @@ t_farm	*make_farm(t_room **rooms)
 			farm->s_index = ft_itoa(i);
 		else if (farm->rooms[i]->status == 2)
 			farm->e_index = ft_itoa(i);
+	farm->ants = farm->rooms[ft_atoi(farm->s_index)]->ants;
 	return (farm);
 }
 
@@ -148,6 +149,8 @@ void	print_farm(t_farm *farm)
 	int i = -1;
 	int j;
 
+	ft_printf(" -----------------------------------\n");
+	ft_printf("GRAPG REPRESENTATION (Adjacency list)\n -----------------------------------\n");
 	ft_printf("Number of rooms - %d\n", farm->quantity);
 	ft_printf("Start index - %s\n", farm->s_index);
 	ft_printf("End index - %s\n", farm->e_index);
@@ -161,14 +164,17 @@ void	print_farm(t_farm *farm)
 	//	ft_printf("  ants = %d", farm->rooms[i]->ants);
 		ft_printf("\n");
 	}
+	ft_printf(" -----------------------------------\n");
 }
 
-void	print_paths(t_path **paths)
+void	print_paths(t_path **paths, t_farm *farm)
 {
 	int	i = -1;
 	int j = -1;
+	int k = -1;
 
 
+	ft_printf("POSSIBLE PATHS\n -----------------------------------\n");
 	while (paths[++j])
 	{
 		i = -1;
@@ -176,17 +182,44 @@ void	print_paths(t_path **paths)
 		{
 			ft_printf("Depth %d\n", paths[j]->depth);
 //			ft_printf("Invalid? %d\n", paths[j]->invalid);
-			ft_printf("Path: ");
+			ft_printf("Path #%d: ", j);
 			while (++i <= paths[j]->depth)
 			{
 //		ft_printf("lala\n");
 				if (i == 0)
-					ft_printf("%s", paths[j]->path[i]->index);
+					ft_printf("%s", paths[j]->path[i]->name);
 				else
-					ft_printf("--> %s", paths[j]->path[i]->index);
+					ft_printf("--> %s", paths[j]->path[i]->name);
+				if (paths[j]->path[i]->arrivals)
+				{
+					k = -1;
+					ft_printf("\nArrivals[");
+					while (++k < (farm->ants + farm->quantity))
+						ft_printf("%d, ", paths[j]->path[i]->arrivals[k]);
+					ft_printf("]\n");
+				}
+
 			}
 			ft_printf("\n");
 		}
+	}
+	ft_printf(" -----------------------------------\n");
+}
+
+void	print_solution(t_farm *farm)
+{
+	int i = -1;
+	int j;
+
+	while (++i < (farm->quantity + farm->ants))
+	{
+		j = -1;
+		while (farm->rooms[++j])
+		{
+			if (farm->rooms[j]->arrivals && farm->rooms[j]->arrivals[i])
+				ft_printf("L%d-%s ", farm->rooms[j]->arrivals[i], farm->rooms[j]->name);
+		}
+		ft_printf("\n");
 	}
 }
 
@@ -307,32 +340,66 @@ t_path	**get_paths(t_farm *farm)
 	return (paths);
 }
 
-/*void	lem_in(t_farm *farm, t_path **paths)
+int		find_dist(t_path *path)
+{
+	int dist;
+	int i = 0;
+	int j = 0;
+
+	dist = path->depth;
+	while (++i < path->depth)
+	{
+		if (path->path[i]->arrivals)
+		{
+			while (path->path[i]->arrivals[j + i - 1])
+				j++;
+		}
+	}
+	dist += j;
+	return (dist);
+}
+
+void	lem_in(t_farm *farm, t_path **paths)
 {
 	int 	ant_n = 0;
 	int 	best_path = 0;
 	int 	dst = 0;
 	int 	best_dst = 0;
 	int 	i;
+	int 	j;
 
-	while (farm->rooms[ft_atoi(farm->s_index)]->ants > ant_n++)
+	while (farm->ants > ant_n++)
 	{
 		i = -1;
+		best_path = 0;
+		dst = 0;
+		best_dst = 0;
+//		ft_printf("ants_n - %d\n", ant_n);
 		while (paths[++i])
 		{
-			if ((i == 0) || (dst = find_dist(paths[i])) <= best_dst)
+			if ((!paths[i]->invalid) &&
+				((dst = find_dist(paths[i])) <= best_dst || (best_dst == 0)))
 			{
 				best_dst = dst;
 				best_path = i;
+			//	ft_printf("Best path - %d\n", best_path);
 			}
 		}
 		i = 0;
-		while (++i < paths[best_path]->depth])
+		j = 0;
+	//	if (best_path == 0)
+	//		ft_printf("EUREKA\n");
+		while (++i < paths[best_path]->depth)
 		{
-			paths[best_path]->path[i]
+			if (!paths[best_path]->path[i]->arrivals)
+				paths[best_path]->path[i]->arrivals = (int*)ft_memalloc(sizeof(int) *
+						(farm->quantity + farm->ants));
+			while (paths[best_path]->path[i]->arrivals[j + i - 1])
+				j++;
+			paths[best_path]->path[i]->arrivals[j + i - 1] = ant_n;
 		}
 	}
-}*/
+}
 
 int		main()
 {
@@ -344,8 +411,9 @@ int		main()
 	farm = make_farm(rooms);
 	print_farm(farm);
 	paths = get_paths(farm);
-	print_paths(paths);
-//	lem_in(farm, paths);
+	lem_in(farm, paths);
+	print_paths(paths, farm);
+	print_solution(farm);
 	system("leaks -q lem-in > leaks.txt");
 	return (0);
 }

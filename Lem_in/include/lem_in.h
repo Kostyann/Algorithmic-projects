@@ -24,10 +24,12 @@ typedef struct		s_room
 	int				ants;
 	int				status;
 	struct s_room	**edges;
+	int 			*arrivals;
 }					t_room;
 
 typedef struct		s_farm
 {
+	int				ants;
 	int				quantity;
 	char			*s_index;
 	char			*e_index;

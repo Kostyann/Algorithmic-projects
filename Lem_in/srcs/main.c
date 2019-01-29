@@ -307,6 +307,33 @@ t_path	**get_paths(t_farm *farm)
 	return (paths);
 }
 
+/*void	lem_in(t_farm *farm, t_path **paths)
+{
+	int 	ant_n = 0;
+	int 	best_path = 0;
+	int 	dst = 0;
+	int 	best_dst = 0;
+	int 	i;
+
+	while (farm->rooms[ft_atoi(farm->s_index)]->ants > ant_n++)
+	{
+		i = -1;
+		while (paths[++i])
+		{
+			if ((i == 0) || (dst = find_dist(paths[i])) <= best_dst)
+			{
+				best_dst = dst;
+				best_path = i;
+			}
+		}
+		i = 0;
+		while (++i < paths[best_path]->depth])
+		{
+			paths[best_path]->path[i]
+		}
+	}
+}*/
+
 int		main()
 {
 	t_farm	*farm;
@@ -318,6 +345,7 @@ int		main()
 	print_farm(farm);
 	paths = get_paths(farm);
 	print_paths(paths);
+	lem_in(farm, paths);
 	system("leaks -q lem-in > leaks.txt");
 	return (0);
 }

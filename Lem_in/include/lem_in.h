@@ -34,6 +34,7 @@ typedef struct		s_farm
 	char			*s_index;
 	char			*e_index;
 	t_room			**rooms;
+	char			***solution;
 }					t_farm;
 
 typedef struct		s_path

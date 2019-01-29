@@ -171,7 +171,6 @@ void	print_paths(t_path **paths, t_farm *farm)
 {
 	int	i = -1;
 	int j = -1;
-	int k = -1;
 
 
 	ft_printf("POSSIBLE PATHS\n -----------------------------------\n");
@@ -190,14 +189,14 @@ void	print_paths(t_path **paths, t_farm *farm)
 					ft_printf("%s", paths[j]->path[i]->name);
 				else
 					ft_printf("--> %s", paths[j]->path[i]->name);
-				if (paths[j]->path[i]->arrivals)
+	/*			if (paths[j]->path[i]->arrivals)
 				{
 					k = -1;
 					ft_printf("\nArrivals[");
 					while (++k < (farm->ants + farm->quantity))
 						ft_printf("%d, ", paths[j]->path[i]->arrivals[k]);
 					ft_printf("]\n");
-				}
+				} */
 
 			}
 			ft_printf("\n");
@@ -206,7 +205,7 @@ void	print_paths(t_path **paths, t_farm *farm)
 	ft_printf(" -----------------------------------\n");
 }
 
-void	print_solution(t_farm *farm)
+/*void	print_solution(t_farm *farm)
 {
 	int i = -1;
 	int j;
@@ -220,6 +219,26 @@ void	print_solution(t_farm *farm)
 				ft_printf("L%d-%s ", farm->rooms[j]->arrivals[i], farm->rooms[j]->name);
 		}
 		ft_printf("\n");
+	}
+} */
+
+void	print_solution(t_farm *farm)
+{
+	int i = -1;
+	int j;
+
+	while (++i < (farm->quantity + farm->ants))
+	{
+		if (farm->solution[i])
+		{
+			j = -1;
+			while (++j < farm->ants)
+				if (farm->solution[i][j])
+					ft_printf("L%d-%s ", j + 1, farm->solution[i][j]);
+
+			ft_printf("\n");
+		}
+	//	ft_printf("\n");
 	}
 }
 
@@ -368,6 +387,7 @@ void	lem_in(t_farm *farm, t_path **paths)
 	int 	i;
 	int 	j;
 
+	farm->solution = (char***)ft_memalloc(sizeof(char**) * (farm->quantity + farm->ants));
 	while (farm->ants > ant_n++)
 	{
 		i = -1;
@@ -397,6 +417,15 @@ void	lem_in(t_farm *farm, t_path **paths)
 			while (paths[best_path]->path[i]->arrivals[j + i - 1])
 				j++;
 			paths[best_path]->path[i]->arrivals[j + i - 1] = ant_n;
+			if (!farm->solution[j + i - 1])
+				farm->solution[j + i - 1] = (char**)ft_memalloc(sizeof(char*) * (farm->ants + 1));
+			if (!farm->solution[j + i])
+				farm->solution[j + i] = (char**)ft_memalloc(sizeof(char*) * (farm->ants + 1));
+			farm->solution[j + i - 1][ant_n - 1] = paths[best_path]->path[i]->name;
+			if (i + 1 == paths[best_path]->depth)
+			{
+				farm->solution[j + i][ant_n - 1] = paths[best_path]->path[i + 1]->name;
+			}
 		}
 	}
 }

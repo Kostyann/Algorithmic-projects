@@ -181,9 +181,9 @@ void	print_paths(t_path **paths)
 			{
 //		ft_printf("lala\n");
 				if (i == 0)
-					ft_printf("%s", paths[j]->path[i]);
+					ft_printf("%s", paths[j]->path[i]->index);
 				else
-					ft_printf("--> %s", paths[j]->path[i]);
+					ft_printf("--> %s", paths[j]->path[i]->index);
 			}
 			ft_printf("\n");
 		}
@@ -192,7 +192,7 @@ void	print_paths(t_path **paths)
 
 // Function that finds broken needle in a haystack (add to libft?)
 
-int		ft_strbrstr(char **haystack, char **needle)
+int		ft_strbrstr(t_room **haystack, t_room **needle)
 {
 	int i;
 	int j;
@@ -201,7 +201,7 @@ int		ft_strbrstr(char **haystack, char **needle)
 	j = 0;
 	while (haystack[++i])
 	{
-		while (haystack[i + j] && ft_strequ(haystack[i + j], needle[j]))
+		while (haystack[i + j] && ft_strequ(haystack[i + j]->index, needle[j]->index))
 			j++;
 		if (!needle[j])
 			return (1);
@@ -210,7 +210,7 @@ int		ft_strbrstr(char **haystack, char **needle)
 	j = 0;
 	while (needle[++i])
 	{
-		while (needle[i + j] && ft_strequ(needle[i + j], haystack[j]))
+		while (needle[i + j] && ft_strequ(needle[i + j]->index, haystack[j]->index))
 			j++;
 		if (!haystack[j])
 			return (1);
@@ -224,13 +224,13 @@ int		find_paths(t_farm *farm, t_room *start, t_path **paths, int *checked, int *
 {
 	int	i = -1;
 	checked[ft_atoi(start->index)] = 1;
-	paths[*j]->path[++(paths[*j]->depth)] = start->index;
+	paths[*j]->path[++(paths[*j]->depth)] = start;
 
 	while (start->edges[++i])
 	{
 		if (ft_strequ(start->edges[i]->index, farm->e_index))
 		{
-			paths[*j]->path[++(paths[*j]->depth)] = start->edges[i]->index;
+			paths[*j]->path[++(paths[*j]->depth)] = start->edges[i];
 			checked[ft_atoi(start->index)] = 0;
 			return (1);
 		}
@@ -240,7 +240,7 @@ int		find_paths(t_farm *farm, t_room *start, t_path **paths, int *checked, int *
 			{
 				(*j)++;
 				paths[*j] = (t_path*)ft_memalloc(sizeof(t_path) + 1);
-				paths[*j]->path = (char**)ft_memalloc(sizeof(char*)
+				paths[*j]->path = (t_room**)ft_memalloc(sizeof(t_room*)
 														* (farm->quantity * 2 + 1));
 				paths[*j]->depth = paths[*j - 1]->depth - 2;
 				paths[*j]->path = ft_memcpy(paths[*j]->path,
@@ -290,7 +290,7 @@ t_path	**get_paths(t_farm *farm)
 	checked = (int*)ft_memalloc(sizeof(int) * (farm->quantity + 1));
 	paths = (t_path**)ft_memalloc(sizeof(t_path*) * (farm->quantity / 2 * (farm->quantity + 1)));
 	paths[j] = (t_path*)ft_memalloc(sizeof(t_path) + 1);
-	paths[j]->path = (char**)ft_memalloc(sizeof(char*) * (farm->quantity + 1));
+	paths[j]->path = (t_room**)ft_memalloc(sizeof(t_room*) * (farm->quantity + 1));
 	paths[j]->depth = -1;
 	find_paths(farm, farm->rooms[ft_atoi(farm->s_index)], paths, checked, &j);
 	ft_memdel((void**)&paths[j]->path);
@@ -345,7 +345,7 @@ int		main()
 	print_farm(farm);
 	paths = get_paths(farm);
 	print_paths(paths);
-	lem_in(farm, paths);
+//	lem_in(farm, paths);
 	system("leaks -q lem-in > leaks.txt");
 	return (0);
 }

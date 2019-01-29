@@ -38,7 +38,7 @@ typedef struct		s_path
 {
 	int				depth;
 	int				invalid;
-	char			**path;
+	t_room			**path;
 }					t_path;
 
 #endif

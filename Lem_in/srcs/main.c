@@ -26,14 +26,16 @@ void	add_link(t_room **farm, char *room, char *link)
 	i = -1;
 	while (farm[++i])
 	{
-	//	ft_printf("lala0\n");
-	//	ft_printf("room = %s, link = %s, name%d = %s\n", room, link, i, farm[i]->name);
 		if (ft_strequ(room, farm[i]->name))
 		{
-	//		ft_printf("lala1\n");
 			j = -1;
 			if(!(farm[i]->edges))
 				farm[i]->edges = (t_room**)ft_memalloc(sizeof(t_room*) * (rooms + 1));
+			k = -1;
+			while (farm[i]->edges[++k])
+				if (ft_strequ(farm[i]->edges[k]->name, link))
+					return ;
+			k = -1;
 			while (farm[++j])
 			{
 				if (ft_strequ(link, farm[j]->name))
@@ -66,8 +68,8 @@ t_room	**get_rooms()
 	valid = 1;
 	i = -1;
 	rooms = (t_room**)ft_memalloc(sizeof(t_room*) * (nodes + 1));
-	fd = open("tests/test.txt", O_RDONLY);
-//	fd = 1;
+//	fd = open("tests/test.txt", O_RDONLY);
+	fd = 0;
 	while ((get_next_line(fd, &line) > 0) && valid)
 	{
 		if (i == nodes)
@@ -151,6 +153,7 @@ void	print_farm(t_farm *farm)
 
 	ft_printf(" -----------------------------------\n");
 	ft_printf("GRAPG REPRESENTATION (Adjacency list)\n -----------------------------------\n");
+	ft_printf("Number of ants - %d\n", farm->ants);
 	ft_printf("Number of rooms - %d\n", farm->quantity);
 	ft_printf("Start index - %s\n", farm->s_index);
 	ft_printf("End index - %s\n", farm->e_index);
@@ -333,6 +336,18 @@ void	check_valid(t_path **paths)
 	}
 }
 
+int		no_end(t_room **path, int index)
+{
+	int i = 0;
+
+	while (path[i])
+		i++;
+	if (ft_atoi(path[i - 1]->index) == index)
+		return (0);
+	return (1);
+
+}
+
 t_path	**get_paths(t_farm *farm)
 {
 	t_path	**paths;
@@ -340,13 +355,17 @@ t_path	**get_paths(t_farm *farm)
 	int 	j = 0;
 
 	checked = (int*)ft_memalloc(sizeof(int) * (farm->quantity + 1));
-	paths = (t_path**)ft_memalloc(sizeof(t_path*) * (farm->quantity / 2 * (farm->quantity + 1)));
+	paths = (t_path**)ft_memalloc(sizeof(t_path*) * (farm->quantity / 2
+			* (farm->quantity + 1)));
 	paths[j] = (t_path*)ft_memalloc(sizeof(t_path) + 1);
 	paths[j]->path = (t_room**)ft_memalloc(sizeof(t_room*) * (farm->quantity + 1));
 	paths[j]->depth = -1;
 	find_paths(farm, farm->rooms[ft_atoi(farm->s_index)], paths, checked, &j);
-	ft_memdel((void**)&paths[j]->path);
-	ft_memdel((void**)&paths[j]);
+	if (no_end(paths[j]->path, ft_atoi(farm->e_index)))
+	{
+		ft_memdel((void**)&paths[j]->path);
+		ft_memdel((void**)&paths[j]);
+	}
 
 //	while (++i < farm->quantity)
 //		ft_printf("%d ", checked[i]);
@@ -418,7 +437,8 @@ void	lem_in(t_farm *farm, t_path **paths)
 				j++;
 			paths[best_path]->path[i]->arrivals[j + i - 1] = ant_n;
 			if (!farm->solution[j + i - 1])
-				farm->solution[j + i - 1] = (char**)ft_memalloc(sizeof(char*) * (farm->ants + 1));
+				farm->solution[j + i - 1] = (char**)ft_memalloc(sizeof(char*)
+						* (farm->ants + 1));
 			if (!farm->solution[j + i])
 				farm->solution[j + i] = (char**)ft_memalloc(sizeof(char*) * (farm->ants + 1));
 			farm->solution[j + i - 1][ant_n - 1] = paths[best_path]->path[i]->name;
@@ -440,8 +460,8 @@ int		main()
 	farm = make_farm(rooms);
 	print_farm(farm);
 	paths = get_paths(farm);
-	lem_in(farm, paths);
 	print_paths(paths, farm);
+	lem_in(farm, paths);
 	print_solution(farm);
 	system("leaks -q lem-in > leaks.txt");
 	return (0);

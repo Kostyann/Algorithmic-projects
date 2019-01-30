@@ -44,4 +44,12 @@ typedef struct		s_path
 	t_room			**path;
 }					t_path;
 
+void	print_farm(t_farm *farm);
+void	print_paths(t_path **paths, t_farm *farm);
+void	print_solution(t_farm *farm);
+
+t_farm	*make_farm();
+
+t_path	**get_paths(t_farm *farm);
+
 #endif

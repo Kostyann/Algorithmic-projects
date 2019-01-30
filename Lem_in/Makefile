@@ -21,7 +21,7 @@ SRC_DIR = srcs/
 OBJ_DIR =	obj/
 INCL_DIR = include/
 
-SRC =		main.c
+SRC =		main.c data_read.c path_finder.c print_fun.c
 OBJ =		$(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
 .PHONY: all

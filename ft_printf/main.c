@@ -19,8 +19,8 @@ int     ft_printf(const char *restrict format, ...);
 
 int     main(void)
 {
-		printf("\n%d\n", printf("%#.34f", -42.456687457786786));
-	 printf("\n%d\n", ft_printf("%#.34f", -42.456687457786786));
+		printf("\n%d\n", printf("atoi 0 - %d\n", atoi("0")));
+	 printf("\n%d\n", ft_printf("atoi 0 - %d\n", atoi("0")));
 
 
 

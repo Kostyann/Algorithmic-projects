@@ -135,7 +135,7 @@ t_farm	*make_farm()
 	farm->rooms = rooms;
 	while (farm->rooms[++i])
 		;
-	farm->quantity = i;
+	farm->rooms_n = i;
 	i = -1;
 	while (farm->rooms[++i])
 		if (farm->rooms[i]->status == 1)

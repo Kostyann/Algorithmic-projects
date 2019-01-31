@@ -40,7 +40,7 @@ void	lem_in(t_farm *farm, t_path **paths)
 	int 	i;
 	int 	j;
 
-	farm->solution = (char***)ft_memalloc(sizeof(char**) * (farm->quantity + farm->ants));
+	farm->solution = (char***)ft_memalloc(sizeof(char**) * (farm->rooms_n + farm->ants));
 	while (farm->ants > ant_n++)
 	{
 		i = -1;
@@ -64,7 +64,7 @@ void	lem_in(t_farm *farm, t_path **paths)
 		{
 			if (!paths[best_path]->path[i]->arrivals)
 				paths[best_path]->path[i]->arrivals = (int*)ft_memalloc(sizeof(int) *
-						(farm->quantity + farm->ants));
+						(farm->rooms_n + farm->ants));
 			if (i < paths[best_path]->depth)
 				while (paths[best_path]->path[i]->arrivals[j + i - 1])
 					j++;

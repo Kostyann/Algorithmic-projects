@@ -23,6 +23,7 @@ typedef struct		s_room
 	int				y;
 	int				ants;
 	int				status;
+	int				depth;
 	struct s_room	**edges;
 	int 			*arrivals;
 }					t_room;
@@ -30,11 +31,13 @@ typedef struct		s_room
 typedef struct		s_farm
 {
 	int				ants;
-	int				quantity;
+	int				rooms_n;
 	char			*s_index;
 	char			*e_index;
 	t_room			**rooms;
 	char			***solution;
+
+	t_room			**bfs_to_visit;
 }					t_farm;
 
 typedef struct		s_path

@@ -20,7 +20,7 @@ void	print_farm(t_farm *farm)
 	ft_printf(" -----------------------------------\n");
 	ft_printf("GRAPG REPRESENTATION (Adjacency list)\n -----------------------------------\n");
 	ft_printf("Number of ants - %d\n", farm->ants);
-	ft_printf("Number of rooms - %d\n", farm->quantity);
+	ft_printf("Number of rooms - %d\n", farm->rooms_n);
 	ft_printf("Start index - %s\n", farm->s_index);
 	ft_printf("End index - %s\n", farm->e_index);
 	while (farm->rooms[++i])
@@ -62,7 +62,7 @@ void	print_paths(t_path **paths, t_farm *farm)
 							{
 								k = -1;
 								ft_printf("\nArrivals[");
-								while (++k < (farm->ants + farm->quantity))
+								while (++k < (farm->ants + farm->rooms_n))
 									ft_printf("%d, ", paths[j]->path[i]->arrivals[k]);
 								ft_printf("]\n");
 							} */
@@ -79,7 +79,7 @@ void	print_solution(t_farm *farm)
 	int i = -1;
 	int j;
 
-	while (++i < (farm->quantity + farm->ants))
+	while (++i < (farm->rooms_n + farm->ants))
 	{
 		if (farm->solution[i])
 		{

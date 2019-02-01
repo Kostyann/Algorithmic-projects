@@ -182,6 +182,7 @@ int		find_paths_bfs(t_farm *farm, t_path **paths, int *checked)
 	int	i;
 	int j;
 	int p;
+	t_room	*link;
 
 	farm->bfs_to_visit = (t_room**)ft_memalloc(sizeof(t_room*) * (farm->rooms_n + 1));
 	farm->bfs_to_visit[0] = farm->rooms[ft_atoi(farm->s_index)];
@@ -190,48 +191,59 @@ int		find_paths_bfs(t_farm *farm, t_path **paths, int *checked)
 	while (farm->bfs_to_visit[++k])
 	{
 		i = -1;
-		checked[ft_atoi(farm->bfs_to_visit[k]->index)] = 1;
+
 		while (farm->bfs_to_visit[k]->edges[++i])
 		{
-			farm->bfs_to_visit[k]->edges[i]->depth = farm->bfs_to_visit[k]->depth + 1;
-			if(!(farm->bfs_to_visit[k]->edges[i]->path_to))
-				farm->bfs_to_visit[k]->edges[i]->path_to =
-						(t_room**)ft_memalloc(sizeof(t_room*) * (farm->rooms_n + 1));
-			j = -1;
-			while (farm->bfs_to_visit[k]->edges[i]->path_to[++j])
-				 ;
-			farm->bfs_to_visit[k]->edges[i]->path_to[j] = farm->bfs_to_visit[k];
+
+			if (farm->bfs_to_visit[k]->edges[i] != farm->bfs_to_visit[k]->parent)
+			{
+				if (!farm->bfs_to_visit[k]->edges[i]->depth)
+					farm->bfs_to_visit[k]->edges[i]->depth = farm->bfs_to_visit[k]->depth + 1;
+				if (!farm->bfs_to_visit[k]->edges[i]->parent)
+				{
+					ft_printf("name of parent - %s\n", farm->bfs_to_visit[k]->name);
+					ft_printf("name of edge - %s\n", farm->bfs_to_visit[k]->edges[i]->name);
+					ft_printf("depth of parent - %d\n", farm->bfs_to_visit[k]->depth);
+					ft_printf("depth of edge - %d\n", farm->bfs_to_visit[k]->edges[i]->depth);
+					farm->bfs_to_visit[k]->edges[i]->parent = farm->bfs_to_visit[k];
+				}
+
+			}
+
 			if (ft_strequ(farm->bfs_to_visit[k]->edges[i]->index, farm->e_index))
 			{
-				paths[p]->path = farm->bfs_to_visit[k]->edges[i]->path_to;
-				paths[p]->depth = farm->bfs_to_visit[k]->edges[i]->depth;
-				checked[ft_atoi(farm->bfs_to_visit[k]->edges[i]->index)] = 1;
-			//	checked[ft_atoi(farm->bfs_to_visit[k]->index)] = 0;
-				p++;
-				paths[p] = (t_path*)ft_memalloc(sizeof(t_path) + 1);
-				paths[p]->path = (t_room**)ft_memalloc(sizeof(t_room*)
-														* (farm->rooms_n + 1));
-				paths[p]->depth = -1;
+				link = farm->bfs_to_visit[k]->edges[i];
+				paths[0]->path[link->depth] = link;
+				paths[0]->depth = link->depth;
+			//	ft_printf("link-depth - %d\n", link->depth);
+				while (link->parent)
+				{
+					link = link->parent;
+			//		ft_printf("link-depth - %d\n", link->depth);
+					paths[0]->path[link->depth] = link;
+
+				}
+				return (1);
 			}
 		}
-
+		checked[ft_atoi(farm->bfs_to_visit[k]->index)] = 1;
 		i = -1;
 		while (farm->bfs_to_visit[k]->edges[++i])
 		{
 			if (!(checked[ft_atoi(farm->bfs_to_visit[k]->edges[i]->index)]))
 			{
-				ft_printf("lala9\n");
 				j = -1;
 				while (farm->bfs_to_visit[++j])
 					;
 				farm->bfs_to_visit[j] = farm->bfs_to_visit[k]->edges[i];
+			//	ft_printf("add {%s} room to visit\n", farm->bfs_to_visit[k]->edges[i]->name);
 			}
 		}
-		ft_printf("k - %d\n", k);
+/*		ft_printf("k - %d\n", k);
 		i = -1;
 		while (++i < farm->rooms_n)
 			ft_printf("[%d] ", checked[i]);
-		ft_printf("\n");
+		ft_printf("\n"); */
 	}
 	free(farm->bfs_to_visit);
 	return (p);
@@ -268,10 +280,10 @@ t_path	**get_paths(t_farm *farm)
 	n = 0;
 
 
-	n = shortest_path(farm, checked);
-	ft_printf("Shorthest path - %d\n", n);
-	ft_bzero((void*)checked, sizeof(int) * (farm->rooms_n + 1));
-	n = 0;
+//	n = shortest_path(farm, checked);
+//	ft_printf("Shorthest path - %d\n", n);
+//	ft_bzero((void*)checked, sizeof(int) * (farm->rooms_n + 1));
+//	n = 0;
 
 /*	find_paths_dfs(farm, farm->rooms[ft_atoi(farm->s_index)], paths, checked, &n);
 	if (no_end(paths[n]->path, ft_atoi(farm->e_index)))
@@ -282,7 +294,6 @@ t_path	**get_paths(t_farm *farm)
 		check_valid(paths); */
 	n = find_paths_bfs(farm, paths, checked);
 
-	ft_printf("lala\n");
 
 	free(checked);
 	return (paths);

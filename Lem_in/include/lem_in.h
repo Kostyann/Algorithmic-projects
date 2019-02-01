@@ -24,9 +24,9 @@ typedef struct		s_room
 	int				ants;
 	int				status;
 	int				depth;
+	struct s_room	*parent;
 	struct s_room	**edges;
 	int 			*arrivals;
-	struct s_room	**path_to;
 }					t_room;
 
 typedef struct		s_farm

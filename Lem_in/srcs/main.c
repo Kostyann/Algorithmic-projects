@@ -55,7 +55,7 @@ void	lem_in(t_farm *farm, t_path **paths)
 			{
 				best_dst = dst;
 				best_path = i;
-			//	ft_printf("Best path - %d\n", best_path);
+//				ft_printf("Best path - %d\n", best_path);
 			}
 		}
 		i = 0;

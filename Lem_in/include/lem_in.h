@@ -26,6 +26,7 @@ typedef struct		s_room
 	int				depth;
 	struct s_room	**edges;
 	int 			*arrivals;
+	struct s_room	**path_to;
 }					t_room;
 
 typedef struct		s_farm

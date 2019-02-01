@@ -151,7 +151,7 @@ int		find_paths_dfs(t_farm *farm, t_room *start, t_path **paths, int *checked, i
 
 		if (!(checked[ft_atoi(start->edges[i]->index)]))
 		{
-			if (find_paths(farm, start->edges[i], paths, checked, j))
+			if (find_paths_dfs(farm, start->edges[i], paths, checked, j))
 			{
 				if (*j >= 100)        // interim solution, need to implement BFS
 					return (1);
@@ -193,20 +193,25 @@ int		find_paths_bfs(t_farm *farm, t_path **paths, int *checked)
 		checked[ft_atoi(farm->bfs_to_visit[k]->index)] = 1;
 		while (farm->bfs_to_visit[k]->edges[++i])
 		{
-			if (!farm->bfs_to_visit[k]->edges[i]->depth)
-				farm->bfs_to_visit[k]->edges[i]->depth = farm->bfs_to_visit[k]->depth + 1;
+			farm->bfs_to_visit[k]->edges[i]->depth = farm->bfs_to_visit[k]->depth + 1;
+			if(!(farm->bfs_to_visit[k]->edges[i]->path_to))
+				farm->bfs_to_visit[k]->edges[i]->path_to =
+						(t_room**)ft_memalloc(sizeof(t_room*) * (farm->rooms_n + 1));
+			j = -1;
+			while (farm->bfs_to_visit[k]->edges[i]->path_to[++j])
+				 ;
+			farm->bfs_to_visit[k]->edges[i]->path_to[j] = farm->bfs_to_visit[k];
 			if (ft_strequ(farm->bfs_to_visit[k]->edges[i]->index, farm->e_index))
 			{
-				paths[p]->path[++(paths[*j]->depth)] = farm->bfs_to_visit[k]->edges[i];
-				checked[ft_atoi(farm->bfs_to_visit[k]->index)] = 0;
+				paths[p]->path = farm->bfs_to_visit[k]->edges[i]->path_to;
+				paths[p]->depth = farm->bfs_to_visit[k]->edges[i]->depth;
+				checked[ft_atoi(farm->bfs_to_visit[k]->edges[i]->index)] = 1;
+			//	checked[ft_atoi(farm->bfs_to_visit[k]->index)] = 0;
 				p++;
 				paths[p] = (t_path*)ft_memalloc(sizeof(t_path) + 1);
 				paths[p]->path = (t_room**)ft_memalloc(sizeof(t_room*)
-														* (farm->rooms_n * 2 + 1));
-				paths[p]->depth = paths[p - 1]->depth - 2;
-				paths[p]->path = ft_memcpy(paths[p]->path,
-											paths[p - 1]->path,
-											sizeof(paths[p - 1]->path) * (paths[p - 1]->depth - 1));
+														* (farm->rooms_n + 1));
+				paths[p]->depth = -1;
 			}
 		}
 
@@ -215,15 +220,21 @@ int		find_paths_bfs(t_farm *farm, t_path **paths, int *checked)
 		{
 			if (!(checked[ft_atoi(farm->bfs_to_visit[k]->edges[i]->index)]))
 			{
+				ft_printf("lala9\n");
 				j = -1;
 				while (farm->bfs_to_visit[++j])
 					;
 				farm->bfs_to_visit[j] = farm->bfs_to_visit[k]->edges[i];
 			}
 		}
+		ft_printf("k - %d\n", k);
+		i = -1;
+		while (++i < farm->rooms_n)
+			ft_printf("[%d] ", checked[i]);
+		ft_printf("\n");
 	}
 	free(farm->bfs_to_visit);
-	return (0);
+	return (p);
 }
 
 int		no_end(t_room **path, int index)
@@ -262,17 +273,16 @@ t_path	**get_paths(t_farm *farm)
 	ft_bzero((void*)checked, sizeof(int) * (farm->rooms_n + 1));
 	n = 0;
 
-//	find_paths_dfs(farm, farm->rooms[ft_atoi(farm->s_index)], paths, checked, &n);
-	find_paths_bfs(farm, paths, checked, &n);
+/*	find_paths_dfs(farm, farm->rooms[ft_atoi(farm->s_index)], paths, checked, &n);
 	if (no_end(paths[n]->path, ft_atoi(farm->e_index)))
 	{
 		ft_memdel((void**)&paths[n]->path);
 		ft_memdel((void**)&paths[n]);
 	}
-//	while (++i < farm->rooms_n)
-//		ft_printf("%d ", checked[i]);
+		check_valid(paths); */
+	n = find_paths_bfs(farm, paths, checked);
 
-	check_valid(paths);
+	ft_printf("lala\n");
 
 	free(checked);
 	return (paths);

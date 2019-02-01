@@ -51,7 +51,7 @@ void	print_paths(t_path **paths, t_farm *farm)
 			ft_printf("Depth %d\n", paths[j]->depth);
 //			ft_printf("Invalid? %d\n", paths[j]->invalid);
 			ft_printf("Path #%d: ", j);
-			while (++i <= paths[j]->depth)
+			while (paths[j]->path[++i])
 			{
 //		ft_printf("lala\n");
 				if (i == 0)

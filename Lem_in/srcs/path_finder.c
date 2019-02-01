@@ -184,7 +184,7 @@ int		find_paths_bfs(t_farm *farm, t_path **paths, int *checked)
 	int p;
 	t_room	*link;
 
-	farm->bfs_to_visit = (t_room**)ft_memalloc(sizeof(t_room*) * (farm->rooms_n + 1));
+	farm->bfs_to_visit = (t_room**)ft_memalloc(sizeof(t_room*) * (farm->rooms_n * 2 + 1));
 	farm->bfs_to_visit[0] = farm->rooms[ft_atoi(farm->s_index)];
 	k = -1;
 	p = 0;
@@ -201,10 +201,10 @@ int		find_paths_bfs(t_farm *farm, t_path **paths, int *checked)
 					farm->bfs_to_visit[k]->edges[i]->depth = farm->bfs_to_visit[k]->depth + 1;
 				if (!farm->bfs_to_visit[k]->edges[i]->parent)
 				{
-					ft_printf("name of parent - %s\n", farm->bfs_to_visit[k]->name);
-					ft_printf("name of edge - %s\n", farm->bfs_to_visit[k]->edges[i]->name);
-					ft_printf("depth of parent - %d\n", farm->bfs_to_visit[k]->depth);
-					ft_printf("depth of edge - %d\n", farm->bfs_to_visit[k]->edges[i]->depth);
+				//	ft_printf("name of parent - %s\n", farm->bfs_to_visit[k]->name);
+				//	ft_printf("name of edge - %s\n", farm->bfs_to_visit[k]->edges[i]->name);
+				//	ft_printf("depth of parent - %d\n", farm->bfs_to_visit[k]->depth);
+				//	ft_printf("depth of edge - %d\n", farm->bfs_to_visit[k]->edges[i]->depth);
 					farm->bfs_to_visit[k]->edges[i]->parent = farm->bfs_to_visit[k];
 				}
 
@@ -213,16 +213,19 @@ int		find_paths_bfs(t_farm *farm, t_path **paths, int *checked)
 			if (ft_strequ(farm->bfs_to_visit[k]->edges[i]->index, farm->e_index))
 			{
 				link = farm->bfs_to_visit[k]->edges[i];
-				paths[0]->path[link->depth] = link;
-				paths[0]->depth = link->depth;
+				paths[p]->path[link->depth] = link;
+				paths[p]->depth = link->depth;
 			//	ft_printf("link-depth - %d\n", link->depth);
 				while (link->parent)
 				{
 					link = link->parent;
 			//		ft_printf("link-depth - %d\n", link->depth);
-					paths[0]->path[link->depth] = link;
-
+					paths[p]->path[link->depth] = link;
 				}
+		//		p++;
+		//		paths[p] = (t_path*)ft_memalloc(sizeof(t_path) + 1);
+		//		paths[p]->path = (t_room**)ft_memalloc(sizeof(t_room*) * (farm->rooms_n + 1));
+		//		paths[p]->depth = -1;
 				return (1);
 			}
 		}
@@ -285,14 +288,20 @@ t_path	**get_paths(t_farm *farm)
 //	ft_bzero((void*)checked, sizeof(int) * (farm->rooms_n + 1));
 //	n = 0;
 
-/*	find_paths_dfs(farm, farm->rooms[ft_atoi(farm->s_index)], paths, checked, &n);
+	n = find_paths_bfs(farm, paths, checked);
+	ft_bzero((void*)checked, sizeof(int) * (farm->rooms_n + 1));
+	paths[n] = (t_path*)ft_memalloc(sizeof(t_path) + 1);
+	paths[n]->path = (t_room**)ft_memalloc(sizeof(t_room*) * (farm->rooms_n + 1));
+	paths[n]->depth = -1;
+	find_paths_dfs(farm, farm->rooms[ft_atoi(farm->s_index)], paths, checked, &n);
 	if (no_end(paths[n]->path, ft_atoi(farm->e_index)))
 	{
 		ft_memdel((void**)&paths[n]->path);
 		ft_memdel((void**)&paths[n]);
 	}
-		check_valid(paths); */
-	n = find_paths_bfs(farm, paths, checked);
+//	ft_printf("lala\n");
+		check_valid(paths);
+
 
 
 	free(checked);

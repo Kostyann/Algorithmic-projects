@@ -20,19 +20,21 @@ int		ft_strbrstr(t_room **haystack, t_room **needle)
 	int j;
 
 	i = -1;
-	j = 0;
+
 	while (haystack[++i])
 	{
-		while (haystack[i + j] && ft_strequ(haystack[i + j]->index, needle[j]->index))
+		j = 0;
+		while (haystack[i + j] && needle[j] && ft_strequ(haystack[i + j]->index, needle[j]->index))
 			j++;
 		if (!needle[j])
 			return (1);
 	}
 	i = -1;
-	j = 0;
+
 	while (needle[++i])
 	{
-		while (needle[i + j] && ft_strequ(needle[i + j]->index, haystack[j]->index))
+		j = 0;
+		while (needle[i + j] && haystack[j] && ft_strequ(needle[i + j]->index, haystack[j]->index))
 			j++;
 		if (!haystack[j])
 			return (1);
@@ -304,9 +306,7 @@ t_path	**get_paths(t_farm *farm)
 		ft_memdel((void**)&paths[n]->path);
 		ft_memdel((void**)&paths[n]);
 	}
-//	ft_printf("lala\n");
-		check_valid(paths);
-
+	check_valid(paths);
 
 
 	free(checked);

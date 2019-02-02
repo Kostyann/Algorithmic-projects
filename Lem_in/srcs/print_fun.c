@@ -12,7 +12,7 @@
 
 #include "../include/lem_in.h"
 
-void	print_farm(t_farm *farm)
+/*void	print_farm(t_farm *farm)
 {
 	int i = -1;
 	int j;
@@ -34,6 +34,14 @@ void	print_farm(t_farm *farm)
 		ft_printf("\n");
 	}
 	ft_printf(" -----------------------------------\n");
+} */
+
+void	print_farm(t_farm *farm)
+{
+	int i = -1;
+	while (farm->view[++i])
+		ft_printf("%s\n", farm->view[i]);
+	ft_printf("\n");
 }
 
 void	print_paths(t_path **paths, t_farm *farm)

@@ -75,15 +75,16 @@ int		path_exists(t_farm *farm, t_room *start, int *checked, int *n)
 	checked[ft_atoi(start->index)] = 1;
 	(*n)++;
 
-	while (start->edges[++i])
-		if (ft_strequ(start->edges[i]->index, farm->e_index))
-			return (1);
-	i = -1;
-	while (start->edges[++i])
+	if (start->edges)
 	{
-		if (!(checked[ft_atoi(start->edges[i]->index)]))
-			if (path_exists(farm, start->edges[i], checked, n))
+		while (start->edges[++i])
+			if (ft_strequ(start->edges[i]->index, farm->e_index))
 				return (1);
+		i = -1;
+		while (start->edges[++i])
+			if (!(checked[ft_atoi(start->edges[i]->index)]))
+				if (path_exists(farm, start->edges[i], checked, n))
+					return (1);
 	}
 	(*n)--;
 	return (0);
@@ -277,8 +278,12 @@ t_path	**get_paths(t_farm *farm)
 	paths[n]->path = (t_room**)ft_memalloc(sizeof(t_room*) * (farm->rooms_n + 1));
 	paths[n]->depth = -1;
 
-	ft_printf("path exists? - %d It's depth - %d\n",
-				path_exists(farm, farm->rooms[ft_atoi(farm->s_index)], checked, &n), n);
+	if (!(path_exists(farm, farm->rooms[ft_atoi(farm->s_index)], checked, &n)))
+	{
+		ft_printf("ERROR: no solution!\n");
+		exit(0);
+	}
+//	ft_printf("path exists! It's depth - %d\n", n);
 	ft_bzero((void*)checked, sizeof(int) * (farm->rooms_n + 1));
 	n = 0;
 

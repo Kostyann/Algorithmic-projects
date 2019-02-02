@@ -1,2 +1,2 @@
-Process 58218: 4391 nodes malloced for 13727 KB
-Process 58218: 0 leaks for 0 total leaked bytes.
+Process 79875: 190 nodes malloced for 16 KB
+Process 79875: 0 leaks for 0 total leaked bytes.

@@ -28,9 +28,9 @@ void	print_farm(t_farm *farm)
 		j = -1;
 		ft_printf("%-3s ", farm->rooms[i]->index);
 		ft_printf("%-6s ", farm->rooms[i]->name);
-		while (farm->rooms[i]->edges[++j])
-			ft_printf("->%-7s", farm->rooms[i]->edges[j]->name);
-		//	ft_printf("  ants = %d", farm->rooms[i]->ants);
+		if (farm->rooms[i]->edges)
+			while (farm->rooms[i]->edges[++j])
+				ft_printf("->%-7s", farm->rooms[i]->edges[j]->name);
 		ft_printf("\n");
 	}
 	ft_printf(" -----------------------------------\n");

@@ -37,7 +37,7 @@ typedef struct		s_farm
 	char			*e_index;
 	t_room			**rooms;
 	char			***solution;
-
+	char 			**view;
 	t_room			**bfs_to_visit;
 }					t_farm;
 

@@ -12,40 +12,38 @@
 
 #include "../include/lem_in.h"
 
-int		add_link(t_room **farm, char *room, char *link)
+int		add_link(t_farm *farm, char *room, char *link)
 {
-	int	i;
+	int i;
 	int j;
 	int k;
-	int rooms;
 
-	rooms = -1;
 	if (ft_strequ(room, link))
 		return (1);
-	while (farm[++rooms])
-		;
 	i = -1;
-	while (farm[++i])
-	{
-		if (ft_strequ(room, farm[i]->name))
-		{
-			if(!(farm[i]->edges))
-				farm[i]->edges = (t_room**)ft_memalloc(sizeof(t_room*) * (rooms + 1));
+	while (farm->rooms[++i]) {
+		if (ft_strequ(room, farm->rooms[i]->name)) {
+			if (!(farm->rooms[i]->edges))
+				farm->rooms[i]->edges = (t_room **) ft_memalloc(sizeof(t_room *) * (farm->rooms_n + 1));
 			k = -1;
-			while (farm[i]->edges[++k])
-				if (ft_strequ(farm[i]->edges[k]->name, link))
+			while (farm->rooms[i]->edges[++k])
+				if (ft_strequ(farm->rooms[i]->edges[k]->name, link))
 					return (1);
-			k = -1;
 			j = -1;
-			while (farm[++j])
-			{
-				if (ft_strequ(link, farm[j]->name))
-				{
+			while (farm->rooms[++j]) {
+				if (ft_strequ(link, farm->rooms[j]->name)) {
 					k = 0;
-					while (farm[i]->edges[k])
+					while (farm->rooms[i]->edges[k])
 						k++;
-					farm[i]->edges[k] = farm[j];
-					farm[i]->edges[k + 1] = 0;
+					farm->rooms[i]->edges[k] = farm->rooms[j];
+					farm->rooms[i]->edges[k + 1] = 0;
+					if (!(farm->rooms[j]->edges))
+						farm->rooms[j]->edges = (t_room **) ft_memalloc(sizeof(t_room *) * (farm->rooms_n + 1));
+					k = 0;
+					while (farm->rooms[j]->edges[k])
+						k++;
+					farm->rooms[j]->edges[k] = farm->rooms[i];
+					farm->rooms[j]->edges[k + 1] = 0;
 					return (1);
 				}
 			}
@@ -98,13 +96,12 @@ int		get_view(t_farm *farm)
 		if (split)
 			ft_memdel_arr((void***)&split);
 	}
-	farm->view[i] = 0;
+	ft_strdel(&farm->view[i]);
 	return (n_rooms);
 }
 
-t_room	**get_rooms(t_farm *farm)
+void	get_rooms(t_farm *farm)
 {
-	t_room	**rooms;
 	char 	*line;
 	char 	**split = 0;
 	int 	start = 0;
@@ -114,7 +111,8 @@ t_room	**get_rooms(t_farm *farm)
 
 	i = 0;
 	j = -1;
-	rooms = (t_room**)ft_memalloc(sizeof(t_room*) * (get_view(farm) + 1));
+	farm->rooms_n = get_view(farm);
+	farm->rooms = (t_room**)ft_memalloc(sizeof(t_room*) * (farm->rooms_n + 1));
 	if (farm->ants < 1)
 	{
 		ft_printf("ERROR: no ants!\n");
@@ -127,24 +125,24 @@ t_room	**get_rooms(t_farm *farm)
 		else if (ft_strequ(line, "##end"))
 			end++;
 		else if ((line[0] == '#' && line[1] != '#') ||
-				(line[0] == '#' && line[1] == '#' && line[2] != '#'))
-			 ;
+				 (line[0] == '#' && line[1] == '#' && line[2] != '#'))
+			;
 		else if (ft_strchr(line, ' '))
 		{
 			split = ft_strsplit(line, ' ');
-			rooms[i] = (t_room*)ft_memalloc(sizeof(t_room) + 1);
-			rooms[i]->name = ft_strdup(split[0]);
-			rooms[i]->index = ft_itoa(i);
-			rooms[i]->x = ft_atoi(split[1]);
-			rooms[i]->y = ft_atoi(split[2]);
+			farm->rooms[i] = (t_room*)ft_memalloc(sizeof(t_room) + 1);
+			farm->rooms[i]->name = ft_strdup(split[0]);
+			farm->rooms[i]->index = ft_itoa(i);
+			farm->rooms[i]->x = ft_atoi(split[1]);
+			farm->rooms[i]->y = ft_atoi(split[2]);
 			if (start == 1)
 			{
-				rooms[i]->status = 1;
+				farm->rooms[i]->status = 1;
 				start++;
 			}
 			else if (end == 1)
 			{
-				rooms[i]->status = 2;
+				farm->rooms[i]->status = 2;
 				end++;
 			}
 			i++;
@@ -152,23 +150,21 @@ t_room	**get_rooms(t_farm *farm)
 		else if (ft_strchr(line, '-'))
 		{
 			split = ft_strsplit(line, '-');
-			if (!(add_link(rooms, split[0], split[1])))
+			if (!(add_link(farm, split[0], split[1])))
 			{
 				ft_printf("ERROR: wrong link!\n");
 				exit(0);
 			}
-			add_link(rooms, split[1], split[0]);
 		}
 		if (split)
 			ft_memdel_arr((void***)&split);
 	}
-	rooms[i] = 0;
+	farm->rooms[i] = 0;
 	if (start != 2 || end != 2)
 	{
 		ft_printf("ERROR: wrong number of ##start/##end!\n");
 		exit(0);
 	}
-	return (rooms);
 }
 
 t_farm	*make_farm()
@@ -178,16 +174,12 @@ t_farm	*make_farm()
 
 	i = -1;
 	farm = (t_farm*)ft_memalloc(sizeof(t_farm));
-	farm->rooms = get_rooms(farm);
+	get_rooms(farm);
 	if (!farm->rooms[0])
 	{
 		ft_printf("ERROR: no rooms!\n");
 		exit(0);
 	}
-	while (farm->rooms[++i])
-		;
-	farm->rooms_n = i;
-	i = -1;
 	while (farm->rooms[++i])
 		if (farm->rooms[i]->status == 1)
 			farm->s_index = ft_itoa(i);

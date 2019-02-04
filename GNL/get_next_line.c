@@ -87,6 +87,7 @@ int		get_next_line(const int fd, char **line)
 	free(buf);
 	if (**line)
 		return (1);
+	free(*line);
 	*line = NULL;
 	return (0);
 }

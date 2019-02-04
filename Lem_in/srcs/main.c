@@ -83,9 +83,10 @@ int		main()
 	t_path	**paths;
 
 	farm = make_farm();
+	print_farm(farm);
 	paths = get_paths(farm);
 //	print_paths(paths, farm);
-	print_farm(farm);
+
 	lem_in(farm, paths);
 	print_solution(farm);
 	system("leaks -q lem-in > leaks.txt");

@@ -26,7 +26,7 @@ typedef struct		s_room
 	int				depth;
 	struct s_room	*parent;
 	struct s_room	**edges;
-	int 			*arrivals;
+	int				*arrivals;
 }					t_room;
 
 typedef struct		s_farm
@@ -37,7 +37,7 @@ typedef struct		s_farm
 	char			*e_index;
 	t_room			**rooms;
 	char			***solution;
-	char 			**view;
+	char			**view;
 	t_room			**bfs_to_visit;
 }					t_farm;
 
@@ -48,12 +48,12 @@ typedef struct		s_path
 	t_room			**path;
 }					t_path;
 
-void	print_farm(t_farm *farm);
-void	print_paths(t_path **paths, t_farm *farm);
-void	print_solution(t_farm *farm);
+void				print_farm(t_farm *farm);
+void				print_paths(t_path **paths, t_farm *farm);
+void				print_solution(t_farm *farm);
 
-t_farm	*make_farm();
+t_farm				*make_farm(void);
 
-t_path	**get_paths(t_farm *farm);
+t_path				**get_paths(t_farm *farm);
 
 #endif

@@ -148,57 +148,59 @@ int		find_paths_dfs(t_farm *farm, t_path **paths, int *checked, int *j)
 
 #define BFS farm->bfs_to_visit
 
+int		check_edges_bfs(t_room *room, t_path **paths, t_farm *farm, int i)
+{
+	t_room	*link;
+
+	if (room->edges[i] != room->parent)
+	{
+		if (!room->edges[i]->depth)
+			room->edges[i]->depth = room->depth + 1;
+		if (!room->edges[i]->parent)
+			room->edges[i]->parent = room;
+	}
+	if (ft_strequ(room->edges[i]->index, farm->e_index))
+	{
+		link = room->edges[i];
+		paths[0]->path[link->depth] = link;
+		paths[0]->depth = link->depth;
+		while (link->parent)
+		{
+			link = link->parent;
+			paths[0]->path[link->depth] = link;
+		}
+		return (1);
+	}
+	return (0);
+}
+
 int		find_paths_bfs(t_farm *farm, t_path **paths, int *checked)
 {
 	int		k;
 	int		i;
 	int		j;
-	int		p;
 	t_room	*link;
 
-	BFS = (t_room**)ft_memalloc(sizeof(t_room*) *
-			(farm->rooms_n * 2 + 1));
+	BFS = (t_room**)ft_memalloc(sizeof(t_room*) * (farm->rooms_n * 2 + 1));
 	BFS[0] = farm->rooms[ft_atoi(farm->s_index)];
 	k = -1;
-	p = 0;
-	while (BFS[++k])
+	link = 0;
+	while (BFS[++k] && (i = -1) == -1)
 	{
-		i = -1;
 		while (BFS[k]->edges[++i])
-		{
-			if (BFS[k]->edges[i] != BFS[k]->parent)
-			{
-				if (!BFS[k]->edges[i]->depth)
-					BFS[k]->edges[i]->depth = BFS[k]->depth + 1;
-				if (!BFS[k]->edges[i]->parent)
-					BFS[k]->edges[i]->parent = BFS[k];
-			}
-			if (ft_strequ(BFS[k]->edges[i]->index, farm->e_index))
-			{
-				link = BFS[k]->edges[i];
-				paths[p]->path[link->depth] = link;
-				paths[p]->depth = link->depth;
-				while (link->parent)
-				{
-					link = link->parent;
-					paths[p]->path[link->depth] = link;
-				}
+			if (check_edges_bfs(BFS[k], paths, farm, i))
 				return (1);
-			}
-		}
 		checked[ft_atoi(BFS[k]->index)] = 1;
 		i = -1;
 		while (BFS[k]->edges[++i])
-			if (!(checked[ft_atoi(BFS[k]->edges[i]->index)]))
+			if (!(checked[ft_atoi(BFS[k]->edges[i]->index)]) && (j = -1) == -1)
 			{
-				j = -1;
 				while (BFS[++j])
 					;
 				BFS[j] = BFS[k]->edges[i];
 			}
 	}
-	free(BFS);
-	return (p);
+	return (0);
 }
 
 int		no_end(t_path **paths, int index, int n)

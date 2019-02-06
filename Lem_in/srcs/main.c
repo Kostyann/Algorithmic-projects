@@ -76,11 +76,11 @@ int		main(void)
 	t_path	**paths;
 
 	farm = make_farm();
-	print_farm(farm);
 	paths = get_paths(farm);
 	farm->solution = (char***)ft_memalloc(sizeof(char**)
 			* (farm->rooms_n + farm->ants));
 	lem_in(farm, paths, 0);
+	print_farm(farm);
 	print_solution(farm);
 	system("leaks -q lem-in > leaks.txt");
 	return (0);

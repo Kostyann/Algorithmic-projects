@@ -56,4 +56,8 @@ t_farm				*make_farm(void);
 
 t_path				**get_paths(t_farm *farm);
 
+int					room_or_comment(t_farm *farm, int *start, int *end,
+															char **split);
+int					link_or_comment(t_farm *farm, int j, char **split);
+
 #endif

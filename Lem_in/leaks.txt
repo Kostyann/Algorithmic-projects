@@ -1,2 +1,2 @@
-Process 94910: 7440 nodes malloced for 13021 KB
-Process 94910: 0 leaks for 0 total leaked bytes.
+Process 1782: 1005170 nodes malloced for 39380 KB
+Process 1782: 0 leaks for 0 total leaked bytes.

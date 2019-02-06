@@ -48,16 +48,23 @@ typedef struct		s_path
 	t_room			**path;
 }					t_path;
 
+t_farm				*make_farm(void);
+
+int					room_or_comment(t_farm *farm, int *start, int *end,
+																char **split);
+int					link_or_comment(t_farm *farm, int j, char **split);
+
+void				path_mem(t_farm *farm, t_path **paths, int n, int depth);
+t_path				**get_paths(t_farm *farm);
+
+int					find_paths_bfs(t_farm *farm, t_path **paths, int *checked);
+
+int					path_exists(t_farm *farm, t_room *start, int *checked);
+int					find_paths_dfs(t_farm *farm, t_path **paths, int *checked,
+									int *j);
+
 void				print_farm(t_farm *farm);
 void				print_paths(t_path **paths, t_farm *farm);
 void				print_solution(t_farm *farm);
-
-t_farm				*make_farm(void);
-
-t_path				**get_paths(t_farm *farm);
-
-int					room_or_comment(t_farm *farm, int *start, int *end,
-															char **split);
-int					link_or_comment(t_farm *farm, int j, char **split);
 
 #endif

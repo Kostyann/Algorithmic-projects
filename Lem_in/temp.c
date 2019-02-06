@@ -4,19 +4,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 void	print_paths(t_path **paths, t_farm *farm)
 {
 	int	i = -1;

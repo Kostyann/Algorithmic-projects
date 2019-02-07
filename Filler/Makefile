@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kmerkulo <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: yserhii <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/12/20 16:30:46 by kmerkulo          #+#    #+#              #
-#    Updated: 2018/12/20 16:30:48 by kmerkulo         ###   ########.fr        #
+#    Created: 2018/12/20 16:30:46 by yserhii          #+#    #+#              #
+#    Updated: 2018/12/20 16:30:48 by yserhii         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = kmerkulo.filler
+NAME = yserhii.filler
 
 CC =		gcc
 FLAGS =		-Wall -Wextra
@@ -50,45 +50,45 @@ main: all
 	@./$(NAME)
 
 s00: all
-	@cd resources && ./filler_vm -p1 ../kmerkulo.filler -f maps/map00
+	@cd resources && ./filler_vm -p1 ../yserhii.filler -f maps/map00
 
 s01: all
-	@cd resources && ./filler_vm -p1 ../kmerkulo.filler -f maps/map01
+	@cd resources && ./filler_vm -p1 ../yserhii.filler -f maps/map01
 
 s02: all
-	@cd resources && ./filler_vm -p1 ../kmerkulo.filler -f maps/map02
+	@cd resources && ./filler_vm -p1 ../yserhii.filler -f maps/map02
 
 s03: all
-	@cd resources && ./filler_vm -p1 ../kmerkulo.filler -f maps/map03
+	@cd resources && ./filler_vm -p1 ../yserhii.filler -f maps/map03
 
 m00p1: all
-	@cd resources && ./filler_vm -p1 ../kmerkulo.filler \
+	@cd resources && ./filler_vm -p1 ../yserhii.filler \
     	 -p2 players/carli.filler -f maps/map00
 
 m01p1: all
-	@cd resources && ./filler_vm -p1 ../kmerkulo.filler \
+	@cd resources && ./filler_vm -p1 ../yserhii.filler \
     	 -p2 players/carli.filler -f maps/map01
 
 m02p1: all
-	@cd resources && ./filler_vm -p1 ../kmerkulo.filler \
+	@cd resources && ./filler_vm -p1 ../yserhii.filler \
     	 -p2 players/carli.filler -f maps/map02
 
 m03p1: all
-	@cd resources && ./filler_vm -p1 ../kmerkulo.filler \
+	@cd resources && ./filler_vm -p1 ../yserhii.filler \
 	 -p2 players/carli.filler -f maps/map03
 
 m00p2: all
 	@cd resources && ./filler_vm -p1 players/carli.filler \
-    -p2 ../kmerkulo.filler -f maps/map00
+    -p2 ../yserhii.filler -f maps/map00
 
 m01p2: all
 	@cd resources && ./filler_vm -p1 players/carli.filler \
-    -p2 ../kmerkulo.filler -f maps/map01
+    -p2 ../yserhii.filler -f maps/map01
 
 m02p2: all
 	@cd resources && ./filler_vm -p1 players/carli.filler \
-    -p2 ../kmerkulo.filler -f maps/map02
+    -p2 ../yserhii.filler -f maps/map02
 
 m03p2: all
 	@cd resources && ./filler_vm -p1 players/carli.filler \
-    -p2 ../kmerkulo.filler -f maps/map03
+    -p2 ../yserhii.filler -f maps/map03

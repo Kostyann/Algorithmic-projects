@@ -26,6 +26,7 @@ typedef struct		s_room
 	int				depth;
 	struct s_room	*parent;
 	struct s_room	**edges;
+	int				edges_n;
 	int				*arrivals;
 }					t_room;
 

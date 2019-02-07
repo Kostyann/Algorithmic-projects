@@ -13,7 +13,7 @@
 NAME = lem-in
 
 CC =		clang
-CFLAGS =	-Wall -Wextra
+CFLAGS =	-Wall -Wextra -Werror
 LIB_DIR =	libft/
 LIBC =		libft.a
 

@@ -12,7 +12,7 @@
 
 #include "../include/lem_in.h"
 
-int		line_analyze(t_farm *farm, char *line, int *n_rooms, char **split)
+int		line_analyze(t_farm *farm, char *line, int *n_rooms, char ***split)
 {
 	if ((line[0] == '#' && line[1] != '#') ||
 		(line[0] == '#' && line[1] == '#' && line[2] != '#'))
@@ -21,21 +21,21 @@ int		line_analyze(t_farm *farm, char *line, int *n_rooms, char **split)
 		farm->ants = ft_atoi(line);
 	else if (ft_strchr(line, ' '))
 	{
-		split = ft_strsplit(line, ' ');
-		if (!split[0] || !split[1] || !split[2] ||
-			(split[3] && !(split[3][0] == '#' && split[3][1] != '#')))
+		*split = ft_strsplit(line, ' ');
+		if (!(*split)[0] || !(*split)[1] || !(*split)[2] ||
+			((*split)[3] && !((*split)[3][0] == '#' && (*split)[3][1] != '#')))
 			return (0);
 		(*n_rooms)++;
 	}
-	else if (ft_strchr(line, '-') && (split = ft_strsplit(line, '-')))
+	else if (ft_strchr(line, '-') && (*split = ft_strsplit(line, '-')))
 	{
-		if (!split[0] || !split[1] || split[2])
+		if (!(*split)[0] || !(*split)[1] || (*split)[2])
 			return (0);
 	}
 	else
 		return (0);
-	if (split)
-		ft_memdel_arr((void***)&split);
+	if (*split)
+		ft_memdel_arr((void***)split);
 	return (1);
 }
 
@@ -59,9 +59,11 @@ int		get_view(t_farm *farm)
 			farm->view = (char**)ft_realloc(farm->view, sizeof(char*)
 			* (lines + 1));
 		}
-		if (!(line_analyze(farm, farm->view[i], &n_rooms, split)))
+		if (!(line_analyze(farm, farm->view[i], &n_rooms, &split)))
 			break ;
 	}
+	if (split)
+		ft_memdel_arr((void***)&split);
 	ft_strdel(&farm->view[i]);
 	return (n_rooms);
 }

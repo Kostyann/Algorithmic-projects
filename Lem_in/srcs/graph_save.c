@@ -16,19 +16,17 @@ void	linking(t_farm *farm, int i, int j)
 {
 	int k;
 
-	k = 0;
-	while (farm->rooms[i]->edges[k])
-		k++;
+	k = farm->rooms[i]->edges_n;
 	farm->rooms[i]->edges[k] = farm->rooms[j];
 	farm->rooms[i]->edges[k + 1] = 0;
+	farm->rooms[i]->edges_n++;
 	if (!(farm->rooms[j]->edges))
 		farm->rooms[j]->edges = (t_room **)
 				ft_memalloc(sizeof(t_room *) * (farm->rooms_n + 1));
-	k = 0;
-	while (farm->rooms[j]->edges[k])
-		k++;
+	k = farm->rooms[j]->edges_n;
 	farm->rooms[j]->edges[k] = farm->rooms[i];
 	farm->rooms[j]->edges[k + 1] = 0;
+	farm->rooms[j]->edges_n++;
 }
 
 int		add_link(t_farm *farm, char *room, char *link)

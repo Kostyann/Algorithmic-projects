@@ -3,7 +3,34 @@
 
 
 
+#include <stdio.h>
+#include <stdint.h>
 
+int main(void)
+{
+	uint16_t x = 1; /* 0x0001 */
+	printf("%s\n", *((uint8_t *) &x) == 0 ? "big-endian" : "little-endian");
+	return (0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 void	print_paths(t_path **paths, t_farm *farm)
 {
 	int	i = -1;
@@ -33,7 +60,7 @@ void	print_paths(t_path **paths, t_farm *farm)
 								while (++k < (farm->ants + farm->rooms_n))
 									ft_printf("%d, ", paths[j]->path[i]->arrivals[k]);
 								ft_printf("]\n");
-							} */
+							}
 
 			}
 			ft_printf("\n");
@@ -106,7 +133,7 @@ int		shortest_path(t_farm *farm, int *checked)
 	return (0);
 }
 
-
+*/
 
 
 

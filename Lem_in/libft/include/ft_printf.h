@@ -36,8 +36,6 @@ typedef struct		s_flags
 	char			id;
 }					t_flags;
 
-int					ft_printf(const char *restrict format, ...);
-
 /*
 ** print functions of different types
 */

@@ -16,7 +16,6 @@
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include "ft_printf.h"
 # define BUFF_SIZE 21
 
 typedef struct		s_list
@@ -27,6 +26,7 @@ typedef struct		s_list
 }					t_list;
 
 int					get_next_line(const int fd, char **line);
+int					ft_printf(const char *restrict format, ...);
 void				*ft_memset(void *b, int c, size_t len);
 void				ft_bzero(void *s, size_t n);
 void				*ft_memcpy(void *restrict dst, const void *restrict src,

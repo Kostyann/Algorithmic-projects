@@ -63,12 +63,18 @@ void	add_room(t_room *room, char **split, int *start, int *end)
 	room->x = ft_atoi(split[1]);
 	room->y = ft_atoi(split[2]);
 	if (*start == 1)
-		room->status = (*start)++;
+	{
+		room->status = *start;
+		*start = 999;
+	}
 	else if (*end == 1)
-		room->status = ++(*end);
+	{
+		room->status = (*end) + 1;
+		*end = 999;
+	}
 }
 
-int		room_or_comment(t_farm *farm, int *start, int *end, char **split)
+int		room_or_comment(t_farm *farm, int *st, int *end, char **split)
 {
 	int		i;
 	int		j;
@@ -76,9 +82,9 @@ int		room_or_comment(t_farm *farm, int *start, int *end, char **split)
 	i = 0;
 	j = -1;
 	while (farm->view[++j] && !(ft_strchr(farm->view[j], '-')))
-		if (ft_strequ(farm->view[j], "##start"))
-			(*start)++;
-		else if (ft_strequ(farm->view[j], "##end"))
+		if (ft_strequ(farm->view[j], "##start") && (*end == 0 || *end == 999))
+			(*st)++;
+		else if (ft_strequ(farm->view[j], "##end") && (*st == 999 || *st == 0))
 			(*end)++;
 		else if ((farm->view[j][0] == '#' && farm->view[j][1] != '#') ||
 				(farm->view[j][0] == '#' && farm->view[j][1] == '#' &&
@@ -89,7 +95,7 @@ int		room_or_comment(t_farm *farm, int *start, int *end, char **split)
 			split = ft_strsplit(farm->view[j], ' ');
 			farm->rooms[i] = (t_room*)ft_memalloc(sizeof(t_room) + 1);
 			farm->rooms[i]->index = ft_itoa(i);
-			add_room(farm->rooms[i], split, start, end);
+			add_room(farm->rooms[i], split, st, end);
 			i++;
 			ft_memdel_arr((void***)&split);
 		}
@@ -110,7 +116,7 @@ int		link_or_comment(t_farm *farm, int j, char **split)
 			split = ft_strsplit(farm->view[j], '-');
 			if (!(add_link(farm, split[0], split[1])))
 			{
-				ft_printf("ERROR: wrong link!\n");
+				ft_printf("ERROR3!\n");
 				exit(0);
 			}
 			ft_memdel_arr((void***)&split);

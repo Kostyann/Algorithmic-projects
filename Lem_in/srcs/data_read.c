@@ -12,6 +12,24 @@
 
 #include "../include/lem_in.h"
 
+int		ft_strchrnum(const char *s, int c)
+{
+	char	q;
+	int		num;
+
+	q = c;
+	num = 0;
+	while (*s)
+	{
+		if (*s == q)
+			num++;
+		s++;
+	}
+	if (*s == q)
+		num++;
+	return (num);
+}
+
 int		line_analyze(t_farm *farm, char *line, int *n_rooms, char ***split)
 {
 	if ((line[0] == '#' && line[1] != '#') ||
@@ -22,12 +40,14 @@ int		line_analyze(t_farm *farm, char *line, int *n_rooms, char ***split)
 	else if (ft_strchr(line, ' '))
 	{
 		*split = ft_strsplit(line, ' ');
-		if (!(*split)[0] || !(*split)[1] || !(*split)[2] ||
+		if (!(*split)[0] || (*split)[0][0] == 'L' ||
+			!(*split)[1] || !(*split)[2] ||
 			((*split)[3] && !((*split)[3][0] == '#' && (*split)[3][1] != '#')))
 			return (0);
 		(*n_rooms)++;
 	}
-	else if (ft_strchr(line, '-') && (*split = ft_strsplit(line, '-')))
+	else if (ft_strchr(line, '-') && (ft_strchrnum(line, '-') == 1)
+				&& (*split = ft_strsplit(line, '-')))
 	{
 		if (!(*split)[0] || !(*split)[1] || (*split)[2])
 			return (0);
@@ -80,9 +100,9 @@ void	get_graph(t_farm *farm)
 	end = 0;
 	farm->rooms = (t_room**)ft_memalloc(sizeof(t_room*) * (farm->rooms_n + 1));
 	j = room_or_comment(farm, &start, &end, split);
-	if (start != 2 || end != 2)
+	if (start != 999 || end != 999)
 	{
-		ft_printf("ERROR: wrong number of ##start/##end!\n");
+		ft_printf("ERROR1!\n");
 		exit(0);
 	}
 	link_or_comment(farm, j, split);
@@ -98,7 +118,7 @@ t_farm	*make_farm(void)
 	farm->rooms_n = get_view(farm);
 	if (farm->ants < 1 || farm->rooms_n < 1)
 	{
-		ft_printf("ERROR: no ants or rooms!\n");
+		ft_printf("ERROR2!\n");
 		exit(0);
 	}
 	get_graph(farm);

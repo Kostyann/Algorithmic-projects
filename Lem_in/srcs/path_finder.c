@@ -103,7 +103,7 @@ t_path	**get_paths(t_farm *farm)
 	path_mem(farm, paths, 0, -1);
 	if (!(path_exists(farm, farm->rooms[ft_atoi(farm->s_index)], checked)))
 	{
-		ft_printf("ERROR: no solution!\n");
+		ft_printf("ERROR5!\n");
 		exit(0);
 	}
 	ft_bzero((void*)checked, sizeof(int) * (farm->rooms_n + 1));

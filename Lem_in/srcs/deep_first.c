@@ -69,7 +69,7 @@ int		find_paths_dfs(t_farm *farm, t_path **paths, int *checked, int *j)
 			farm->s_index = start->edges[i]->index;
 			if (find_paths_dfs(farm, paths, checked, j))
 			{
-				if (*j >= 20)
+				if (*j >= 100)
 					return (1);
 				(*j)++;
 				path_mem(farm, paths, *j, paths[*j - 1]->depth - 2);

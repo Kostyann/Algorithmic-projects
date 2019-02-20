@@ -59,14 +59,12 @@ int		line_analyze(t_farm *farm, char *line, int *n_rooms, char ***split)
 	return (1);
 }
 
-int		get_view(t_farm *farm)
+int		get_view(t_farm *farm, int *n_rooms)
 {
-	int		n_rooms;
 	int		lines;
 	char	**split;
 	int		i;
 
-	n_rooms = 0;
 	lines = 5;
 	split = 0;
 	i = -1;
@@ -79,13 +77,15 @@ int		get_view(t_farm *farm)
 			farm->view = (char**)ft_realloc(farm->view, sizeof(char*)
 			* (lines + 1));
 		}
-		if (!(line_analyze(farm, farm->view[i], &n_rooms, &split)))
+		if (((ft_strequ(farm->view[i], "##start") ||
+			ft_strequ(farm->view[i], "##end")) && !farm->ants)
+			|| (!(line_analyze(farm, farm->view[i], n_rooms, &split))))
 			break ;
 	}
 	if (split)
 		ft_memdel_arr((void***)&split);
 	ft_strdel(&farm->view[i]);
-	return (n_rooms);
+	return (*n_rooms);
 }
 
 void	get_graph(t_farm *farm)
@@ -112,10 +112,12 @@ t_farm	*make_farm(void)
 {
 	t_farm	*farm;
 	int		i;
+	int		n_rooms;
 
 	i = -1;
+	n_rooms = 0;
 	farm = (t_farm*)ft_memalloc(sizeof(t_farm));
-	farm->rooms_n = get_view(farm);
+	farm->rooms_n = get_view(farm, &n_rooms);
 	if (farm->ants < 1 || farm->rooms_n < 1)
 	{
 		ft_printf("ERROR2!\n");

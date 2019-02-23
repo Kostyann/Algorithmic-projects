@@ -40,3 +40,14 @@ void	print_solution(t_farm *farm)
 		}
 	}
 }
+
+int		com_o_comm(char *line)
+{
+	if (line && line[0])
+	{
+		if ((line[0] == '#' && line[1] != '#') ||
+			(line[0] == '#' && line[1] && line[1] == '#' && line[2] != '#'))
+			return (1);
+	}
+	return (0);
+}

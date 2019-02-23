@@ -67,5 +67,6 @@ int					find_paths_dfs(t_farm *farm, t_path **paths, int *checked,
 void				print_farm(t_farm *farm);
 void				print_paths(t_path **paths, t_farm *farm);
 void				print_solution(t_farm *farm);
+int					com_o_comm(char *line);
 
 #endif

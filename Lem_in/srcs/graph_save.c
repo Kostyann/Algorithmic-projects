@@ -81,14 +81,13 @@ int		room_or_comment(t_farm *farm, int *st, int *end, char **split)
 
 	i = 0;
 	j = -1;
-	while (farm->view[++j] && !(ft_strchr(farm->view[j], '-')))
+	while (farm->view[++j] && (!((ft_strchr(farm->view[j], '-'))
+			&& !com_o_comm(farm->view[j]))))
 		if (ft_strequ(farm->view[j], "##start") && (*end == 0 || *end == 999))
 			(*st)++;
 		else if (ft_strequ(farm->view[j], "##end") && (*st == 999 || *st == 0))
 			(*end)++;
-		else if ((farm->view[j][0] == '#' && farm->view[j][1] != '#') ||
-				(farm->view[j][0] == '#' && farm->view[j][1] == '#' &&
-				farm->view[j][2] != '#'))
+		else if (com_o_comm(farm->view[j]))
 			;
 		else if (ft_strchr(farm->view[j], ' '))
 		{
@@ -107,9 +106,7 @@ int		link_or_comment(t_farm *farm, int j, char **split)
 {
 	while (farm->view[j])
 	{
-		if ((farm->view[j][0] == '#' && farm->view[j][1] != '#') ||
-			(farm->view[j][0] == '#' && farm->view[j][1] == '#' &&
-			farm->view[j][2] != '#'))
+		if (com_o_comm(farm->view[j]))
 			;
 		else
 		{

@@ -82,5 +82,6 @@ int		main(void)
 	lem_in(farm, paths, 0);
 	print_farm(farm);
 	print_solution(farm);
+	system("leaks -q lem-in");
 	return (0);
 }

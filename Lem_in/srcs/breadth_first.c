@@ -16,27 +16,32 @@
 ** Breadth-first search (BFS)
 */
 
-int		check_edges_bfs(t_room *room, t_path **paths, t_farm *farm, int i)
+void	clean_member(t_path **paths, int w)
+{
+	int	i;
+
+	i = 0;
+	while (++i < paths[w]->depth)
+		paths[w]->path[i]->blocked = 1;
+}
+
+int		check_room_bfs(t_room *room, t_path **paths, t_farm *farm, int w)
 {
 	t_room	*link;
 
-	if (room->edges[i] != room->parent)
+	if (ft_strequ(room->index, farm->e_index))
 	{
-		if (!room->edges[i]->depth)
-			room->edges[i]->depth = room->depth + 1;
-		if (!room->edges[i]->parent)
-			room->edges[i]->parent = room;
-	}
-	if (ft_strequ(room->edges[i]->index, farm->e_index))
-	{
-		link = room->edges[i];
-		paths[0]->path[link->depth] = link;
-		paths[0]->depth = link->depth;
+		link = room;
+		paths[w]->path[link->depth] = link;
+		paths[w]->path[link->depth + 1] = 0;
+		paths[w]->depth = link->depth;
 		while (link->parent)
 		{
 			link = link->parent;
-			paths[0]->path[link->depth] = link;
+			paths[w]->path[link->depth] = link;
 		}
+		if (paths[w]->depth > 1)
+			clean_member(paths, w);
 		return (1);
 	}
 	return (0);
@@ -44,28 +49,47 @@ int		check_edges_bfs(t_room *room, t_path **paths, t_farm *farm, int i)
 
 #define BFS farm->bfs_to_visit
 
-int		find_paths_bfs(t_farm *farm, t_path **paths, int *checked)
+int		find_paths_bfs(t_farm *farm, t_path **paths, int *checked, int w)
 {
 	int		k;
 	int		i;
 	int		j;
 
-	BFS = (t_room**)ft_memalloc(sizeof(t_room*) * (farm->rooms_n * 2 + 1));
+	BFS = (t_room**)ft_memalloc(sizeof(t_room*) * (farm->rooms_n + 1));
 	BFS[0] = farm->rooms[ft_atoi(farm->s_index)];
 	k = -1;
 	while (BFS[++k] && (i = -1) == -1)
 	{
-		while (BFS[k]->edges[++i])
-			if (check_edges_bfs(BFS[k], paths, farm, i))
-				return (1);
+		if (check_room_bfs(BFS[k], paths, farm, w))
+		{
+			k = -1;
+			while (BFS[++k])
+			{
+				BFS[k]->depth = 0;
+				BFS[k]->parent = 0;
+			}
+			ft_bzero((void*)checked, sizeof(int) * (farm->rooms_n + 1));
+			free(BFS);
+			return (1);
+		}
+
 		checked[ft_atoi(BFS[k]->index)] = 1;
 		i = -1;
 		while (BFS[k]->edges[++i])
-			if (!(checked[ft_atoi(BFS[k]->edges[i]->index)]) && (j = -1) == -1)
+			if (!(checked[ft_atoi(BFS[k]->edges[i]->index)]) &&
+				!BFS[k]->edges[i]->blocked && (j = -1) == -1)
 			{
 				while (BFS[++j])
 					;
 				BFS[j] = BFS[k]->edges[i];
+				checked[ft_atoi(BFS[k]->edges[i]->index)] = 1;
+				if (BFS[j] != BFS[k]->parent)
+				{
+					if (!BFS[j]->depth)
+						BFS[j]->depth = BFS[k]->depth + 1;
+					if (!BFS[j]->parent)
+						BFS[j]->parent = BFS[k];
+				}
 			}
 	}
 	return (0);

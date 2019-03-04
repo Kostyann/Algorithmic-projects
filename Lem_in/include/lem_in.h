@@ -28,6 +28,7 @@ typedef struct		s_room
 	struct s_room	**edges;
 	int				edges_n;
 	int				*arrivals;
+	int blocked;
 }					t_room;
 
 typedef struct		s_farm
@@ -58,14 +59,13 @@ int					link_or_comment(t_farm *farm, int j, char **split);
 void				path_mem(t_farm *farm, t_path **paths, int n, int depth);
 t_path				**get_paths(t_farm *farm);
 
-int					find_paths_bfs(t_farm *farm, t_path **paths, int *checked);
+int					find_paths_bfs(t_farm *farm, t_path **paths, int *checked, int w);
 
 int					path_exists(t_farm *farm, t_room *start, int *checked);
 int					find_paths_dfs(t_farm *farm, t_path **paths, int *checked,
 									int *j);
 
 void				print_farm(t_farm *farm);
-void				print_paths(t_path **paths, t_farm *farm);
 void				print_solution(t_farm *farm);
 int					com_o_comm(char *line);
 

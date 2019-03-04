@@ -113,7 +113,8 @@ int		link_or_comment(t_farm *farm, int j, char **split)
 			split = ft_strsplit(farm->view[j], '-');
 			if (!(add_link(farm, split[0], split[1])))
 			{
-				ft_printf("ERROR3!\n");
+				ft_printf("ERROR!\n");
+				system("leaks -q lem-in");
 				exit(0);
 			}
 			ft_memdel_arr((void***)&split);

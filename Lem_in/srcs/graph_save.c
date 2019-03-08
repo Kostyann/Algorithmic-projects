@@ -114,7 +114,6 @@ int		link_or_comment(t_farm *farm, int j, char **split)
 			if (!(add_link(farm, split[0], split[1])))
 			{
 				ft_printf("ERROR!\n");
-				system("leaks -q lem-in");
 				exit(0);
 			}
 			ft_memdel_arr((void***)&split);

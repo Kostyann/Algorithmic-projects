@@ -50,7 +50,6 @@ t_path	**get_paths(t_farm *farm)
 	if (!(path_exists(farm, farm->rooms[ft_atoi(farm->s_index)], checked)))
 	{
 		ft_printf("ERROR!\n");
-		system("leaks -q lem-in");
 		exit(0);
 	}
 	ft_bzero((void*)checked, sizeof(int) * (farm->rooms_n + 1));

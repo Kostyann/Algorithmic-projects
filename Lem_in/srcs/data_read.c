@@ -103,7 +103,6 @@ void	get_graph(t_farm *farm)
 	if (start != 999 || end != 999)
 	{
 		ft_printf("ERROR!\n");
-		system("leaks -q lem-in");
 		exit(0);
 	}
 	link_or_comment(farm, j, split);
@@ -122,7 +121,6 @@ t_farm	*make_farm(void)
 	if (farm->ants < 1 || farm->rooms_n < 1)
 	{
 		ft_printf("ERROR!\n");
-		system("leaks -q lem-in");
 		exit(0);
 	}
 	get_graph(farm);

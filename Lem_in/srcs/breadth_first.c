@@ -49,11 +49,34 @@ int		check_room_bfs(t_room *room, t_path **paths, t_farm *farm, int w)
 
 #define BFS farm->bfs_to_visit
 
+void	add_to_bfs(t_farm *farm, int *checked, int k)
+{
+	int	i;
+	int j;
+
+	i = -1;
+	while (BFS[k]->edges[++i])
+		if (!(checked[ft_atoi(BFS[k]->edges[i]->index)]) &&
+			!BFS[k]->edges[i]->blocked && (j = -1) == -1)
+		{
+			while (BFS[++j])
+				;
+			BFS[j] = BFS[k]->edges[i];
+			checked[ft_atoi(BFS[k]->edges[i]->index)] = 1;
+			if (BFS[j] != BFS[k]->parent)
+			{
+				if (!BFS[j]->depth)
+					BFS[j]->depth = BFS[k]->depth + 1;
+				if (!BFS[j]->parent)
+					BFS[j]->parent = BFS[k];
+			}
+		}
+}
+
 int		find_paths_bfs(t_farm *farm, t_path **paths, int *checked, int w)
 {
 	int		k;
 	int		i;
-	int		j;
 
 	BFS = (t_room**)ft_memalloc(sizeof(t_room*) * (farm->rooms_n + 1));
 	BFS[0] = farm->rooms[ft_atoi(farm->s_index)];
@@ -72,25 +95,8 @@ int		find_paths_bfs(t_farm *farm, t_path **paths, int *checked, int w)
 			free(BFS);
 			return (1);
 		}
-
 		checked[ft_atoi(BFS[k]->index)] = 1;
-		i = -1;
-		while (BFS[k]->edges[++i])
-			if (!(checked[ft_atoi(BFS[k]->edges[i]->index)]) &&
-				!BFS[k]->edges[i]->blocked && (j = -1) == -1)
-			{
-				while (BFS[++j])
-					;
-				BFS[j] = BFS[k]->edges[i];
-				checked[ft_atoi(BFS[k]->edges[i]->index)] = 1;
-				if (BFS[j] != BFS[k]->parent)
-				{
-					if (!BFS[j]->depth)
-						BFS[j]->depth = BFS[k]->depth + 1;
-					if (!BFS[j]->parent)
-						BFS[j]->parent = BFS[k];
-				}
-			}
+		add_to_bfs(farm, checked, k);
 	}
 	return (0);
 }

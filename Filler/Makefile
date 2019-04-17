@@ -10,10 +10,10 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = yserhii.filler
+NAME = kmerkulo.filler
 
 CC =		gcc
-FLAGS =		-Wall -Wextra
+FLAGS =		-Wall -Wextra -Werror
 LIB_DIR =	libft/
 LIBC =		libft.a
 
@@ -42,53 +42,56 @@ $(OBJ_DIR)%.o:	%.c
 
 clean:
 	@rm -rf $(OBJ_DIR)
+
 fclean:		clean
 	@rm -f $(NAME)
-re:			fclean all
+	@$(MAKE) fclean -C libft
+
+re:	fclean all
 
 main: all
 	@./$(NAME)
 
 s00: all
-	@cd resources && ./filler_vm -p1 ../yserhii.filler -f maps/map00
+	@cd resources && ./filler_vm -p1 ../kmerkulo.filler -f maps/map00
 
 s01: all
-	@cd resources && ./filler_vm -p1 ../yserhii.filler -f maps/map01
+	@cd resources && ./filler_vm -p1 ../kmerkulo.filler -f maps/map01
 
 s02: all
-	@cd resources && ./filler_vm -p1 ../yserhii.filler -f maps/map02
+	@cd resources && ./filler_vm -p1 ../kmerkulo.filler -f maps/map02
 
 s03: all
-	@cd resources && ./filler_vm -p1 ../yserhii.filler -f maps/map03
+	@cd resources && ./filler_vm -p1 ../kmerkulo.filler -f maps/map03
 
 m00p1: all
-	@cd resources && ./filler_vm -p1 ../yserhii.filler \
+	@cd resources && ./filler_vm -p1 ../kmerkulo.filler \
     	 -p2 players/carli.filler -f maps/map00
 
 m01p1: all
-	@cd resources && ./filler_vm -p1 ../yserhii.filler \
+	@cd resources && ./filler_vm -p1 ../kmerkulo.filler \
     	 -p2 players/carli.filler -f maps/map01
 
 m02p1: all
-	@cd resources && ./filler_vm -p1 ../yserhii.filler \
+	@cd resources && ./filler_vm -p1 ../kmerkulo.filler \
     	 -p2 players/carli.filler -f maps/map02
 
 m03p1: all
-	@cd resources && ./filler_vm -p1 ../yserhii.filler \
+	@cd resources && ./filler_vm -p1 ../kmerkulo.filler \
 	 -p2 players/carli.filler -f maps/map03
 
 m00p2: all
 	@cd resources && ./filler_vm -p1 players/carli.filler \
-    -p2 ../yserhii.filler -f maps/map00
+    -p2 ../kmerkulo.filler -f maps/map00
 
 m01p2: all
 	@cd resources && ./filler_vm -p1 players/carli.filler \
-    -p2 ../yserhii.filler -f maps/map01
+    -p2 ../kmerkulo.filler -f maps/map01
 
 m02p2: all
 	@cd resources && ./filler_vm -p1 players/carli.filler \
-    -p2 ../yserhii.filler -f maps/map02
+    -p2 ../kmerkulo.filler -f maps/map02
 
 m03p2: all
 	@cd resources && ./filler_vm -p1 players/carli.filler \
-    -p2 ../yserhii.filler -f maps/map03
+    -p2 ../kmerkulo.filler -f maps/map03

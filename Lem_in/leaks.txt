@@ -1,2 +1,0 @@
-Process 78780: 7281 nodes malloced for 12379 KB
-Process 78780: 0 leaks for 0 total leaked bytes.

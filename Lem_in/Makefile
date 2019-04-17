@@ -51,16 +51,8 @@ clean:
 	@rm -rf $(OBJ_DIR)
 	@echo "\033[32mCleaned!\033[0m"
 
-lib-clean:
-	@$(MAKE) clean -C libft
-
 fclean:		clean
 	@rm -f $(NAME)
-
-lib-fclean:
 	@$(MAKE) fclean -C libft
 
-re:			fclean all
-
-lib-re:
-	@$(MAKE) re -C libft	
+re:	fclean all

@@ -1,3 +1,0 @@
-ft_memset: x0.96 faster than libft.so's function (1920144 cpu ticks vs 1834966)
-ft_memset: x1.00 slower than libft.so's function (3677199 cpu ticks vs 3689603)
-ft_memset: x1.00 faster than libft.so's function (909107 cpu ticks vs 905948)

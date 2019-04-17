@@ -1,8 +1,0 @@
-//Retrieve all the files named ".git" and pump them into 'rm -rf'
-//WARNING if you don't understand why/how this command works, DO NOT run it!
-
-find . -name '.git*' | xargs rm -rf
-
-//WARNING, if you accidentally pipe a `.` or `/` or other wildcard
-//into xargs rm -rf, then the next question you will have is: "why is
-//the bash ls command not found?  Requiring an OS reinstall.
